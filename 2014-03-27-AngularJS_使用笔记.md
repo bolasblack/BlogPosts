@@ -10,7 +10,8 @@ p.input-object.text-right(data-app-eval="view_avaliableSendDays = ['今天', '�
   button.button(
     type="button"
     data-ng-repeat=“view_day in view_avaliableSendDays"
-    data-ng-class="{'button-positive': checkStartDayOffset($index)}"
+    data-ng-class="{'button-positive': startDayOffset = $index}"
+    data-ng-click="startDayOffset = $index"
   ) {{view_day}}
 ```
 
@@ -29,4 +30,34 @@ module.directive('appEval', [
       $scope.$eval attrs.appEval
 ])
 ```
+
+* * *
+
+如果是在使用 `Jade` 的话，那么本着 “控制器里的嵌套 Scope 越少越好” 的原则，推荐使用迭代器来替换 `ngRepeat` ：
+
+```jade
+p.input-object.text-right
+  each day, index in ['今天', '明天', '后天']
+    button.button(
+      type="button"
+      data-ng-class="{'button-positive': startDayOffset === #{index}}"
+      data-ng-click="startDayOffset = #{index}"
+    )= day
+```
+
+不过即使如此， `appEval` 依旧是有用武之地的。比如说用来初始化某个控制器的变量：
+
+```jade
+p.input-object.text-right(data-app-eval="startDayOffset = 0")
+  each day, index in ['今天', '明天', '后天']
+    button.button(
+      type="button"
+      data-ng-class="{'button-positive': startDayOffset === #{index}}"
+      data-ng-click="startDayOffset = #{index}"
+    )= day
+```
+
+因为 `offset` 的值是由视图控制的，如果在控制器里设置了某个变量的默认值，那么当视图中的候选值调整后，控制器的代码也需要进行相应的调整。
+
+如果把初始化默认值的代码放在视图中，维护起来会更加的便捷，而且不容易漏改。
 
