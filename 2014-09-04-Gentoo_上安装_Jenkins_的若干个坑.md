@@ -5,7 +5,7 @@ category: ["gentoo"]
 
 嗯，在 Gentoo 上装了一下 Jenkins ，记录一下遇到的坑吧。
 
-## overlay
+## Overlay
 
 Gentoo 官方的 portage 和 gentoo-zh 里都是没有 Jenkins 的，所以得自己去找一下 overlay 。我在 [http://gpo.zugaina.org/](http://gpo.zugaina.org/) 这个网站找到了相应的[文件](http://gpo.zugaina.org/) ，然后由于下文中会提到的一些事情，所以对文件做了一些改动，push 到了自己的仓库 [bolasblack/overlay](https://github.com/bolasblack/overlay) 。版本是 1.577 ，官方最新是 1.578 ，不过看了一下 changelog 似乎没啥太大的变化，就懒得写了。
 
@@ -28,7 +28,7 @@ Apache 我只知道要禁用 `ignore_invalid_headers` 。Nginx 的话要在 `ser
 * http://www.myexception.cn/ruby-rails/1617396.html
 * https://issues.jenkins-ci.org/browse/JENKINS-12875
 
-## git commit 乱码
+## Git commit 乱码
 
 这个问题其实是被 Java 的默认运行编码坑的，我已经在 overlay 的 `files/jenkins-bin.confd` 里设置好了。
 
@@ -38,3 +38,9 @@ Apache 我只知道要禁用 `ignore_invalid_headers` 。Nginx 的话要在 `ser
 
 * http://bbbush.livejournal.com/392149.html
 * http://www.tuicool.com/articles/f6J3I3
+
+## SSH Username with private key
+
+这个 key Jenkins 是不会自动创建的，需要你手动执行 `sudo -u jenkins ssh-keygen -t rsa` 来新建。
+
+由于我的那个 overlay 里把 `jenkins` 的家目录默认设置在了 `/var/lib/jenkins` ，所以找 ssh 的 pub key 的时候也要去那个目录下找。
