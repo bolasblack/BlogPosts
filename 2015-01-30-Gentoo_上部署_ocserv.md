@@ -116,6 +116,10 @@ dns = 8.8.8.8
 cisco-client-compat = true
 ```
 
+最后生成帐号密码文件：
+
+    sudo ocpasswd -c /etc/ocserv/ocpasswd username
+
 ## 其他配置
 
 以 [Linode 的配置](https://www.linode.com/docs/security/securing-your-server#creating-a-firewall) 为例，新建或修改 `/etc/iptables.firewall.rules` 文件：
