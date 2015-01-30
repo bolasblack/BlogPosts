@@ -188,6 +188,25 @@ sudo iptables -t nat -L
 
 如果证书是自己签发的，那么 iOS 客户端在连接前先到 `Settings` 标签页关闭 `Block Untrusted Servers` 。
 
+## Troubleshooting
+
+### ocserv: error while loading shared libraries: libgnutls.so.28: cannot open shared object file: No such file or directory
+
+启动 ocserv 的命令改一下：
+
+    sudo LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib ocserv -f -d 1
+
+### 无法访问国内网站
+
+错误信息：
+
+    ocserv[15995]: main: 客户端IP:1035: unexpected DTLS content type: 23; possibly a firewall disassociated a UDP session
+
+给 `/data/etc/ocserv/ocserv.conf` 加两个路由：
+
+    route = 0.0.0.0/128.0.0.0
+    route = 128.0.0.0/128.0.0.0
+
 ## 余话
 
 关于开机自动启动 ocserv ，开机自动载入 iptables 配置，客户端证书自动连接，这些东西我就不在这里写了，可以参考下面的参考文章。
