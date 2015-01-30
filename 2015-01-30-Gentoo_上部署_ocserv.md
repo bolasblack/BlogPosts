@@ -63,6 +63,19 @@ sudo mkdir -p /etc/ocserv/certificates
 cd /etc/ocserv/certificates
 ```
 
+创建 `ca.tmpl` 模板，这里的 `cn` 和 `organization` 可以随便写：
+
+```
+cn = "Your CA name"
+organization = "Your fancy name"
+serial = 1
+expiration_days = 3650
+ca
+signing_key
+cert_signing_key
+crl_signing_key
+```
+
 创建 `server.tmpl` 模板，这里的 `cn` 必须对应最终提供服务的 hostname 或 IP ：
 
 ```
@@ -77,6 +90,7 @@ tls_www_server
 然后来建证书：
 
 ```bash
+sudo certtool --generate-privkey --outfile ca-key.pem
 sudo certtool --generate-privkey --outfile server-key.pem
 sudo certtool --generate-certificate --load-privkey server-key.pem --load-ca-certificate ca-cert.pem --load-ca-privkey ca-key.pem --template server.tmpl --outfile server-cert.pem
 ```
