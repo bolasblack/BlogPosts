@@ -202,14 +202,18 @@ sudo iptables -t nat -L
 
     ocserv[15995]: main: 客户端IP:1035: unexpected DTLS content type: 23; possibly a firewall disassociated a UDP session
 
-给 `/data/etc/ocserv/ocserv.conf` 加两个路由：
+给 `/etc/ocserv/ocserv.conf` 加两个路由：
 
     route = 0.0.0.0/128.0.0.0
     route = 128.0.0.0/128.0.0.0
 
 ## 余话
 
-关于开机自动启动 ocserv ，开机自动载入 iptables 配置，客户端证书自动连接，这些东西我就不在这里写了，可以参考下面的参考文章。
+关于开机自动启动 ocserv ，开机自动载入 iptables 配置，客户端证书自动连接，这些东西我就不在这里写了，可以看下面的参考文章。
+
+我建了一个 Gist ：Gentoo 的 ocserv 启动脚本：https://gist.github.com/bolasblack/9f53b048e46f538cf08d
+
+记得把 `PIDFILE` 的路径改成 `/etc/ocserv/ocserv.conf` 里配置的 `pid-file` 路径。
 
 最后，祝 GFW 早日被终结。
 
