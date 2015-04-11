@@ -8,36 +8,9 @@ tags: ["gentoo", "ocserv", "iOS"]
 
 ## 安装 GnuTLS
 
-ocserv 最让人头疼的事情在于他依赖 GnuTLS 3.x ，Gentoo 的源里目前它还是 2.x 的状态，所以没办法，只能自己编译。
-
 ```bash
-cd ~
-wget ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.12.tar.xz
-tar xvf gnutls-3.3.12.tar.xz
-cd gnutls-3.3.12
-./configure --enable-shared
-make -j2 && sudo make install
+sudo emerge -av gnutls
 ```
-
-编译完成后使用 `sudo gnutls-cli -v` 看看打印出来的版本号：
-
-```bash
-gnutls-cli 3.3.12
-Copyright (C) 2000-2015 Free Software Foundation, and others, all rights reserved.
-This is free software. It is licensed for use, modification and
-redistribution under the terms of the GNU General Public License,
-version 3 or later <http://gnu.org/licenses/gpl.html>
-```
-
-如果提示：
-
-    gnutls-cli: error while loading shared libraries: libgnutls-dane.so.0: cannot open shared object file: No such file or directory
-
-类似的错误，就给 `/root/.bashrc` 加一行：
-
-    export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
-
-至此，GnuTLS 就装的差不多了。
 
 ## 安装 ocserv
 
@@ -45,10 +18,10 @@ version 3 or later <http://gnu.org/licenses/gpl.html>
 
 ```bash
 cd ~
-wget ftp://ftp.infradead.org/pub/ocserv/ocserv-0.9.0.1.tar.xz
-tar xvf ocserv-0.9.0.1.tar.xz
-cd ocserv-0.9.0
-PKG_CONFIG_PATH=~/gnutls-3.3.12/lib/ ./configure
+wget ftp://ftp.infradead.org/pub/ocserv/ocserv-0.10.2.tar.xz
+tar xvf ocserv-0.10.2.tar.xz
+cd ocserv-0.10.2
+./configure
 make -j2 && sudo make install
 ```
 
@@ -92,13 +65,14 @@ tls_www_server
 ```bash
 sudo certtool --generate-privkey --outfile ca-key.pem
 sudo certtool --generate-privkey --outfile server-key.pem
+sudo certtool --generate-self-signed --load-privkey ca-key.pem --template ca.tmpl --outfile ca-cert.pem
 sudo certtool --generate-certificate --load-privkey server-key.pem --load-ca-certificate ca-cert.pem --load-ca-privkey ca-key.pem --template server.tmpl --outfile server-cert.pem
 ```
 
 然后来改配置：
 
 ```bash
-sudo cp ~/ocserv-0.9.0/doc/sample.config /etc/ocserv/ocserv.conf
+sudo cp ~/ocserv-0.10.2/doc/sample.config /etc/ocserv/ocserv.conf
 sudo vim /etc/ocserv/ocserv.conf
 ```
 
@@ -117,6 +91,7 @@ listen-host = 1.2.3.4
 # 如果改了的话两个端口最好不同，我在使用时发现如果端口相同的话，会导致请求被阻塞的情况
 tcp-port = 9000
 udp-port = 9001
+
 # 自动优化 VPN 的网络性能
 try-mtu-discovery = true
 # 服务器证书与密钥
@@ -128,6 +103,9 @@ dns = 8.8.8.8
 #route = 192.168.1.0/255.255.255.0
 # 启用 cisco 客户端兼容性支持
 cisco-client-compat = true
+# 开着这个会报错：error: 'isolate-workers' is set to true, but not compiled with seccomp or Linux namespaces support
+# 好像是内核不支持，反正自己看着办
+isolate-workers = false
 ```
 
 最后生成帐号密码文件：
@@ -206,6 +184,10 @@ sudo iptables -t nat -L
 
     route = 0.0.0.0/128.0.0.0
     route = 128.0.0.0/128.0.0.0
+
+### 无法访问外网
+
+去设置一下 iptables ，我被这个坑两次了。
 
 ## 余话
 
