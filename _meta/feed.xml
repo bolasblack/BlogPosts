@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xml" href="https://github.com/bolasblack/BlogPosts/blob/master/_meta/feed.xslt.xml"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+  <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
+  <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh-CN" />
+  <updated>2016-11-28T00:40:41+08:00</updated>
+  <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
+  <title type="html">c4605's blog</title>
+  <subtitle></subtitle>
+  <author>
+    <name>c4605</name>
+    <email>bolasblack@gmail.com</email>
+    <uri>https://github.com/bolasblack</uri>
+  </author>
+
+  
+    <entry>
+      <title type="html">关于 React 和 Angular 的看法</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2015-06-03-关于_React_和_Angular_的看法.md" rel="alternate" type="text/html" title="关于 React 和 Angular 的看法" />
+      <published>2016-11-28T00:40:41+08:00</published>
+      <updated>2016-11-28T00:40:41+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2015-06-03-关于_React_和_Angular_的看法</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2015-06-03-关于_React_和_Angular_的看法.md">我最近也用了一段时间的 reactjs ，所以我想有还是稍微有点资格来谈论 angularjs 和 reactjs 的。
+
+有一些文章会提到 angularjs 的两个很关键的问题：controller 拥有了自己的状态，和声明依赖比较容易出现循环依赖。
+
+Facebook 确实提出了一个非常不错的解决方案，但这方案与 Virtual DOM 没有直接的关系（一些文章总是提这东西，我承认这是一个很重要的特性，但和解决 angularjs 的问题关系不大）。
+
+这个方案是 [Flux](http://facebook.github.io/flux/) ：通过发布事件的方式来提醒模型更新状态，进而更新所有相关 DOM ，一个很巧妙的解决方案。而 Virtual DOM 只是这个解决方案里保证性能的一环而已。
+
+而 data-binding ，实话说看到一些 reactjs 的拥趸一天到晚扯 data-binding 是邪恶的让我觉得很莫名其妙。data-binding 只是一种模式而已，reactjs 内置了数据的单向绑定难道这就不是 data-binding ？而且 reactjs 还带了一个扩展 [ReactLink](http://facebook.github.io/react/docs/two-way-binding-helpers.html) 用来实现数据的双向绑定又是什么意思？难道在 Vitrual DOM 的 `onChange` 属性里传一个回调函数然后更新 `state` 或者发出事件更新模型就不是数据绑定了？那么其他框架实现双向绑定的方法 “监听 DOM 事件，更新 ViewModel” 也不能算是双向绑定咯？因为这其实和在 reactjs 里做的没有任何区别。
+
+我的观点就是，reactjs 是一个不错的东西，Flux 解决了不少其他 MVVM 框架的问题，而 data-binding 绝对是一种进步，因为它大量的减少了开发者的代码量（早就有人 [实现](https://github.com/spoike/refluxjs#using-refluxconnect) 了一个使用 flux 模式的双向绑定扩展了）。</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+        <category term="[&quot;JavaScript&quot;]" />
+      
+
+      
+        <category term="reactjs" />
+      
+        <category term="angularjs" />
+      
+    </entry>
+  
+    <entry>
+      <title type="html">OS X 下推荐的一些命令行工具</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具.md" rel="alternate" type="text/html" title="OS X 下推荐的一些命令行工具" />
+      <published>2015-04-21T10:31:14+08:00</published>
+      <updated>2015-04-21T10:31:14+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具.md">太常见的我就不记录了：
+
+* [homebrew](http://brew.sh/) 这个不用多作介绍，之所以列出来主要是为了列一些扩展工具
+    * [homebrew services](https://github.com/gapple/homebrew-services) 一个勉强算是 OS X 下的 `/etc/init.d` ，一开始 `brew services list` 的时候是什么都没有的，你得手动 `brew services start nginx` 这样子才算是正是把它交给 homebrew services 管理。虽然有点蛋疼，但不管怎么说，有总比没有强，是吧？
+    * [homebrew-rmtree](https://github.com/beeftornado/homebrew-rmtree) 删除指定包的时候顺手删除没有被别的包用到的依赖，其实就是帮你做了 `brew cleanup package` 和 `brew rm --force package \`join &lt;(brew leaves) &lt;(brew deps package)\`` 的工作
+* [fzf](https://github.com/junegunn/fzf) 一个可扩展的模糊查询工具，可以过滤历史命令、`kill -9` 进程名称、`ssh` 的帐号和服务器地址什么的。也支持作为 Vim 的扩展来过滤命令什么的
+* [hub](https://github.com/github/hub) 算是 git 的扩展吧，很好的把 GitHub 和 git 命令融合了起来，比如 `git create reponame` 或者 `git clone reponame` 什么的，开坑方便了不少
+* ffmpeg 神器不用多作介绍，不过以前年轻不懂事，一直不怎么有在意这个，最近终于知道这玩意有多好用了，所以这里还是要列一下
+* aria2c 如上
+* mosh 嗯，如果到服务器的连接不稳定，那就用这个吧，反正我之前连 linode 日本的服务器一天到晚断线，用了这个再也没断过了
+* coreutils GNU 的那套命令行工具比如 `ls` ，因为 OS X 的工具很多都是 BSD 系的，很多参数和 GNU 系的不一样，但很多时候我们自己写的脚本需要到 Linux 下面去跑，所以干脆还是直接在 OS X 下也用 GNU 的那套工具得了
+* [reattach-to-user-namespace](https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard) 这个算是比较蛋疼，是为了解决在 tmux 下无法将文本复制到系统剪贴板的问题</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+        <category term="[&quot;shell&quot;]" />
+      
+
+      
+        <category term="osx" />
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Gentoo 上部署 ocserv</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2015-01-30-Gentoo_上部署_ocserv.md" rel="alternate" type="text/html" title="Gentoo 上部署 ocserv" />
+      <published>2015-04-12T00:43:30+08:00</published>
+      <updated>2015-01-30T22:08:08+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2015-01-30-Gentoo_上部署_ocserv</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2015-01-30-Gentoo_上部署_ocserv.md">终于忍受不了 iOS 上翻墙的蛋疼劲了，VPN 一锁屏就断。和废掉完全没区别。所以，查查资料，我们来装 ocserv 吧。
+
+## 安装 GnuTLS
+
+```bash
+sudo emerge -av gnutls
+```
+
+## 安装 ocserv
+
+这个教程一抓一大吧，而且问题似乎都不大。
+
+```bash
+cd ~
+wget ftp://ftp.infradead.org/pub/ocserv/ocserv-0.10.2.tar.xz
+tar xvf ocserv-0.10.2.tar.xz
+cd ocserv-0.10.2
+./configure
+make -j2 &amp;&amp; sudo make install
+```
+
+这样子就编译安装完成了。接下来配置 ocserv 。
+
+## 配置 ocserv
+
+先建证书：
+
+```bash
+sudo mkdir -p /etc/ocserv/certificates
+cd /etc/ocserv/certificates
+```
+
+创建 `ca.tmpl` 模板，这里的 `cn` 和 `organization` 可以随便写：
+
+```
+cn = &quot;Your CA name&quot;
+organization = &quot;Your fancy name&quot;
+serial = 1
+expiration_days = 3650
+ca
+signing_key
+cert_signing_key
+crl_signing_key
+```
+
+创建 `server.tmpl` 模板，这里的 `cn` 必须对应最终提供服务的 hostname 或 IP ：
+
+```
+cn = &quot;Your hostname or IP&quot;
+organization = &quot;Your fancy name&quot;
+expiration_days = 3650
+signing_key
+encryption_key
+tls_www_server
+```
+
+然后来建证书：
+
+```bash
+sudo certtool --generate-privkey --outfile ca-key.pem
+sudo certtool --generate-privkey --outfile server-key.pem
+sudo certtool --generate-self-signed --load-privkey ca-key.pem --template ca.tmpl --outfile ca-cert.pem
+sudo certtool --generate-certificate --load-privkey server-key.pem --load-ca-certificate ca-cert.pem --load-ca-privkey ca-key.pem --template server.tmpl --outfile server-cert.pem
+```
+
+然后来改配置：
+
+```bash
+sudo cp ~/ocserv-0.10.2/doc/sample.config /etc/ocserv/ocserv.conf
+sudo vim /etc/ocserv/ocserv.conf
+```
+
+文件内容：
+
+```conf
+# 登陆方式，目前先用密码登录
+auth = &quot;plain[/etc/ocserv/ocpasswd]&quot;
+# 允许同时连接的客户端数量
+max-clients = 4
+# 限制同一客户端的并行登陆数量
+max-same-clients = 2
+# 服务监听的IP（服务器 IP ，可不设置）
+listen-host = 1.2.3.4
+# 服务监听的 TCP/UDP 端口，这个自己看着办，客户端以 IP:PORT 的格式来连接
+# 如果改了的话两个端口最好不同，我在使用时发现如果端口相同的话，会导致请求被阻塞的情况
+tcp-port = 9000
+udp-port = 9001
+
+# 自动优化 VPN 的网络性能
+try-mtu-discovery = true
+# 服务器证书与密钥
+server-cert = /etc/ocserv/certificates/server-cert.pem
+server-key =  /etc/ocserv/certificates/server-key.pem
+# 客户端连上 VPN 后使用的 DNS
+dns = 8.8.8.8
+# 注释掉所有的 route ，让服务器成为 gateway
+#route = 192.168.1.0/255.255.255.0
+# 启用 cisco 客户端兼容性支持
+cisco-client-compat = true
+# 开着这个会报错：error: 'isolate-workers' is set to true, but not compiled with seccomp or Linux namespaces support
+# 好像是内核不支持，反正自己看着办
+isolate-workers = false
+```
+
+最后生成帐号密码文件：
+
+    sudo ocpasswd -c /etc/ocserv/ocpasswd username
+
+## 其他配置
+
+以 [Linode 的配置](https://www.linode.com/docs/security/securing-your-server#creating-a-firewall) 为例，新建或修改 `/etc/iptables.firewall.rules` 文件：
+
+```iptables
+# 如果是新建文件才需要这行
+*filter
+
+# 这里的端口填 ocserv 配置里的 tcp-port 和 udp-port
+-A INPUT -p tcp -m state --state NEW --dport 9000 -j ACCEPT
+-A INPUT -p udp -m state --state NEW --dport 9001 -j ACCEPT
+
+# 注释这行，允许转发
+# -A FORWARD -j DROP
+
+# 如果是新建文件才需要这行
+COMMIT
+
+
+
+#启用NAT
+*nat
+-A POSTROUTING -j MASQUERADE
+COMMIT
+```
+
+完成之后导入新配置并检查配置正确：
+
+```bash
+sudo iptables-restore &lt; /etc/iptables.firewall.rules
+sudo iptables -L
+sudo iptables -t nat -L
+```
+
+接着打开 IPv4 的流量转发：
+
+    sudo vim /etc/sysctl.conf
+
+启用此项：
+
+    net.ipv4.ip_forward=1
+
+刷新配置：
+
+    sudo sysctl -p /etc/sysctl.conf
+
+## 测试一下
+
+    sudo ocserv -f -d 1
+
+如果运行成功，就下载一个 AnyConnect 客户端来测试一下。
+
+如果证书是自己签发的，那么 iOS 客户端在连接前先到 `Settings` 标签页关闭 `Block Untrusted Servers` 。
+
+## Troubleshooting
+
+### ocserv: error while loading shared libraries: libgnutls.so.28: cannot open shared object file: No such file or directory
+
+启动 ocserv 的命令改一下：
+
+    sudo LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib ocserv -f -d 1
+
+### 无法访问国内网站
+
+错误信息：
+
+    ocserv[15995]: main: 客户端IP:1035: unexpected DTLS content type: 23; possibly a firewall disassociated a UDP session
+
+给 `/etc/ocserv/ocserv.conf` 加两个路由：
+
+    route = 0.0.0.0/128.0.0.0
+    route = 128.0.0.0/128.0.0.0
+
+### 无法访问外网
+
+去设置一下 iptables ，我被这个坑两次了。
+
+## 余话
+
+关于开机自动启动 ocserv ，开机自动载入 iptables 配置，客户端证书自动连接，这些东西我就不在这里写了，可以看下面的参考文章。
+
+我建了一个 Gist ：Gentoo 的 ocserv 启动脚本：https://gist.github.com/bolasblack/9f53b048e46f538cf08d
+
+记得把 `PIDFILE` 的路径改成 `/etc/ocserv/ocserv.conf` 里配置的 `pid-file` 路径。
+
+最后，祝 GFW 早日被终结。
+
+参考文章：
+
+* [折腾笔记：架设OpenConnect Server给iPhone提供更顺畅的网络生活](http://bitinn.net/11084/)
+* [Gentoo编译安装Ocserv上Cisco AnyConnect VPN](http://blog.ihipop.info/2014/07/4782.html)
+* [HOW TO INSTALL GNUTLS 3.1.23 FROM SOURCE IN UBUNTU 14.04](http://www.bauer-power.net/2014/06/how-to-install-gnutls-3123-from-source.html)</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+        <category term="[&quot;科学上网&quot;]" />
+      
+
+      
+        <category term="gentoo" />
+      
+        <category term="ocserv" />
+      
+        <category term="iOS" />
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Gentoo 上安装 Jenkins 的若干个坑</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-09-04-Gentoo_上安装_Jenkins_的若干个坑.md" rel="alternate" type="text/html" title="Gentoo 上安装 Jenkins 的若干个坑" />
+      <published>2015-04-09T17:52:38+08:00</published>
+      <updated>2014-09-04T13:09:07+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-09-04-Gentoo_上安装_Jenkins_的若干个坑</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-09-04-Gentoo_上安装_Jenkins_的若干个坑.md">嗯，在 Gentoo 上装了一下 Jenkins ，记录一下遇到的坑吧。
+
+## Overlay
+
+~~Gentoo 官方的 portage 和 gentoo-zh 里都是没有 Jenkins 的，所以得自己去找一下 overlay 。我在 [http://gpo.zugaina.org/](http://gpo.zugaina.org/) 这个网站找到了相应的[文件](http://gpo.zugaina.org/) ，然后由于下文中会提到的一些事情，所以对文件做了一些改动，push 到了自己的仓库 [bolasblack/overlay](https://github.com/bolasblack/overlay) 。版本是 1.577 ，官方最新是 1.578 ，不过看了一下 changelog 似乎没啥太大的变化，就懒得写了。~~
+
+Jenkins 现在已经进入到了官方的 portage 里了，可以使用 `emerge -av jenkins-bin` 来安装。
+
+## 部署上的一些零碎
+
+Gentoo 的 [Init Scripts](http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&amp;chap=4) 配置文件一般都在 `/etc/conf.d/servicename` 里面， Jenkins 也不例外，改监听的端口什么的都去那边改。
+
+虽然过了一年半了， Nginx 的配置文件还是可以参考 Jenkins 的 Wiki 的：[https://wiki.jenkins-ci.org/display/JENKINS/Running+Hudson+behind+Nginx](https://wiki.jenkins-ci.org/display/JENKINS/Running+Hudson+behind+Nginx)。
+
+这里有一份简化了感觉好像还能用的配置文件，就是不知道什么时候会不会遇到坑 [https://gist.github.com/bolasblack/578d9f086a93ab69bf3b](https://gist.github.com/bolasblack/578d9f086a93ab69bf3b#file-jenkins-conf-L5) 。
+
+## No valid crumb was included in the request
+
+如果在点击某些选项后页面上什么都没出来，JS 控制台提示某个 POST 请求被响应 403 ，Status Text 是标题的话，那就是你在全局安全设置里开了“防止跨站点请求伪造”，然后被 Nginx/Apache 坑了。
+
+Apache 我只知道要禁用 `ignore_invalid_headers` 。Nginx 的话要在 `server` 块里添加一行 `ignore_invalid_headers off;` 来防止 Nginx 过滤掉 Jenkins 为了防止 CSRF 发出的 `.crumb` 或者 `Crumb` 请求头。
+
+示例代码：[https://gist.github.com/bolasblack/578d9f086a93ab69bf3b#file-jenkins-conf-L5](https://gist.github.com/bolasblack/578d9f086a93ab69bf3b#file-jenkins-conf-L5)
+
+参考链接：
+
+* http://www.myexception.cn/ruby-rails/1617396.html
+* https://issues.jenkins-ci.org/browse/JENKINS-12875
+
+## Git commit 乱码
+
+具体的处理方法是在系统变量 `JAVA_TOOL_OPTIONS` 里设置默认编码，我们需要的就是 `-Dfile.encoding=UTF-8` 。
+
+参考链接：
+
+* http://bbbush.livejournal.com/392149.html
+* http://www.tuicool.com/articles/f6J3I3
+
+## SSH Username with private key
+
+这个 key Jenkins 是不会自动创建的，需要你手动执行 `sudo -u jenkins ssh-keygen -t rsa` 来新建。
+
+由于官方的 conf.d 里把 `jenkins` 的家目录默认设置在了 `/var/lib/jenkins` ，所以找 ssh 的 pub key 的时候也要去那个目录下找。
+
+## It appears that your reverse proxy set up is broken
+
+我也不知道怎么解决，反正用了我自己那个 nginx 配置文件以后就解决了
+
+可能有帮助的链接（反正我没得到帮助）：
+
+* http://www.phase2technology.com/blog/running-jenkins-behind-nginx/
+
+## 设置“启用安全”后所有页面都需要 Basic HTTP Authorization
+
+尝试一下在 `/var/lib/jenkins/home/config.xml` 文件保持 `&lt;useSecurity&gt;` 的情况下删除 `&lt;authorizationStrategy&gt;` 和 `&lt;securityRealm&gt;` ，然后重新激活“启用安全”。
+
+参考链接：
+
+* http://stackoverflow.com/questions/29530558/how-to-disable-basic-http-auth-of-jenkins
+
+## 如何设置 Jenkins 监听的地址
+
+修改 `/etc/conf.d/jenkins` 文件的 `JENKINS_ARGS=&quot;--httpListenAddress=127.0.0.1&quot;` 来把监听地址设置为 `127.0.0.1` 。
+
+也可以通过命令 `java -jar  /opt/jenkins/jenkins.war --help` 来获取其他配置参数。</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+        <category term="[&quot;gentoo&quot;]" />
+      
+
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Audio 标签的若干个坑</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑.md" rel="alternate" type="text/html" title="Audio 标签的若干个坑" />
+      <published>2014-08-22T14:51:58+08:00</published>
+      <updated>2014-08-22T14:51:58+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑.md">这两天写了一点和 `Audio` 标签相关的代码，于是就被浏览器坑的昏天暗地，在这里做个笔记
+
+## 状态码
+
+Chrome, Safari, Firefox 实现的 `Audio` 标签是不支持对响应状态码为 `200` 的文件进行循环的，目前看起来这似乎已经变成了行业的潜规则似的。说是潜规则，是因为我没有在规范里找到任何与此有关的描述，我没有对 IE 进行测试。这里也有人遇到了和我一样的问题：[HTML5 video will not loop](http://stackoverflow.com/questions/8088364/html5-video-will-not-loop)。
+
+## Audio 标签的 load 方法
+
+在 30/31 版本的 Firefox  中 `audio.load()` 方法是基本没什么作用的（我没有测试更低版本的）， 如果一个 `Audio` 标签 `preload` 属性的值为 `none` ，那么它不会自动地去加载这个音频文件，在其他浏览器中可以通过 `audio.load()` 来触发下载音频文件的行为进而实现按需预加载的效果，但这在 Firefox 下是无效的，只有调用 `audio.play()` 时它才会遵循[规范](http://www.w3.org/TR/html5/embedded-content-0.html#playing-the-media-resource)触发下载资源的行为
+
+## 循环播放的间隔
+
+不同浏览器实现的循环播放的间隔是不同的，测试代码：
+
+&lt;iframe width=&quot;100%&quot; height=&quot;300&quot; src=&quot;http://jsfiddle.net/kfpyk5qk/embedded/&quot; allowfullscreen=&quot;allowfullscreen&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
+
+结果如下：
+
+```
+# Chrome - 1
+1161
+# Chrome - 2
+10215
+
+# Firefox - 1
+1264
+# Firefox - 2
+10280
+
+# 最令人发指的 Safari - 1
+2324
+# 最令人发指的 Safari - 2
+11330
+```
+
+目前没有找到比较好的办法来处理这个问题。</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+        <category term="[&quot;HTML5&quot;]" />
+      
+
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Socket.io 如何切换 Namespace 和 querystring</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md" rel="alternate" type="text/html" title="Socket.io 如何切换 Namespace 和 querystring" />
+      <published>2014-07-01T23:29:20+08:00</published>
+      <updated>2014-07-01T23:29:20+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md">目前的 Socket.io 的情况似乎是，当我发起过一次连接后，接下来的所有新连接的 namespace 和 query 等内容都会使用第一次的配置，蛋疼无比。
+
+看了下代码，然后又尝试了一些时间，找出了办法：
+
+```javascript
+var socket = io.connect('/path', {query: {key: 'value'}})
+
+// 当需要切换的时候
+socket.close()
+socket.io.opts.query.key = '...' // 设置 querystring
+socket.io.opts.path = '/newpath' // 切换 namespace
+socket.open()
+```</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+        <category term="[&quot;JavaScript&quot;]" />
+      
+
+      
+    </entry>
+  
+    <entry>
+      <title type="html">为什么我喜欢在 Terminal 里使用 Vim</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md" rel="alternate" type="text/html" title="为什么我喜欢在 Terminal 里使用 Vim" />
+      <published>2014-05-09T17:48:53+08:00</published>
+      <updated>2014-05-09T17:48:53+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md">[&quot;其实很简单，因为 Shell 好用~\n\n在 Terminal 打开 Vim ，然后 &lt;kbd&gt;Ctrl-z&lt;/kbd&gt; 。\n\n“biu!”，不见了。\n\n再开个 node ，然后 &lt;kbd&gt;Ctrl-z&lt;/kbd&gt; 。\n\n“biu!”，又不见了。\n\n然后输入 `jobs` ，回车：\n\n```\n[1]  - suspended  vim\n[2]  + suspended  node\n```\n\n然后输入 `fg %2` ，回车，“biu!”，Vim 又出来了。\n\n退出 Vim ，然后输入 `fg` ，“biu!”，node 回来了。\n\n什么？你说 Terminal 下复制麻烦？\n\n```vimscript\n:'&lt;,'&gt;w !pbcopy&lt;CR&gt;\n```&quot;]</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Gentoo 安装问题集</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集.md" rel="alternate" type="text/html" title="Gentoo 安装问题集" />
+      <published>2014-05-09T17:48:53+08:00</published>
+      <updated>2014-05-09T17:48:53+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集.md">[&quot;虽说我一直在用 Archlinux ，但是对于一个没什么立场的人来说，“换个东西玩玩”的想法永远比“不折腾”要来的有诱惑力的多。\n\n顺便吐个槽，Gentoo 的官方中文文档虽说好像该有的都有，但是总是在关键的时候对比英文文档差了一些啊。\n\n## 使用 genkernel 编译内核时报错无法找到 Busybox Could not find source tarball\n\n大致意思是说 genkernel 的配置文件的 busybox 版本太老了，目前能和 genkernel 配合的 busybox 版本早就已经上去了。\n\n解决方法是 `etc-update`\n\n问题和借鉴方案：http://www.gossamer-threads.com/lists/gentoo/user/246728\n\n## emerge-webrsync 时报错 No space left on device (28)\n\nGoogle 了一下一看，大概是 inode 数量用光了。\n\n问题和解决方案：http://forums.gentoo.org/viewtopic-p-4207220.html?sid=19ef1e6b90db75e6be0879523f3b5531\n\n提醒一下，使用 mkfs.ext... 相当于初始化了一遍分区，所以里面的文件都会消失的。\n\n## 安装 mlocate 的依赖 setools 时报错\n\n大致错误信息：\n\n&gt; Building of python bindings from libapol/swig/python directory with CPython 2.7 failed\n\n这是一个 swig 的 bug ，可以通过安装 swig 2.0.4 或者通过 emerge 3.3.7-r5 版本的 setools 来解决这个问题。\n\n问题和解决方案：http://forums.gentoo.org/viewtopic-t-946618-view-previous.html?sid=909f017c2967130df083fa2ce5382419\n\n## 安装完成后 /etc/init.d/net.eth0 无法启动，提示找不到网卡\n\n这个应该是 udev 更新以后出现的情况，在升级后无线网卡和有线网卡的名称不再是 `eth0` 或者 `wlan0` 这类的名称，变更为 `enp12s0` 或者 `wlp3s0` 这样的名称。\n\n在操作系统中具体变为了哪个名称需要执行 `ifconfig -a` 来查看，查找到后将相应的 `/eth/init.d/net.xxx` 文件修改后重启系统或者使用 `dhcpd` 这类命令启动网卡即可。\n\n相关资料：http://www.linuxsir.org/bbs/thread384902.html&quot;]</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+
+      
+    </entry>
+  
+    <entry>
+      <title type="html">如何让一个非数组构造器骗过浏览器和框架</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md" rel="alternate" type="text/html" title="如何让一个非数组构造器骗过浏览器和框架" />
+      <published>2014-05-09T11:59:45+08:00</published>
+      <updated>2014-05-09T11:59:45+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md">```javascript
+var eve = function() {
+  this.setArray(this.makeArray(arguments));
+  return this;
+}
+eve.toString = function() {
+  return &quot;function Array() { [native code] }&quot;
+}
+eve.prototype = {
+  setArray: function(elems) {
+    this.length = 0;//设置length以及重排索引
+    Array.prototype.push.apply(this, elems);
+    return this;
+  },
+  makeArray: function(arr) {//把传入参数变成数组
+    var ret = [];
+    if( arr != null ){    var i = arr.length;
+      //单个元素，但window, string、 function有 'length'的属性，加其它的判断
+      if( i == null || arr.split || arr.setInterval || arr.call ){
+        ret[0] = arr;
+      }else{
+        try{
+          ret = Array.prototype.slice.call(arr)
+        }catch(e){
+          while( i ) ret[--i] = arr[i];//Clone数组
+        }
+      }
+    }
+    return ret;
+  },
+  splice: [].splice,
+  // Douglas Crockford: Duck typing arrays
+  sort: [].sort,
+  // Most lib
+  toString: function() { return '[object Array]' }
+}
+
+// Chrome
+// b = new eve // =&gt; []
+// Array.isArray(b) // =&gt; false
+// Object.prototype.toString.call(b) // =&gt; [object Object]
+
+// Firefox
+// b = new eve // =&gt; [object Array]
+// Array.isArray(b) // =&gt; true
+// Object.prototype.toString.call(b) // =&gt; [object Array]
+```
+
+以上是简化了司徒正美的代码后得到的结果，但还不能让 Chrome 的 `Object.prototype.toString.call(b)` 变为 `[object Array]` ，以及 `Array.isArray(b)` 的结果为 `true`。
+
+查看 [ECMAScript 5](http://es5.github.io/#x15.4.3.2) ，发现 `Array.isArray()` 的实现是：
+
+    If the value of the [[Class]] internal property of arg is &quot;Array&quot;, then return true.
+
+在搜索如何篡改 `[[Class]] internal property` 时，[听说](http://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring)这个东西在 ECMAScript 6 里会被移除，`Array.isArray()` 的实现方式会变成这样：
+
+    If arg is an exotic Array object, then return true.
+
+发现好像这条路有点崎岖……
+
+后来偶然记起 `instanceof` 运算符的工作方式，是通过判断 `instance.__proto__ === Class.prototype` 来得到结果的，所以就想看看通过 `__proto__` 能不能找到答案。
+
+最终找到了一个看似通用的方案：
+
+```javascript
+Array.createConstructor = function() {
+  var constructor = function() {
+    var result = Array.apply(null, arguments)
+    result.__proto__ = constructor.prototype
+    return result
+  }
+  constructor.toString = function() {
+    return &quot;function Array() { [native code] }&quot;
+  }
+  constructor.prototype.constructor = constructor
+  return constructor
+}
+
+var eve = Array.createConstructor()
+
+// Chrome
+// b = new eve // =&gt; []
+// Array.isArray(b) // =&gt; true
+// Object.prototype.toString.call(b) // =&gt; [object Array]
+
+// Firefox
+// b = new eve // =&gt; [object Array]
+// Array.isArray(b) // =&gt; true
+// Object.prototype.toString.call(b) // =&gt; [object Array]
+```
+
+由于 `__proto__` 已经被 ES6 [规范化](http://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.__proto__)了，而且目前的主流浏览器都支持 `__proto__` 属性，所以使用它应该就是比较合适的方案了。
+
+由于老浏览器本身没有实现 `Array.isArray()` 接口，使用的一般都是通过判断 `Object.prototype.toString.call` 获得的字符串的方式，所以可以将两种办法混合使用，最终代码（代码未经老浏览器测试）：
+
+```javascript
+
+var polyfillPrototype = {
+  setArray : function(elems) {
+    this.length = 0;//设置length以及重排索引
+    Array.prototype.push.apply(this, elems);
+    return this;
+  },
+  makeArray : function( arr ) {//把传入参数变成数组
+    var ret = [];
+    if( arr != null ){    var i = arr.length;
+      //单个元素，但window, string、 function有 'length'的属性，加其它的判断
+      if( i == null || arr.split || arr.setInterval || arr.call ){
+        ret[0] = arr;
+      }else{
+        try{
+          ret = Array.prototype.slice.call(arr)
+        }catch(e){
+          while( i ) ret[--i] = arr[i];//Clone数组
+        }
+      }
+    }
+    return ret;
+  },
+  splice: [].splice,
+  sort: [].sort,
+  toString: function() {
+    return '[object Array]'
+  }
+}
+
+var createConstructor = function() {
+  var protoChecker = new (function() {}),
+      constructor
+
+  if ('__proto__' in protoChecker) {
+    constructor = function() {
+      var result = Array.apply(null, arguments)
+      result.__proto__ = constructor.prototype
+      return result
+    }
+    constructor.prototype.constructor = constructor
+  } else {
+    constructor = function() {
+      this.setArray(this.makeArray(arguments));
+      return this;
+    }
+    constructor.prototype = polyfillPrototype
+  }
+  constructor.toString = function() {
+    return &quot;function Array() { [native code] }&quot;
+  }
+  return constructor
+}
+
+var eve = createConstructor()
+```
+
+参考文章：
+
+* `《模拟jQuery实现类数组对象》`： http://www.cnblogs.com/rubylouvre/archive/2009/11/29/1612865.html
+* `《Array Subtypes》`： http://wiki.ecmascript.org/doku.php?id=strawman:array_subtypes
+* `《[译]JavaScript: __proto__》`： http://www.cnblogs.com/ziyunfei/archive/2012/10/05/2710955.html
+* `《Annotated ECMAScript 5.1》`： http://es5.github.io/
+* `《unofficial ECMAScript 6》`： http://people.mozilla.org/~jorendorff/es6-draft.html</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+        <category term="[&quot;JavaScript&quot;]" />
+      
+
+      
+        <category term="Array" />
+      
+        <category term="__proto__" />
+      
+        <category term="isArray" />
+      
+        <category term="构造器" />
+      
+        <category term="jQuery" />
+      
+    </entry>
+  
+    <entry>
+      <title type="html">AngularJS 使用笔记</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md" rel="alternate" type="text/html" title="AngularJS 使用笔记" />
+      <published>2014-03-27T11:46:50+08:00</published>
+      <updated>2014-03-27T10:15:10+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md">编写一个 `appEval` 指令（类似早期版本的 `ngInit` ）能够很好的实现“表现与逻辑分离”的思想，比如要渲染出三个内容规则的按钮，就可以这样：
+
+```jade
+p.input-object.text-right(data-app-eval=&quot;view_avaliableSendDays = ['今天', '明天', '后天']&quot;)
+  button.button(
+    type=&quot;button&quot;
+    data-ng-repeat=“view_day in view_avaliableSendDays&quot;
+    data-ng-class=&quot;{'button-positive': startDayOffset = $index}&quot;
+    data-ng-click=&quot;startDayOffset = $index&quot;
+  ) {{view_day}}
+```
+
+很显然， `view_avaliableSendDays`  是不适合在控制器里进行定义的，在模板里定义则显得比较合理
+
+但是在模板里定义也会引起一些问题，比如在没有意识到的情况下控制器里的变量污染了视图里的变量名，或者正好相反
+
+这种时候比较合适的做法就是给视图专有的变量名加上特殊的前缀，比如 `view_` 这样子
+
+附 `appEval` 的代码：
+
+```coffeescript
+module.directive('appEval', [
+  -&gt;
+    link: ($scope, $elem, attrs) -&gt;
+      $scope.$eval attrs.appEval
+])
+```
+
+* * *
+
+如果是在使用 `Jade` 的话，那么本着 “控制器里的嵌套 Scope 越少越好” 的原则，推荐使用迭代器来替换 `ngRepeat` ：
+
+```jade
+p.input-object.text-right
+  each day, index in ['今天', '明天', '后天']
+    button.button(
+      type=&quot;button&quot;
+      data-ng-class=&quot;{'button-positive': startDayOffset === #{index}}&quot;
+      data-ng-click=&quot;startDayOffset = #{index}&quot;
+    )= day
+```
+
+不过即使如此， `appEval` 依旧是有用武之地的。比如说用来初始化某个控制器的变量：
+
+```jade
+p.input-object.text-right(data-app-eval=&quot;startDayOffset = 0&quot;)
+  each day, index in ['今天', '明天', '后天']
+    button.button(
+      type=&quot;button&quot;
+      data-ng-class=&quot;{'button-positive': startDayOffset === #{index}}&quot;
+      data-ng-click=&quot;startDayOffset = #{index}&quot;
+    )= day
+```
+
+因为 `offset` 的值是由视图控制的，如果在控制器里设置了某个变量的默认值，那么当视图中的候选值调整后，控制器的代码也需要进行相应的调整。
+
+如果把初始化默认值的代码放在视图中，维护起来会更加的便捷，而且不容易漏改。</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+        <category term="[&quot;JavaScript&quot;]" />
+      
+
+      
+    </entry>
+  
+</feed>
