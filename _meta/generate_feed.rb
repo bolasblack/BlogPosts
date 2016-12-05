@@ -8,6 +8,7 @@ require 'date'
 require 'yaml'
 require 'liquid'
 require 'jekyll'
+require 'kramdown'
 
 class Settings
   def self.settings
@@ -43,15 +44,15 @@ def get_posts g
   g.ls_files('../').values.reduce([]) { |memo, fileinfo|
     if File.extname(fileinfo[:path]) == Settings["extname"]
       raw_content = IO.read(fileinfo[:path])
-      parsed = raw_content.split(/^-+$/).reject(&:empty?).map(&:strip)
-      meta_yml, content = parsed.length == 1 ? ['', parsed] : parsed
+      parsed = raw_content.split(/^-+$/m).reject(&:empty?).map(&:strip)
+      meta_yml, content = parsed.length == 1 ? [''].concat(parsed) : parsed
       metainfo = YAML.load(meta_yml) || {}
       basename = File.basename(fileinfo[:path], Settings["extname"])
       postinfo = {
         "id" => basename,
         "url" => File.basename(fileinfo[:path]),
         "title" => basename.gsub(/(^\d{4}-\d{2}-\d{2}-|_)/, ' ').strip,
-        "content" => content,
+        "content" => Kramdown::Document.new(content, input: :GFM).to_html,
         "created_at" => g.gblob(fileinfo[:path]).log.first.author_date,
         "updated_at" => g.gblob(fileinfo[:path]).log.last.author_date,
       }.merge(metainfo)
