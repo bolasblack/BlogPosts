@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
   <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh-CN" />
-  <updated>2016-11-28T00:40:41+08:00</updated>
+  <updated>2020-04-09T00:00:00+08:00</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
   <title type="html">c4605's blog</title>
   <subtitle></subtitle>
@@ -13,6 +13,129 @@
     <uri>https://github.com/bolasblack</uri>
   </author>
 
+  
+    <entry>
+      <title type="html">无固有尺寸的 SVG 图片在各浏览器中的渲染尺寸问题</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题.md" rel="alternate" type="text/html" title="无固有尺寸的 SVG 图片在各浏览器中的渲染尺寸问题" />
+      <published>2020-04-09T00:00:00+08:00</published>
+      <updated>2020-04-09T00:00:00+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题.md">&lt;h2 id=&quot;故事&quot;&gt;故事&lt;/h2&gt;
+
+&lt;p&gt;公司同事在做图片预览功能时发现，很多 SVG 图片在 Firefox 下通过 &lt;code&gt;img&lt;/code&gt; 标签加载成功后，&lt;code&gt;naturalWidth&lt;/code&gt;/&lt;code&gt;naturalHeight&lt;/code&gt; 是 0，和其他浏览器表现不同。&lt;/p&gt;
+
+&lt;p&gt;这个事情让我有点好奇，按照经验，我觉得 Firefox 一般是最跟随标准的，但是它又何其他浏览器的实现都不相同。所以查了一些资料做了一些测试。经过简单测试后发现，没有 固有尺寸&lt;sup id=&quot;fnref:intrinsic-dimensions&quot;&gt;&lt;a href=&quot;#fn:intrinsic-dimensions&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; 的 SVG 在不同浏览器上使用 &lt;code&gt;img&lt;/code&gt; 标签渲染时的尺寸是不同的。&lt;/p&gt;
+
+&lt;p&gt;我用几个浏览器跑了一遍 &lt;a href=&quot;https://codepen.io/AmeliaBR/pen/gvEJWr/ (&amp;quot;natural&amp;quot; dimensions of an SVG with viewBox only)&quot;&gt;CodePen 上的例子&lt;/a&gt;[^github-#3510]&lt;/p&gt;
+
+&lt;p&gt;这个例子一共有四张图：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;有 &lt;code&gt;viewBox&lt;/code&gt; 属性的正方图片&lt;/li&gt;
+  &lt;li&gt;有 &lt;code&gt;viewBox&lt;/code&gt; 属性的非正方图片&lt;/li&gt;
+  &lt;li&gt;没有 &lt;code&gt;viewBox&lt;/code&gt; 属性的非正方图片&lt;/li&gt;
+  &lt;li&gt;有 &lt;code&gt;viewBox&lt;/code&gt; 和 &lt;code&gt;width&lt;/code&gt;, &lt;code&gt;height&lt;/code&gt; 属性的非正方图片&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;分别在 Firefox v74, Chrome v80, Safari v13 里跑了一下代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;document.querySelectorAll('img').forEach(el =&amp;gt; {
+  console.log(
+    'width', el.width,
+    'height', el.height,
+    'naturalWidth', el.naturalWidth,
+    'naturalHeight', el.naturalHeight,
+  )
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;结果如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Firefox v74：
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code&gt;img.naturalWidth&lt;/code&gt;/&lt;code&gt;img.naturalHeight&lt;/code&gt;
+        &lt;ul&gt;
+          &lt;li&gt;1, 2, 3 的这个属性都返回 0&lt;/li&gt;
+          &lt;li&gt;4 返回 SVG 图片 &lt;code&gt;width&lt;/code&gt;, &lt;code&gt;height&lt;/code&gt; 属性的值&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;img.width&lt;/code&gt;/&lt;code&gt;img.height&lt;/code&gt;
+        &lt;ul&gt;
+          &lt;li&gt;1, 2 的 &lt;code&gt;img.width&lt;/code&gt; 都是 &lt;code&gt;100%&lt;/code&gt; 的计算值，&lt;code&gt;img.height&lt;/code&gt; 按比例缩放&lt;/li&gt;
+          &lt;li&gt;3 返回 &lt;code&gt;300x150&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;4 返回 SVG 图片 &lt;code&gt;width&lt;/code&gt;, &lt;code&gt;height&lt;/code&gt; 属性的值&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Chrome v80
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code&gt;img.naturalWidth&lt;/code&gt;/&lt;code&gt;img.naturalHeight&lt;/code&gt;
+        &lt;ul&gt;
+          &lt;li&gt;1, 2 的 &lt;code&gt;naturalHeight&lt;/code&gt; 都返回 &lt;code&gt;150&lt;/code&gt; ，&lt;code&gt;naturalWidth&lt;/code&gt; 按比例缩放&lt;/li&gt;
+          &lt;li&gt;3 返回 &lt;code&gt;300x150&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;4 返回 SVG 图片 &lt;code&gt;width&lt;/code&gt;, &lt;code&gt;height&lt;/code&gt; 属性的值&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;img.width&lt;/code&gt;/&lt;code&gt;img.height&lt;/code&gt; 和 Firefox 表现一致&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Safari v13
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code&gt;img.naturalWidth&lt;/code&gt;/&lt;code&gt;img.naturalHeight&lt;/code&gt;
+        &lt;ul&gt;
+          &lt;li&gt;1, 2 的 &lt;code&gt;naturalWidth&lt;/code&gt; 都返回 &lt;code&gt;100%&lt;/code&gt; 的计算值，&lt;code&gt;naturalHeight&lt;/code&gt; 按比例缩放&lt;/li&gt;
+          &lt;li&gt;3 返回 &lt;code&gt;300x150&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;4 返回 SVG 图片 &lt;code&gt;width&lt;/code&gt;, &lt;code&gt;height&lt;/code&gt; 属性的值&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;img.width&lt;/code&gt;/&lt;code&gt;img.height&lt;/code&gt; 和 Firefox 表现一致&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;然后我查了一下 &lt;a href=&quot;https://html.spec.whatwg.org/commit-snapshots/a027acbded508ca06c67fbc9e550e22072681463/#dom-img-naturalwidth&quot;&gt;2020-04-09 时的 HTML 的标准对 &lt;code&gt;naturalWidth&lt;/code&gt; 的描述&lt;/a&gt;：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The IDL attributes &lt;code&gt;naturalWidth&lt;/code&gt; and &lt;code&gt;naturalHeight&lt;/code&gt; must return the density-corrected intrinsic width and height of the image, in CSS pixels, if the image has intrinsic dimensions and is available, or else 0.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;看起来好像是 Firefox 的实现比较贴近当前的 HTML 标准。&lt;/p&gt;
+
+&lt;h2 id=&quot;那么如果我想体面地渲染一张随机的-svg-图片我该怎么办呢&quot;&gt;那么如果我想体面地渲染一张随机的 SVG 图片，我该怎么办呢？&lt;/h2&gt;
+
+&lt;p&gt;目前我没有想到什么特别好的方案，可能会需要自己根据需求来确定方案&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;如果可以获取到 SVG 文件的代码，而且可以执行 JavaScript ，那么我们可以通过判断 &lt;code&gt;&amp;lt;svg&amp;gt;&lt;/code&gt; 标签有没有 &lt;code&gt;width&lt;/code&gt;, &lt;code&gt;height&lt;/code&gt; 来确认图片是否有固有尺寸，有的话就直接使用 &lt;code&gt;naturalWidth&lt;/code&gt;/&lt;code&gt;naturalHeight&lt;/code&gt; ，没有的话就使用一 &lt;code&gt;img.width&lt;/code&gt;/&lt;code&gt;img.height&lt;/code&gt; 计算出宽高比，然后使用我们预置的宽度/高度来渲染图片，另外一边等比缩放&lt;/li&gt;
+  &lt;li&gt;如果没办法获取 SVG 文件的代码，或者没办法执行 JavaScript ，那么我们就只能给图片的外部套一个限制了宽高的容器了。如果图片有固有尺寸，那么图片会按照固有尺寸进行渲染（如果超出了我们限制的宽高它会等比缩放）；如果没有固有尺寸，它就会自动缩放以适应我们限制的宽高&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;其他资料&quot;&gt;其他资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://thatemil.com/blog/2014/04/06/intrinsic-sizing-of-svg-in-responsive-web-design/&quot;&gt;Intrinsic sizing of SVG in responsive web design - That Emil.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:intrinsic-dimensions&quot;&gt;
+      &lt;p&gt;固有尺寸（Intrinsic Dimensions）在 CSS 里指的是 object 内置的 偏好（preferred）/原生（natural） 的尺寸（the intrinsic height, intrinsic width, and intrinsic aspect ratio），CSS 标准里没有定义如何获取这部分信息。而在 SVG 图片这个上下文里，我们可以认为 SVG 图片的 &lt;code&gt;width&lt;/code&gt;/&lt;code&gt;height&lt;/code&gt; 属性就是它的固有尺寸。 https://drafts.csswg.org/css-images-3/#intrinsic-dimensions &lt;a href=&quot;#fnref:intrinsic-dimensions&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+
+      
+    </entry>
   
     <entry>
       <title type="html">关于 React 和 Angular 的看法</title>
@@ -781,79 +904,6 @@ var eve = createConstructor()
         <category term="构造器" />
       
         <category term="jQuery" />
-      
-    </entry>
-  
-    <entry>
-      <title type="html">AngularJS 使用笔记</title>
-      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md" rel="alternate" type="text/html" title="AngularJS 使用笔记" />
-      <published>2014-03-27T11:46:50+08:00</published>
-      <updated>2014-03-27T10:15:10+08:00</updated>
-      <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记</id>
-      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md">&lt;p&gt;编写一个 &lt;code&gt;appEval&lt;/code&gt; 指令（类似早期版本的 &lt;code&gt;ngInit&lt;/code&gt; ）能够很好的实现“表现与逻辑分离”的思想，比如要渲染出三个内容规则的按钮，就可以这样：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-jade&quot;&gt;p.input-object.text-right(data-app-eval=&quot;view_avaliableSendDays = ['今天', '明天', '后天']&quot;)
-  button.button(
-    type=&quot;button&quot;
-    data-ng-repeat=“view_day in view_avaliableSendDays&quot;
-    data-ng-class=&quot;{'button-positive': startDayOffset = $index}&quot;
-    data-ng-click=&quot;startDayOffset = $index&quot;
-  ) {{view_day}}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;很显然， &lt;code&gt;view_avaliableSendDays&lt;/code&gt;  是不适合在控制器里进行定义的，在模板里定义则显得比较合理&lt;/p&gt;
-
-&lt;p&gt;但是在模板里定义也会引起一些问题，比如在没有意识到的情况下控制器里的变量污染了视图里的变量名，或者正好相反&lt;/p&gt;
-
-&lt;p&gt;这种时候比较合适的做法就是给视图专有的变量名加上特殊的前缀，比如 &lt;code&gt;view_&lt;/code&gt; 这样子&lt;/p&gt;
-
-&lt;p&gt;附 &lt;code&gt;appEval&lt;/code&gt; 的代码：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-coffeescript&quot;&gt;module.directive('appEval', [
-  -&amp;gt;
-    link: ($scope, $elem, attrs) -&amp;gt;
-      $scope.$eval attrs.appEval
-])
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;如果是在使用 &lt;code&gt;Jade&lt;/code&gt; 的话，那么本着 “控制器里的嵌套 Scope 越少越好” 的原则，推荐使用迭代器来替换 &lt;code&gt;ngRepeat&lt;/code&gt; ：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-jade&quot;&gt;p.input-object.text-right
-  each day, index in ['今天', '明天', '后天']
-    button.button(
-      type=&quot;button&quot;
-      data-ng-class=&quot;{'button-positive': startDayOffset === #{index}}&quot;
-      data-ng-click=&quot;startDayOffset = #{index}&quot;
-    )= day
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;不过即使如此， &lt;code&gt;appEval&lt;/code&gt; 依旧是有用武之地的。比如说用来初始化某个控制器的变量：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-jade&quot;&gt;p.input-object.text-right(data-app-eval=&quot;startDayOffset = 0&quot;)
-  each day, index in ['今天', '明天', '后天']
-    button.button(
-      type=&quot;button&quot;
-      data-ng-class=&quot;{'button-positive': startDayOffset === #{index}}&quot;
-      data-ng-click=&quot;startDayOffset = #{index}&quot;
-    )= day
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;因为 &lt;code&gt;offset&lt;/code&gt; 的值是由视图控制的，如果在控制器里设置了某个变量的默认值，那么当视图中的候选值调整后，控制器的代码也需要进行相应的调整。&lt;/p&gt;
-
-&lt;p&gt;如果把初始化默认值的代码放在视图中，维护起来会更加的便捷，而且不容易漏改。&lt;/p&gt;</content>
-
-      <author>
-        <name>c4605</name>
-        <email>bolasblack@gmail.com</email>
-        <uri>https://github.com/bolasblack</uri>
-      </author>
-
-      
-        <category term="[&quot;JavaScript&quot;]" />
-      
-
       
     </entry>
   
