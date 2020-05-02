@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if [ $# -eq 0 ]; then
+  echo "Post Name: "
+  read postName
+else
+  postName="$@"
+fi
+
+postName=$(echo "$postName" | sed -e 's/^[[:space:]]*//')
+
+if [ -z "$postName" ]; then
+  exit 1
+fi
+
+cd "$(git rev-parse --show-toplevel)"
+
+fileName="$(date "+%Y-%m-%d")-${postName// /_}.md"
+
+echo "$(cat <<EOF
+---
+title: $postName
+category: []
+tags: []
+---
+
+EOF
+)" > "$fileName"
+
+echo "Created $fileName"

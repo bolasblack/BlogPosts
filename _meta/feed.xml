@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
   <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh-CN" />
-  <updated>2020-04-09T00:00:00+08:00</updated>
+  <updated>2020-05-02T17:28:03+08:00</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
   <title type="html">c4605's blog</title>
   <subtitle></subtitle>
@@ -15,10 +15,166 @@
 
   
     <entry>
+      <title type="html">尝试用 TypeScript 模拟一个带 Payload 的枚举</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md" rel="alternate" type="text/html" title="尝试用 TypeScript 模拟一个带 Payload 的枚举" />
+      <published>2020-05-02T17:28:03+08:00</published>
+      <updated>2020-05-02T17:28:03+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md">&lt;p&gt;这两天逛 GitHub 时突然又注意到了 &lt;a href=&quot;https://github.com/origamitower/folktale&quot;&gt;folktale&lt;/a&gt; ，发现它现在带了一个 &lt;a href=&quot;https://folktale.origamitower.com/api/v2.3.0/en/folktale.adt.union.union.union.html&quot;&gt;adt/union&lt;/a&gt; 。看起来 folktale 现在的 &lt;code&gt;Maybe&lt;/code&gt;, &lt;code&gt;Result&lt;/code&gt;, &lt;code&gt;Validation&lt;/code&gt; 都是从 union 里派生出来的，使用方法和 Swift/Rust 里的枚举非常相似：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;const Either = union('Either', {
+  Left: (value) =&amp;gt; ({ value }),
+  Right: (value) =&amp;gt; ({ value }),
+})
+
+console.log(
+  Either.Right(1).matchWith({
+    Left: ({ value }) =&amp;gt; `left ${value}`,
+    Right: ({ value }) =&amp;gt; `right ${value}`,
+  })
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;正好我想在 TypeScript 里模拟一个带 Payload 的枚举机制已经想了很久了，觉得这个 API 设计得不错，可惜的是没有 TypeScript 的类型定义，在各种抓耳挠腮之下写了一个不完美的版本（下面解释）：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;// 这是一个假的函数，只是做个占位而已
+export function union&amp;lt;P extends BaseUnionPatterns&amp;gt;(
+  typeId: string,
+  patterns: P,
+): UnionTypes&amp;lt;P&amp;gt; {
+  return null as any
+}
+
+export type UnionModelMatchPatterns&amp;lt;P extends BaseUnionPatterns, R&amp;gt; = {
+  [K in keyof P]: (patternFnReturn: ReturnType&amp;lt;P[K]&amp;gt;) =&amp;gt; R
+}
+
+export type UnionModelMatchPatternsWithAny&amp;lt;P extends BaseUnionPatterns, R&amp;gt; = {
+  [K in keyof P]?: (patternFnReturn: ReturnType&amp;lt;P[K]&amp;gt;) =&amp;gt; R
+} &amp;amp; {
+  $$any: (patternFnReturn: ReturnType&amp;lt;P[keyof P]&amp;gt;) =&amp;gt; R
+}
+
+export type UnionInstance&amp;lt;P extends BaseUnionPatterns, Type extends keyof P&amp;gt; = {
+  equals: (unionInstance: UnionInstance&amp;lt;P, any&amp;gt;) =&amp;gt; boolean
+  matchWith: &amp;lt;R&amp;gt;(
+    branches:
+      | UnionModelMatchPatterns&amp;lt;P, R&amp;gt;
+      | UnionModelMatchPatternsWithAny&amp;lt;P, R&amp;gt;,
+  ) =&amp;gt; R
+}
+
+export interface UnionType&amp;lt;P extends BaseUnionPatterns, K extends keyof P&amp;gt; {
+  (...args: Parameters&amp;lt;P[K]&amp;gt;): UnionInstance&amp;lt;P, K&amp;gt;
+  hasInstance: (model: UnionInstance&amp;lt;P, keyof P&amp;gt;) =&amp;gt; boolean
+}
+
+export type UnionTypes&amp;lt;P extends BaseUnionPatterns&amp;gt; = {
+  [K in keyof P]: UnionType&amp;lt;P, K&amp;gt;
+}
+
+export interface BaseUnionPatterns {
+  [type: string]: (...args: any) =&amp;gt; any
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;事情并不如愿，总归还是没有办法完全实现我想要的效果，最终的成效是：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;// 在这段代码里
+
+// Maybe 变量的类型是对的
+const Maybe = union('Maybe', { // patterns 参数的类型约束是对的
+  Nothing: () =&amp;gt; null,
+  Just: &amp;lt;T&amp;gt;(value: T) =&amp;gt; ({ value }),
+  Other: &amp;lt;T&amp;gt;(arg1: T, rest: T[]) =&amp;gt; [arg1].concat(rest),
+})
+
+// a 变量的类型是对的
+const a = Maybe.Just(1)
+// b 变量的类型被成功推断
+const b = a.matchWith({ // branches 的类型约束是对的
+  Nothing: (arg) =&amp;gt; 'no value', // arg 的类型确实是 null
+  Just: (arg) =&amp;gt; `value: ${arg.value}`, // arg 的类型是 { value: unknown } （问题一）
+  Other: (arg) =&amp;gt; `values: ${arg.join(',')}`, // arg 的类型是 unknown[] （问题二）
+})
+a.matchWith({
+  Just: (arg) =&amp;gt; `value: ${arg.value}`,
+  // TypeScript 里指定的 Symbol 没办法作为 key 的类型，所以只能用特殊 key $$any
+  // 来替代 folktale 里的 any Symbol （问题三）
+  $$any: (arg) =&amp;gt; `values: ${arg}`,
+})
+
+console.log(b)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我们来一个个看这些问题：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;关于问题一，让人比较不爽，毕竟 &lt;code&gt;Maybe.Just&lt;/code&gt; 的参数类型是出现过的，只是因为 &lt;code&gt;patterns&lt;/code&gt; 参数里的 &lt;code&gt;Just&lt;/code&gt; 函数是一个泛型函数，而我们在做类型转换的时候又没办法传递类型参数，所以没办法推断出 &lt;code&gt;{ value: T }&lt;/code&gt; 里 &lt;code&gt;T&lt;/code&gt; 的类型；&lt;/li&gt;
+  &lt;li&gt;关于问题二，其实可以理解的，毕竟整个 &lt;code&gt;a&lt;/code&gt; 变量的生命周期里从来没提到过 &lt;code&gt;Other&lt;/code&gt; 的 Payload 类型；&lt;/li&gt;
+  &lt;li&gt;关于问题三，和问题一一样，都是属于语言设施功能上的缺位，大概只能等 TypeScript 支持相关的特性。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;后来结合问题一问题二一想，其实这两个问题可以尝试一起解决，我们只要在声明变量 &lt;code&gt;a&lt;/code&gt; 的时候给它传递一个更完整的类型信息就可以了，于是又一阵抓耳挠腮之后，终于写出来一个粗糙的方案：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;export type UnionV&amp;lt;
+  T extends UnionTypes&amp;lt;any&amp;gt;,
+  WrappedValues extends T extends UnionTypes&amp;lt;infer P&amp;gt;
+    ? { [K in keyof P]: ReturnType&amp;lt;P[K]&amp;gt; }
+    : never
+&amp;gt; = UnionInstance&amp;lt;
+  { [K in keyof T]: (...args: Parameters&amp;lt;T[K]&amp;gt;) =&amp;gt; WrappedValues[K] },
+  keyof T
+&amp;gt;
+
+const Maybe = union('Maybe', {
+  Nothing: () =&amp;gt; null,
+  Just: &amp;lt;T&amp;gt;(value: T) =&amp;gt; ({ value }),
+  Others: &amp;lt;T&amp;gt;(con: T, rest: T[]) =&amp;gt; [con].concat(rest),
+})
+
+type MaybeNumber = UnionV&amp;lt;
+  typeof Maybe,
+  { // 这里填进去 patterns 各个函数的返回值类型
+    Nothing: null
+    Just: { value: number }
+    Others: number[]
+  }
+&amp;gt;
+const a = Maybe.Just('a') as MaybeNumber
+// 这回 b 的类型被成功推断为 number | null
+const b = a.matchWith({
+  Nothing: (arg) =&amp;gt; arg,
+  Just: (arg) =&amp;gt; arg.value, // arg 的类型为 { value: number }
+  Others: (items) =&amp;gt; items.length, // arg 的类型为 number[]
+})
+console.log(b)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;目前这套方案在 &lt;code&gt;patterns&lt;/code&gt; 的参数都是具体的类型时，不需要 &lt;code&gt;UnionV&lt;/code&gt; 就能够工作得很好；在出现泛型函数时，我只能想到通过 &lt;code&gt;UnionV&lt;/code&gt; 来为 tsc 提供额外的类型信息。&lt;/p&gt;
+
+&lt;p&gt;那么，我们这算是大功告成了吗？并没有，因为整套方案是真的不够优雅，&lt;code&gt;UnionV&lt;/code&gt; 的第二个类型参数实在是让人倒胃口。而且如果你仔细看的话，会发现我上面这段代码里 &lt;code&gt;Maybe.Just&lt;/code&gt; 的参数是一个字符串，而 tsc 并没有报错。我知道是因为我用了转型，但是如果我这么写 &lt;code&gt;a: MaybeNumber =&lt;/code&gt; ，tsc 会报错说 &lt;code&gt;Type '{ value: unknown; }' is not assignable to type '{ value: number; }'.&lt;/code&gt; ，所以……这就是为什么这个方案不够优雅的原因之二了。&lt;/p&gt;
+
+&lt;p&gt;目前还想不出来更好的方案，只能再等等了，看看 TypeScript 接下来会不会提供这套方案需要的东西吧。&lt;/p&gt;</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+        <category term="[]" />
+      
+
+      
+    </entry>
+  
+    <entry>
       <title type="html">无固有尺寸的 SVG 图片在各浏览器中的渲染尺寸问题</title>
       <link href="https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题.md" rel="alternate" type="text/html" title="无固有尺寸的 SVG 图片在各浏览器中的渲染尺寸问题" />
-      <published>2020-04-09T00:00:00+08:00</published>
-      <updated>2020-04-09T00:00:00+08:00</updated>
+      <published>2020-04-16T23:18:25+08:00</published>
+      <updated>2020-04-16T23:18:25+08:00</updated>
       <id>https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题</id>
       <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题.md">&lt;h2 id=&quot;故事&quot;&gt;故事&lt;/h2&gt;
 
@@ -713,197 +869,6 @@ socket.open()
 
       
 
-      
-    </entry>
-  
-    <entry>
-      <title type="html">如何让一个非数组构造器骗过浏览器和框架</title>
-      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md" rel="alternate" type="text/html" title="如何让一个非数组构造器骗过浏览器和框架" />
-      <published>2014-05-09T11:59:45+08:00</published>
-      <updated>2014-05-09T11:59:45+08:00</updated>
-      <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架</id>
-      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md">&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;var eve = function() {
-  this.setArray(this.makeArray(arguments));
-  return this;
-}
-eve.toString = function() {
-  return &quot;function Array() { [native code] }&quot;
-}
-eve.prototype = {
-  setArray: function(elems) {
-    this.length = 0;//设置length以及重排索引
-    Array.prototype.push.apply(this, elems);
-    return this;
-  },
-  makeArray: function(arr) {//把传入参数变成数组
-    var ret = [];
-    if( arr != null ){    var i = arr.length;
-      //单个元素，但window, string、 function有 'length'的属性，加其它的判断
-      if( i == null || arr.split || arr.setInterval || arr.call ){
-        ret[0] = arr;
-      }else{
-        try{
-          ret = Array.prototype.slice.call(arr)
-        }catch(e){
-          while( i ) ret[--i] = arr[i];//Clone数组
-        }
-      }
-    }
-    return ret;
-  },
-  splice: [].splice,
-  // Douglas Crockford: Duck typing arrays
-  sort: [].sort,
-  // Most lib
-  toString: function() { return '[object Array]' }
-}
-
-// Chrome
-// b = new eve // =&amp;gt; []
-// Array.isArray(b) // =&amp;gt; false
-// Object.prototype.toString.call(b) // =&amp;gt; [object Object]
-
-// Firefox
-// b = new eve // =&amp;gt; [object Array]
-// Array.isArray(b) // =&amp;gt; true
-// Object.prototype.toString.call(b) // =&amp;gt; [object Array]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;以上是简化了司徒正美的代码后得到的结果，但还不能让 Chrome 的 &lt;code&gt;Object.prototype.toString.call(b)&lt;/code&gt; 变为 &lt;code&gt;[object Array]&lt;/code&gt; ，以及 &lt;code&gt;Array.isArray(b)&lt;/code&gt; 的结果为 &lt;code&gt;true&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;查看 &lt;a href=&quot;http://es5.github.io/#x15.4.3.2&quot;&gt;ECMAScript 5&lt;/a&gt; ，发现 &lt;code&gt;Array.isArray()&lt;/code&gt; 的实现是：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;If the value of the [[Class]] internal property of arg is &quot;Array&quot;, then return true.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在搜索如何篡改 &lt;code&gt;[[Class]] internal property&lt;/code&gt; 时，&lt;a href=&quot;http://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring&quot;&gt;听说&lt;/a&gt;这个东西在 ECMAScript 6 里会被移除，&lt;code&gt;Array.isArray()&lt;/code&gt; 的实现方式会变成这样：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;If arg is an exotic Array object, then return true.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;发现好像这条路有点崎岖……&lt;/p&gt;
-
-&lt;p&gt;后来偶然记起 &lt;code&gt;instanceof&lt;/code&gt; 运算符的工作方式，是通过判断 &lt;code&gt;instance.__proto__ === Class.prototype&lt;/code&gt; 来得到结果的，所以就想看看通过 &lt;code&gt;__proto__&lt;/code&gt; 能不能找到答案。&lt;/p&gt;
-
-&lt;p&gt;最终找到了一个看似通用的方案：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;Array.createConstructor = function() {
-  var constructor = function() {
-    var result = Array.apply(null, arguments)
-    result.__proto__ = constructor.prototype
-    return result
-  }
-  constructor.toString = function() {
-    return &quot;function Array() { [native code] }&quot;
-  }
-  constructor.prototype.constructor = constructor
-  return constructor
-}
-
-var eve = Array.createConstructor()
-
-// Chrome
-// b = new eve // =&amp;gt; []
-// Array.isArray(b) // =&amp;gt; true
-// Object.prototype.toString.call(b) // =&amp;gt; [object Array]
-
-// Firefox
-// b = new eve // =&amp;gt; [object Array]
-// Array.isArray(b) // =&amp;gt; true
-// Object.prototype.toString.call(b) // =&amp;gt; [object Array]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;由于 &lt;code&gt;__proto__&lt;/code&gt; 已经被 ES6 &lt;a href=&quot;http://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.__proto__&quot;&gt;规范化&lt;/a&gt;了，而且目前的主流浏览器都支持 &lt;code&gt;__proto__&lt;/code&gt; 属性，所以使用它应该就是比较合适的方案了。&lt;/p&gt;
-
-&lt;p&gt;由于老浏览器本身没有实现 &lt;code&gt;Array.isArray()&lt;/code&gt; 接口，使用的一般都是通过判断 &lt;code&gt;Object.prototype.toString.call&lt;/code&gt; 获得的字符串的方式，所以可以将两种办法混合使用，最终代码（代码未经老浏览器测试）：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;
-var polyfillPrototype = {
-  setArray : function(elems) {
-    this.length = 0;//设置length以及重排索引
-    Array.prototype.push.apply(this, elems);
-    return this;
-  },
-  makeArray : function( arr ) {//把传入参数变成数组
-    var ret = [];
-    if( arr != null ){    var i = arr.length;
-      //单个元素，但window, string、 function有 'length'的属性，加其它的判断
-      if( i == null || arr.split || arr.setInterval || arr.call ){
-        ret[0] = arr;
-      }else{
-        try{
-          ret = Array.prototype.slice.call(arr)
-        }catch(e){
-          while( i ) ret[--i] = arr[i];//Clone数组
-        }
-      }
-    }
-    return ret;
-  },
-  splice: [].splice,
-  sort: [].sort,
-  toString: function() {
-    return '[object Array]'
-  }
-}
-
-var createConstructor = function() {
-  var protoChecker = new (function() {}),
-      constructor
-
-  if ('__proto__' in protoChecker) {
-    constructor = function() {
-      var result = Array.apply(null, arguments)
-      result.__proto__ = constructor.prototype
-      return result
-    }
-    constructor.prototype.constructor = constructor
-  } else {
-    constructor = function() {
-      this.setArray(this.makeArray(arguments));
-      return this;
-    }
-    constructor.prototype = polyfillPrototype
-  }
-  constructor.toString = function() {
-    return &quot;function Array() { [native code] }&quot;
-  }
-  return constructor
-}
-
-var eve = createConstructor()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;参考文章：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code&gt;《模拟jQuery实现类数组对象》&lt;/code&gt;： http://www.cnblogs.com/rubylouvre/archive/2009/11/29/1612865.html&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;《Array Subtypes》&lt;/code&gt;： http://wiki.ecmascript.org/doku.php?id=strawman:array_subtypes&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;《[译]JavaScript: __proto__》&lt;/code&gt;： http://www.cnblogs.com/ziyunfei/archive/2012/10/05/2710955.html&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;《Annotated ECMAScript 5.1》&lt;/code&gt;： http://es5.github.io/&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;《unofficial ECMAScript 6》&lt;/code&gt;： http://people.mozilla.org/~jorendorff/es6-draft.html&lt;/li&gt;
-&lt;/ul&gt;</content>
-
-      <author>
-        <name>c4605</name>
-        <email>bolasblack@gmail.com</email>
-        <uri>https://github.com/bolasblack</uri>
-      </author>
-
-      
-        <category term="[&quot;JavaScript&quot;]" />
-      
-
-      
-        <category term="Array" />
-      
-        <category term="__proto__" />
-      
-        <category term="isArray" />
-      
-        <category term="构造器" />
-      
-        <category term="jQuery" />
       
     </entry>
   
