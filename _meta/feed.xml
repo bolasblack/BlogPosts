@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
   <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh-CN" />
-  <updated>2020-05-02T17:28:03+08:00</updated>
+  <updated>2020-05-05T00:00:00+08:00</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
   <title type="html">c4605's blog</title>
   <subtitle></subtitle>
@@ -13,6 +13,45 @@
     <uri>https://github.com/bolasblack</uri>
   </author>
 
+  
+    <entry>
+      <title type="html">TypeScript 如何真正 keyof 一个枚举</title>
+      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举.md" rel="alternate" type="text/html" title="TypeScript 如何真正 keyof 一个枚举" />
+      <published>2020-05-05T00:00:00+08:00</published>
+      <updated>2020-05-05T00:00:00+08:00</updated>
+      <id>https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举</id>
+      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举.md">&lt;p&gt;有一个朋友问我怎么才能 &lt;code&gt;keyof&lt;/code&gt; 一个 TypeScript 里的枚举，因为如果你直接 &lt;code&gt;keyof Enum&lt;/code&gt; 的话，得到的结果是类似 &lt;code&gt;keyof number&lt;/code&gt; ，而不是得到枚举的所有可能的 key 。&lt;/p&gt;
+
+&lt;p&gt;于是我简单写了一下跟他解释，顺手发上来：&lt;/p&gt;
+
+&lt;p&gt;在 TypeScript 里，你在声明一个枚举的时候，其实声明了两个类型，一个是枚举容器的类型（是一个对象），一个是枚举成员的类型（是数字/字符串或者其他类型的子类型）。&lt;/p&gt;
+
+&lt;p&gt;TypeScript 的 &lt;code&gt;keyof&lt;/code&gt; 操作符预设后面跟着的是类型，所以我们 &lt;code&gt;keyof Enum&lt;/code&gt; 时，其实相当于是在 &lt;code&gt;keyof (作为 number 的子类型的 Enum)&lt;/code&gt; ，也就是相当于 &lt;code&gt;keyof number&lt;/code&gt; ，所以会得到 &lt;code&gt;number&lt;/code&gt; 的属性和方法名。&lt;/p&gt;
+
+&lt;p&gt;而 &lt;code&gt;typeof&lt;/code&gt; 操作符预设后面跟的是一个值，所以当我们这么写 &lt;code&gt;keyof typeof Enum&lt;/code&gt; 的时候，我们是把 &lt;code&gt;Enum&lt;/code&gt; 作为一个值（也就是上文提到的“对象”），展开来以后就是 &lt;code&gt;keyof (作为类型的 Enum)&lt;/code&gt; ，所以能够得到枚举的 key 。&lt;/p&gt;
+
+&lt;p&gt;相关资料：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/microsoft/TypeScript/issues/14106&quot;&gt;keyof Enum - microsoft/TypeScript#14106 - GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      <author>
+        <name>c4605</name>
+        <email>bolasblack@gmail.com</email>
+        <uri>https://github.com/bolasblack</uri>
+      </author>
+
+      
+        <category term="[&quot;TypeScript&quot;]" />
+      
+
+      
+        <category term="TypeScript" />
+      
+        <category term="枚举" />
+      
+    </entry>
   
     <entry>
       <title type="html">尝试用 TypeScript 模拟一个带 Payload 的枚举</title>
@@ -164,9 +203,13 @@ console.log(b)
       </author>
 
       
-        <category term="[]" />
+        <category term="[&quot;TypeScript&quot;]" />
       
 
+      
+        <category term="TypeScript" />
+      
+        <category term="枚举" />
       
     </entry>
   
@@ -803,63 +846,6 @@ socket.open()
 
 &lt;pre&gt;&lt;code class=&quot;language-vimscript&quot;&gt;:'&amp;lt;,'&amp;gt;w !pbcopy&amp;lt;CR&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;</content>
-
-      <author>
-        <name>c4605</name>
-        <email>bolasblack@gmail.com</email>
-        <uri>https://github.com/bolasblack</uri>
-      </author>
-
-      
-
-      
-    </entry>
-  
-    <entry>
-      <title type="html">Gentoo 安装问题集</title>
-      <link href="https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集.md" rel="alternate" type="text/html" title="Gentoo 安装问题集" />
-      <published>2014-05-09T17:48:53+08:00</published>
-      <updated>2014-05-09T17:48:53+08:00</updated>
-      <id>https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集</id>
-      <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集.md">&lt;p&gt;虽说我一直在用 Archlinux ，但是对于一个没什么立场的人来说，“换个东西玩玩”的想法永远比“不折腾”要来的有诱惑力的多。&lt;/p&gt;
-
-&lt;p&gt;顺便吐个槽，Gentoo 的官方中文文档虽说好像该有的都有，但是总是在关键的时候对比英文文档差了一些啊。&lt;/p&gt;
-
-&lt;h2 id=&quot;使用-genkernel-编译内核时报错无法找到-busybox-could-not-find-source-tarball&quot;&gt;使用 genkernel 编译内核时报错无法找到 Busybox Could not find source tarball&lt;/h2&gt;
-
-&lt;p&gt;大致意思是说 genkernel 的配置文件的 busybox 版本太老了，目前能和 genkernel 配合的 busybox 版本早就已经上去了。&lt;/p&gt;
-
-&lt;p&gt;解决方法是 &lt;code&gt;etc-update&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;问题和借鉴方案：http://www.gossamer-threads.com/lists/gentoo/user/246728&lt;/p&gt;
-
-&lt;h2 id=&quot;emerge-webrsync-时报错-no-space-left-on-device-28&quot;&gt;emerge-webrsync 时报错 No space left on device (28)&lt;/h2&gt;
-
-&lt;p&gt;Google 了一下一看，大概是 inode 数量用光了。&lt;/p&gt;
-
-&lt;p&gt;问题和解决方案：http://forums.gentoo.org/viewtopic-p-4207220.html?sid=19ef1e6b90db75e6be0879523f3b5531&lt;/p&gt;
-
-&lt;p&gt;提醒一下，使用 mkfs.ext… 相当于初始化了一遍分区，所以里面的文件都会消失的。&lt;/p&gt;
-
-&lt;h2 id=&quot;安装-mlocate-的依赖-setools-时报错&quot;&gt;安装 mlocate 的依赖 setools 时报错&lt;/h2&gt;
-
-&lt;p&gt;大致错误信息：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Building of python bindings from libapol/swig/python directory with CPython 2.7 failed&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;这是一个 swig 的 bug ，可以通过安装 swig 2.0.4 或者通过 emerge 3.3.7-r5 版本的 setools 来解决这个问题。&lt;/p&gt;
-
-&lt;p&gt;问题和解决方案：http://forums.gentoo.org/viewtopic-t-946618-view-previous.html?sid=909f017c2967130df083fa2ce5382419&lt;/p&gt;
-
-&lt;h2 id=&quot;安装完成后-etcinitdneteth0-无法启动提示找不到网卡&quot;&gt;安装完成后 /etc/init.d/net.eth0 无法启动，提示找不到网卡&lt;/h2&gt;
-
-&lt;p&gt;这个应该是 udev 更新以后出现的情况，在升级后无线网卡和有线网卡的名称不再是 &lt;code&gt;eth0&lt;/code&gt; 或者 &lt;code&gt;wlan0&lt;/code&gt; 这类的名称，变更为 &lt;code&gt;enp12s0&lt;/code&gt; 或者 &lt;code&gt;wlp3s0&lt;/code&gt; 这样的名称。&lt;/p&gt;
-
-&lt;p&gt;在操作系统中具体变为了哪个名称需要执行 &lt;code&gt;ifconfig -a&lt;/code&gt; 来查看，查找到后将相应的 &lt;code&gt;/eth/init.d/net.xxx&lt;/code&gt; 文件修改后重启系统或者使用 &lt;code&gt;dhcpd&lt;/code&gt; 这类命令启动网卡即可。&lt;/p&gt;
-
-&lt;p&gt;相关资料：http://www.linuxsir.org/bbs/thread384902.html&lt;/p&gt;</content>
 
       <author>
         <name>c4605</name>

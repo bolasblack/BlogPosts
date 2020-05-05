@@ -1,7 +1,7 @@
 ---
 title: 尝试用 TypeScript 模拟一个带 Payload 的枚举
-category: []
-tags: []
+category: [TypeScript]
+tags: [TypeScript, 枚举]
 ---
 
 这两天逛 GitHub 时突然又注意到了 [folktale](https://github.com/origamitower/folktale) ，发现它现在带了一个 [adt/union](https://folktale.origamitower.com/api/v2.3.0/en/folktale.adt.union.union.union.html) 。看起来 folktale 现在的 `Maybe`, `Result`, `Validation` 都是从 union 里派生出来的，使用方法和 Swift/Rust 里的枚举非常相似：
