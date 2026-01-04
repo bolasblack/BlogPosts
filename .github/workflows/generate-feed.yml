@@ -21,7 +21,7 @@ jobs:
       - name: Sync files from posts branch
         run: |
           git fetch origin posts
-          git rm -rf .
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
           git checkout origin/posts -- .
 
       - name: Setup mise
