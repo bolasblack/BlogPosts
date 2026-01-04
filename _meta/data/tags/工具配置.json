@@ -1,28 +1,19 @@
 {
   "meta" : {
-    "total-posts" : 23,
+    "total-posts" : 21,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-04T21:37:33.135336647Z"
+    "generated-at" : "2026-01-04T21:38:32.956845111Z"
   },
   "tag" : "工具配置",
-  "count" : 2,
+  "count" : 1,
   "posts" : [ {
-    "id" : "2026-01-04-我把我的配置共享仓库转移到了_LLM-oriented_模式",
-    "path" : "2026-01-04-我把我的配置共享仓库转移到了_LLM-oriented_模式.md",
-    "title" : "我把我的配置共享仓库转移到了 LLM-oriented 模式",
-    "date" : "2026-01-04",
-    "created-at" : "2026-01-04T00:00:00Z",
-    "updated-at" : "2026-01-04T00:00:00Z",
-    "tags" : [ "LLM", "工具配置", "ESLint", "npm" ],
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-04-我把我的配置共享仓库转移到了_LLM-oriented_模式.md"
-  }, {
     "id" : "2026-01-02-我把我的配置共享仓库转移到了_LLM-oriented_模式",
     "path" : "2026-01-02-我把我的配置共享仓库转移到了_LLM-oriented_模式.md",
     "title" : "我把我的配置共享仓库转移到了 LLM-oriented 模式",
     "date" : "2026-01-02",
     "created-at" : "2026-01-02T00:00:00Z",
-    "updated-at" : "2026-01-02T00:00:00Z",
+    "updated-at" : "2026-01-04T21:37:33Z",
     "tags" : [ "LLM", "工具配置", "ESLint", "npm" ],
     "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-我把我的配置共享仓库转移到了_LLM-oriented_模式.md"
   } ]

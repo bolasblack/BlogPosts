@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
   <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh-CN" />
-  <updated>2026-01-04T21:17:00Z</updated>
+  <updated>2026-01-04T21:37:33Z</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
@@ -13,6 +13,315 @@
     <uri>https://github.com/bolasblack</uri>
   </author>
 
+  
+  <entry>
+    <title type="html">我把我的配置共享仓库转移到了 LLM-oriented 模式</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-我把我的配置共享仓库转移到了_LLM-oriented_模式.md" rel="alternate" type="text/html" title="我把我的配置共享仓库转移到了 LLM-oriented 模式" />
+    <published>2026-01-02T00:00:00Z</published>
+    <updated>2026-01-04T21:37:33Z</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-我把我的配置共享仓库转移到了_LLM-oriented_模式</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-我把我的配置共享仓库转移到了_LLM-oriented_模式.md">&lt;h2 id=&quot;啥是-llm-oriented-的配置共享方案&quot;&gt;啥是 &quot;LLM-oriented
+的配置共享方案&quot;&lt;/h2&gt;
+&lt;p&gt;简单来说，就是让配置共享项目提供 &lt;a
+href=&quot;https://llmstxt.org/&quot;&gt;llms.txt&lt;/a&gt; ，使用方依此让 LLM
+去下载/更新项目的配置文件，以保持配置的更新。而不是通过 npm registry
+来分发配置。&lt;/p&gt;
+&lt;h2 id=&quot;那为不用-npm-了&quot;&gt;那为不用 npm 了？&lt;/h2&gt;
+&lt;p&gt;传统的工具配置共享方式，无论是通过 &lt;code&gt;extends&lt;/code&gt; 继承还是
+preset
+预设，都面临一个根本性的矛盾：&lt;strong&gt;便利性与灵活性的两难选择&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&quot;继承模式的优点&quot;&gt;继承模式的优点&lt;/h3&gt;
+&lt;p&gt;当你使用类似 &lt;code&gt;extends: &quot;@company/eslint-config&quot;&lt;/code&gt;
+的方式时，好处显而易见：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;升级简单&lt;/strong&gt;：只需
+&lt;code&gt;npm update&lt;/code&gt;，所有使用该配置的项目都能获得更新&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;一致性保证&lt;/strong&gt;：团队中所有项目使用相同的规则&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;维护集中&lt;/strong&gt;：配置的改进和 bug
+修复只需要在一个地方进行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;但现实很骨感&quot;&gt;但现实很骨感&lt;/h3&gt;
+&lt;p&gt;问题出现在你需要做任何&quot;非标准&quot;操作的时候：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;&lt;strong&gt;自定义需求&lt;/strong&gt;：项目有特殊需求，需要覆盖某些规则&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;依赖版本冲突&lt;/strong&gt;：你需要升级
+ESLint，但上游配置包还没有跟进（比如 ESLint 更新到 flat mode config
+了，你需要用到最新版的 ESLint 了，但是我懒，我还没更新 🤪）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;规则分歧&lt;/strong&gt;：上游更新了某个规则，但你的项目不适用（问题是你一开始可能不知道，等出问题了才发现&quot;卧槽我被坑了&quot;）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这时候，你有两个选择：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;选择 A：在继承基础上打补丁&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// eslint.config.js&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;default&lt;/span&gt; [&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;baseConfig&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  {&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;rules&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;co&quot;&gt;// 覆盖一个规则&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;st&quot;&gt;&amp;quot;some-rule&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;off&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;co&quot;&gt;// 再覆盖一个&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;st&quot;&gt;&amp;quot;another-rule&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [&lt;span class=&quot;st&quot;&gt;&amp;quot;error&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; { &lt;span class=&quot;dt&quot;&gt;different&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;options&amp;quot;&lt;/span&gt; }]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// 还要处理插件版本冲突...&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;]&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;补丁越打越多，最终你的&quot;继承&quot;变成了一层又一层的覆盖，反而比从头写还难维护。&lt;/p&gt;
+&lt;p&gt;ESLint 其实已经还好了，Prettier 和 lint-staged 这种没有 extends/merge
+机制的就更麻烦了，我之前写了一个超级麻烦的 lint-staged 配置（看这里 &lt;a
+href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt;
+和 &lt;a
+href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.helpers.js&quot;&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt;&lt;/a&gt;，看起来挺
+decent
+的（好吧至少我自己这么觉得），其实超级难用，还把一个非常简单的事情搞的极其复杂&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;选择 B：Eject（弹出）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;很多脚手架工具提供了 &lt;code&gt;eject&lt;/code&gt;
+命令，把所有配置文件复制到你的项目里，让你获得完全控制权。&lt;/p&gt;
+&lt;p&gt;但 eject 之后：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;你失去了自动升级的能力，你得自己去更新，没办法享受上游已经测试过的插件之间的兼容性&lt;/li&gt;
+&lt;li&gt;当上游有重要更新时，你需要手动 diff 和合并&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;这就是两难困境&lt;/strong&gt;：继承模式下你受制于上游，eject
+之后你要承担维护成本。&lt;/p&gt;
+&lt;h2 id=&quot;llm-是个好东西&quot;&gt;LLM 是个好东西&lt;/h2&gt;
+&lt;p&gt;现在我们有了 LLM 了，时代变了&lt;/p&gt;
+&lt;h3 id=&quot;新的工作流&quot;&gt;新的工作流&lt;/h3&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;&lt;strong&gt;获取最新配置&lt;/strong&gt;：LLM 直接从 llms.md/llms.txt
+获取最新的推荐配置&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;智能合并&lt;/strong&gt;：LLM
+理解你的项目上下文，把新配置合并到现有配置中&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;保留自定义&lt;/strong&gt;：你的自定义修改会被识别并保留&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;按需更新&lt;/strong&gt;：当你需要升级时，让 LLM
+帮你处理合并冲突&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;为什么这比传统方式更好&quot;&gt;为什么这比传统方式更好？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;所有配置都在你的代码库中&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;没有隐藏的 &lt;code&gt;node_modules&lt;/code&gt;
+深处的配置文件，没有&quot;这个规则是从哪里来的&quot;的困惑。每一行配置都清清楚楚地在你的项目里。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;升级变得可控&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;升级不再是一个&quot;要么全要，要么不要&quot;的决定。LLM 可以帮你：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查看上游有什么变化&lt;/li&gt;
+&lt;li&gt;理解每个变化的影响&lt;/li&gt;
+&lt;li&gt;选择性地应用更新&lt;/li&gt;
+&lt;li&gt;自动处理合并冲突&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;自定义是一等公民&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;你的自定义不再是&quot;补丁&quot;，而是配置的一部分。LLM
+在更新时会理解并尊重这些自定义。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;依赖版本自由&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;你可以随时升级任何依赖，不需要等待上游配置包更新。遇到问题？还能让
+LLM 帮你调整配置（他们读起配置来也变简单了）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;上游的配置文件变的更简单了&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;还是看我的 lint-staged 配置文件&lt;/p&gt;
+&lt;p&gt;以前的版本：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a
+href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;为了方便下游能复用配置，还能自定义 lint-staged
+的配置，不得不写的帮助函数 &lt;a
+href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.helpers.js&quot;&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;现在的版本：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a
+href=&quot;https://github.com/bolasblack/js-metarepo/blob/25d4495adcba67bda9daf65b04a204acc01cb795/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt;
+算了，这个实在是太简单了，我直接 inline 了得了：
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
+class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;module&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;*.{ts,tsx,js,jsx}&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [&lt;span class=&quot;st&quot;&gt;&amp;quot;prettier --write&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;eslint&amp;quot;&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;*.{css,scss,sass,less,md,mdx}&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [&lt;span class=&quot;st&quot;&gt;&amp;quot;prettier --write&amp;quot;&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt; 已经不存在了，因为没必要&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2
+id=&quot;你说了这么多但这看起来不还是倒退吗&quot;&gt;你说了这么多，但这看起来不还是倒退吗？&lt;/h2&gt;
+&lt;p&gt;是，也不是。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;是&lt;/strong&gt;：配置文件确实在每个项目中独立存在，和最早的时候一样&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不是&lt;/strong&gt;：因为维护成本发生了本质变化：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;以前&lt;/strong&gt;：人工去看 CHANGELOG 或者看和上游配置文件的
+diff -&amp;gt; 搞明白啥变了 -&amp;gt; 手动修改 -&amp;gt; 测试验证&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;现在&lt;/strong&gt;：告诉 LLM &quot;升级到最新推荐配置&quot; -&amp;gt; 审查 LLM
+的改动 -&amp;gt; 完成&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;维护的认知负担从&quot;我需要理解所有这些配置&quot;变成了&quot;我需要审查 LLM
+的建议&quot;。这是和最早的时候不同的地方。&lt;/p&gt;
+&lt;h2 id=&quot;总结ai-版我自己编不出来&quot;&gt;总结（AI 版，我自己编不出来）&lt;/h2&gt;
+&lt;p&gt;传统的配置共享是在&quot;一刀切的便利&quot;和&quot;完全自主的复杂&quot;之间做选择。LLM-oriented
+的方式让我们可以两者兼得：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;保持配置的完全所有权和透明度&lt;/li&gt;
+&lt;li&gt;同时享受智能辅助的升级和维护&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这不是技术的倒退，而是利用新工具重新定义了最佳实践。&lt;/p&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="LLM" />
+    
+
+    
+    <category term="LLM" />
+    
+    <category term="工具配置" />
+    
+    <category term="ESLint" />
+    
+    <category term="npm" />
+    
+  </entry>
+  
+  <entry>
+    <title type="html">比特币钱包生态有多土狗：从开始到放弃</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-比特币钱包生态有多土狗_从开始到放弃.md" rel="alternate" type="text/html" title="比特币钱包生态有多土狗：从开始到放弃" />
+    <published>2026-01-03T00:00:00Z</published>
+    <updated>2026-01-04T21:37:33Z</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-比特币钱包生态有多土狗_从开始到放弃</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-比特币钱包生态有多土狗_从开始到放弃.md">&lt;p&gt;如果你正在开发一个比特币
+dApp，你可能已经发现了，比特币社区的生态实在是太土狗了。&lt;/p&gt;
+&lt;p&gt;最简单的例子就是比特币钱包，大家似乎热衷于给其他人制定标准，但大家似乎又不热衷于实现这个标准。&lt;/p&gt;
+&lt;h2 id=&quot;标准什么标准&quot;&gt;&quot;标准&quot;？什么标准？&lt;/h2&gt;
+&lt;p&gt;让例子更详细一点：&lt;/p&gt;
+&lt;h3
+id=&quot;wbips制定标准的人自己都不遵守&quot;&gt;WBIPs：制定标准的人自己都不遵守&lt;/h3&gt;
+&lt;p&gt;Leather 和 Xverse 搞了一个 &lt;a
+href=&quot;https://wbips.netlify.app/&quot;&gt;WBIPs&lt;/a&gt;
+，说是要制定一个统一的比特币钱包 API 标准，但：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;signPsbt 的 finalize 参数&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a
+href=&quot;https://github.com/wbips/wbips-docs/blob/a7862572785686da8c0097125366086fea3c70d6/pages/request_api/signPsbt.md&quot;&gt;&lt;code&gt;signPsbt&lt;/code&gt;&lt;/a&gt;
+标准里定义了 &lt;code&gt;finalize&lt;/code&gt; 参数，但两个发起者都没实现：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Leather 的&lt;a
+href=&quot;https://github.com/leather-io/mono/blob/2570b8e89e1a7d67ff2ec469c42b321f5d956e92/packages/rpc/src/methods/bitcoin/sign-psbt.ts#L25-L35&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Xverse 的&lt;a
+href=&quot;https://github.com/secretkeylabs/sats-connect-core/blob/cfbbdfde28a646f1b5114dad39ec76da85c3ffe9/src/request/types/btcMethods.ts#L178-L192&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;钱包自动发现机制的实现完全不对啊老师&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a
+href=&quot;https://github.com/wbips/wbips-docs/blob/a7862572785686da8c0097125366086fea3c70d6/pages/wbips/WBIP004.md&quot;&gt;WBIP004&lt;/a&gt;
+定义了钱包插件的自动发现机制，第一步是往 &lt;code&gt;wbip_providers&lt;/code&gt;
+里注入钱包 provider。&lt;/p&gt;
+&lt;p&gt;但实际上 Xverse 和 Leather 都是往 &lt;code&gt;window.btc_providers&lt;/code&gt;
+里注入的：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Leather 的&lt;a
+href=&quot;https://github.com/leather-io/mono/blob/2570b8e89e1a7d67ff2ec469c42b321f5d956e92/packages/provider/src/add-leather-to-providers.ts#L21-L52&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Xverse 的&lt;a
+href=&quot;https://github.com/secretkeylabs/xverse-web-extension/blob/bdbd6a008fd3d8f04ea18eca0374fae67d90114c/src/inpage/index.ts#L53&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;另外两个主流钱包根本不 care&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;更不用说实际上占有大量流量的 &lt;strong&gt;UniSat&lt;/strong&gt; 和 &lt;strong&gt;OKX
+Wallet&lt;/strong&gt; 似乎对支持 WBIPs 没有丝毫兴趣。&lt;/p&gt;
+&lt;h3 id=&quot;sats-connect标准之上的标准&quot;&gt;sats-connect：标准之上的标准&lt;/h3&gt;
+&lt;p&gt;然后在 WBIPs 之外，Xverse 还搞了一个 &lt;a
+href=&quot;https://github.com/xverseapp/sats-connect&quot;&gt;sats-connect&lt;/a&gt;
+，似乎想在 WBIPs 之外再扩展一些自己的 API ，实现一套标准之上的标准。&lt;/p&gt;
+&lt;p&gt;这不算差，尤其是它还兼容了 UniSat API 。Magic Eden 还号称 &quot;兼容
+sats-connect&quot;。&lt;/p&gt;
+&lt;p&gt;&quot;这听起来简直太棒了！sats-connect
+简直就是版本答案！世界救主！&quot;，对吧？你肯定是这么想的。&lt;/p&gt;
+&lt;p&gt;不过完美世界的上空&quot;还剩下两朵小小的乌云&quot;：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;&lt;strong&gt;sats-connect 不支持 OKX Wallet&lt;/strong&gt;（虽然 OKX Wallet 的
+API 现在已经迁移到和 UniSat 兼容了，但 sats-connect
+没办法自动发现它）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Magic Eden 的自动发现跟的是另一个标准&lt;/strong&gt;：&lt;a
+href=&quot;https://github.com/ExodusMovement/bitcoin-wallet-standard&quot;&gt;&lt;code&gt;ExodusMovement/bitcoin-wallet-standard&lt;/code&gt;&lt;/a&gt;，而不是
+WBIPs 标准。所以你没办法靠 sats-connect 来自动发现它。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;等下又来一个标准&quot;&gt;等下，又来一个标准？&lt;/h3&gt;
+&lt;p&gt;&quot;等下卧槽，这个 &lt;code&gt;ExodusMovement/bitcoin-wallet-standard&lt;/code&gt;
+又是个什么标准？我 TM 从来没听说过啊！&quot;&lt;/p&gt;
+&lt;p&gt;对的，在我尝试集成 Magic Eden
+之前，我也没听说过，现在我听说了，你也听说了。&lt;/p&gt;
+&lt;h3 id=&quot;更多-fun-facts&quot;&gt;更多 Fun Facts&lt;/h3&gt;
+&lt;p&gt;噢，还有一个 &quot;fun fact&quot; ，如果你的用户同时安装了 Xverse 和 Magic Eden
+，而且你没有处理好，那么你的用户在点击连接钱包时，可能会&lt;strong&gt;随机收到来自两个中其中一个钱包的确认请求&lt;/strong&gt;，人生真是处处充满惊喜。&lt;/p&gt;
+&lt;p&gt;噢，再加一个 &quot;fun fact&quot; ，Magic Eden 虽然号称 &quot;兼容
+sats-connect&quot;，但实际上它兼容的是&lt;strong&gt;旧版本的 API&lt;/strong&gt; 。&lt;/p&gt;
+&lt;h2 id=&quot;来点示例代码&quot;&gt;来点示例代码&lt;/h2&gt;
+&lt;p&gt;你可能会觉得那大不了我就自己在项目里都集成一遍呗。那让我们来看看为了实现一个简单的连接钱包功能，代码的差异：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// UniSat - 直接调用 window 对象&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; unisatResponse &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;unisat&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;requestAccounts&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Leather - 又是另一套 API&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; leatherResponse &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;LeatherProvider&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;request&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;getAddresses&amp;quot;&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Xverse - 来自官方文档&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;import&lt;/span&gt; { request } &lt;span class=&quot;im&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;sats-connect&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; xverseResponse &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;request&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;getAddresses&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Magic Eden - 来自官方文档&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;import&lt;/span&gt; { getAddress&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; AddressPurpose&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; BitcoinNetworkType } &lt;span class=&quot;im&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;sats-connect&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;getAddress&lt;/span&gt;({&lt;/span&gt;
+&lt;span id=&quot;cb1-14&quot;&gt;&lt;a href=&quot;#cb1-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  getProvider&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; getBtcProvider&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-15&quot;&gt;&lt;a href=&quot;#cb1-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  payload&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-16&quot;&gt;&lt;a href=&quot;#cb1-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    purposes&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [AddressPurpose&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;Ordinals&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; AddressPurpose&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;Payment&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-17&quot;&gt;&lt;a href=&quot;#cb1-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    message&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Address for receiving Ordinals and payments&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-18&quot;&gt;&lt;a href=&quot;#cb1-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    network&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-19&quot;&gt;&lt;a href=&quot;#cb1-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      type&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; BitcoinNetworkType&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;Mainnet&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-20&quot;&gt;&lt;a href=&quot;#cb1-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-21&quot;&gt;&lt;a href=&quot;#cb1-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-22&quot;&gt;&lt;a href=&quot;#cb1-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  onFinish&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (response) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-23&quot;&gt;&lt;a href=&quot;#cb1-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;onFinish response, &amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; response&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;addresses&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-24&quot;&gt;&lt;a href=&quot;#cb1-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    connectionStatus&lt;span class=&quot;op&quot;&gt;?.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;setAccounts&lt;/span&gt;(response&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;addresses&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;unknown&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;as&lt;/span&gt; Account[])&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-25&quot;&gt;&lt;a href=&quot;#cb1-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-26&quot;&gt;&lt;a href=&quot;#cb1-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  onCancel&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-27&quot;&gt;&lt;a href=&quot;#cb1-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;alert&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;Request canceled&amp;quot;&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-28&quot;&gt;&lt;a href=&quot;#cb1-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-29&quot;&gt;&lt;a href=&quot;#cb1-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;四个钱包，四种写法。&lt;/p&gt;
+&lt;p&gt;如果你得在你的项目里集成 6
+个钱包呢？恭喜你，你会需要把我上面提到的问题都过一遍，和我一起愉快地浪费掉一大把人生的时间。&lt;/p&gt;
+&lt;h2 id=&quot;总结一下&quot;&gt;总结一下&lt;/h2&gt;
+&lt;p&gt;&quot;去他妈的傻逼比特币钱包生态，太他妈土狗了！&quot;，你/我心想。&lt;/p&gt;
+&lt;h2 id=&quot;所以我写了一个库&quot;&gt;所以我写了一个库&lt;/h2&gt;
+&lt;p&gt;所以我写了一个 &lt;a
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;bitcoin-wallet-connector&lt;/a&gt;
+，可以让其他人少浪费一点时间在这些破事上。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;下一篇文章&lt;/strong&gt;我会详细介绍这个库的使用方法和设计理念。如果你已经等不及了，可以先看看：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://bitcoin-wallet-connector.netlify.app/iframe.html?id=components-bitcoinconnectionprovider--default&amp;amp;viewMode=story&quot;&gt;在线
+Demo&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;GitHub
+仓库&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="Bitcoin" />
+    
+
+    
+    <category term="Bitcoin" />
+    
+    <category term="钱包" />
+    
+    <category term="dApp" />
+    
+    <category term="Web3" />
+    
+  </entry>
   
   <entry>
     <title type="html">如何让一个非数组构造器骗过浏览器和框架</title>
@@ -684,120 +993,6 @@ href=&quot;http://stackoverflow.com/questions/29530558/how-to-disable-basic-http
 
     
     <category term="gentoo" />
-    
-  </entry>
-  
-  <entry>
-    <title type="html">基本完成了 todoist 的 Cli 客户端</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-30-release_todoistCli.md" rel="alternate" type="text/html" title="基本完成了 todoist 的 Cli 客户端" />
-    <published>2012-12-30T00:00:00Z</published>
-    <updated>2026-01-04T21:17:00Z</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2012-12-30-release_todoistCli</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-30-release_todoistCli.md">&lt;p&gt;这个已经写了很久了，之前也自称写完过，不过当时写完后没怎么用，主要问题是发现想要添加一个新待办事项的时候还需要开一个终端依旧有些蛋疼&lt;/p&gt;
-&lt;p&gt;于是项目就此搁置&lt;/p&gt;
-&lt;p&gt;最近换了 Mac ，工作有些忙，暂时没时间折腾 Arch Linux
-，所以大部分事情都在 Mac 上搞定，用了 Things 后就开始想着是不是写个
-todoist 的快速添加待办事项的小程序出来&lt;/p&gt;
-&lt;p&gt;天可怜见，差点就去学 Objective-C 了呀！&lt;/p&gt;
-&lt;p&gt;不过后来发现 Mac 上有个叫做 DTerm
-的应用，允许你随时唤出一个执行并显示执行结果的窗口&lt;/p&gt;
-&lt;p&gt;于是重写 todoistCli 的心思又活络起来了&lt;/p&gt;
-&lt;p&gt;几天下来，除了基本的逻辑和语言没有改变以外，其他的差不多都重写过了&lt;/p&gt;
-&lt;p&gt;用起来比之前爽多了&lt;/p&gt;
-&lt;p&gt;然后也发现对 Python
-的恶感竟然又少了不少，话说回来我还真是个没立场的家伙啊&lt;/p&gt;
-&lt;p&gt;最近一直想着想搞搞 Clojure-py 呢，一个 Python 的 Clojure
-实现，目前还是实验室级别的东西，不过相对于运行在 JVM 的 Clojure
-来说，我想大概 Clojure-py 更亲切一点吧……&lt;/p&gt;
-&lt;p&gt;话说回来 todoistCli 托管在我的 Github 账户上，如果感兴趣的话可以试试
-&lt;a
-href=&quot;https://github.com/bolasblack/todoistCli&quot;&gt;&lt;span&gt;https://github.com/bolasblack/todoistCli&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="代码" />
-    
-
-    
-    <category term="代码" />
-    
-    <category term="python" />
-    
-    <category term="todoist" />
-    
-    <category term="GTD" />
-    
-    <category term="cli" />
-    
-  </entry>
-  
-  <entry>
-    <title type="html">OS X 下推荐的一些命令行工具</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具.md" rel="alternate" type="text/html" title="OS X 下推荐的一些命令行工具" />
-    <published>2015-04-21T00:00:00Z</published>
-    <updated>2026-01-04T21:17:00Z</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具.md">&lt;p&gt;太常见的我就不记录了：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://brew.sh/&quot;&gt;homebrew&lt;/a&gt;
-这个不用多作介绍，之所以列出来主要是为了列一些扩展工具
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/gapple/homebrew-services&quot;&gt;homebrew
-services&lt;/a&gt; 一个勉强算是 OS X 下的 &lt;code&gt;/etc/init.d&lt;/code&gt; ，一开始
-&lt;code&gt;brew services list&lt;/code&gt; 的时候是什么都没有的，你得手动
-&lt;code&gt;brew services start nginx&lt;/code&gt; 这样子才算是正是把它交给 homebrew
-services 管理。虽然有点蛋疼，但不管怎么说，有总比没有强，是吧？&lt;/li&gt;
-&lt;li&gt;&lt;a
-href=&quot;https://github.com/beeftornado/homebrew-rmtree&quot;&gt;homebrew-rmtree&lt;/a&gt;
-删除指定包的时候顺手删除没有被别的包用到的依赖，其实就是帮你做了
-&lt;code&gt;brew cleanup package&lt;/code&gt; 和
-&lt;code&gt;brew rm --force package \&lt;/code&gt;join &amp;lt;(brew leaves) &amp;lt;(brew
-deps package)`` 的工作&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/junegunn/fzf&quot;&gt;fzf&lt;/a&gt;
-一个可扩展的模糊查询工具，可以过滤历史命令、&lt;code&gt;kill -9&lt;/code&gt;
-进程名称、&lt;code&gt;ssh&lt;/code&gt; 的帐号和服务器地址什么的。也支持作为 Vim
-的扩展来过滤命令什么的&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/github/hub&quot;&gt;hub&lt;/a&gt; 算是 git
-的扩展吧，很好的把 GitHub 和 git 命令融合了起来，比如
-&lt;code&gt;git create reponame&lt;/code&gt; 或者 &lt;code&gt;git clone reponame&lt;/code&gt;
-什么的，开坑方便了不少&lt;/li&gt;
-&lt;li&gt;ffmpeg
-神器不用多作介绍，不过以前年轻不懂事，一直不怎么有在意这个，最近终于知道这玩意有多好用了，所以这里还是要列一下&lt;/li&gt;
-&lt;li&gt;aria2c 如上&lt;/li&gt;
-&lt;li&gt;mosh 嗯，如果到服务器的连接不稳定，那就用这个吧，反正我之前连 linode
-日本的服务器一天到晚断线，用了这个再也没断过了&lt;/li&gt;
-&lt;li&gt;coreutils GNU 的那套命令行工具比如 &lt;code&gt;ls&lt;/code&gt; ，因为 OS X
-的工具很多都是 BSD 系的，很多参数和 GNU
-系的不一样，但很多时候我们自己写的脚本需要到 Linux
-下面去跑，所以干脆还是直接在 OS X 下也用 GNU 的那套工具得了&lt;/li&gt;
-&lt;li&gt;&lt;a
-href=&quot;https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard&quot;&gt;reattach-to-user-namespace&lt;/a&gt;
-这个算是比较蛋疼，是为了解决在 tmux
-下无法将文本复制到系统剪贴板的问题&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="shell" />
-    
-
-    
-    <category term="shell" />
-    
-    <category term="osx" />
     
   </entry>
   
