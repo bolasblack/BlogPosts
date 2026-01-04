@@ -1,9 +1,9 @@
 {
   "meta" : {
-    "total-posts" : 19,
-    "total-pages" : 2,
+    "total-posts" : 21,
+    "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-04T22:10:14.994815+01:00"
+    "generated-at" : "2026-01-04T22:28:22.192347+01:00"
   },
   "tags" : [ {
     "tag" : "JavaScript",
@@ -90,9 +90,17 @@
     "count" : 1,
     "file" : "tags/ios.json"
   }, {
+    "tag" : "钱包",
+    "count" : 1,
+    "file" : "tags/钱包.json"
+  }, {
     "tag" : "osx",
     "count" : 1,
     "file" : "tags/osx.json"
+  }, {
+    "tag" : "Web3",
+    "count" : 1,
+    "file" : "tags/web3.json"
   }, {
     "tag" : "水",
     "count" : 1,
@@ -102,6 +110,10 @@
     "count" : 1,
     "file" : "tags/shell.json"
   }, {
+    "tag" : "LLM",
+    "count" : 1,
+    "file" : "tags/llm.json"
+  }, {
     "tag" : "cli",
     "count" : 1,
     "file" : "tags/cli.json"
@@ -109,6 +121,18 @@
     "tag" : "GTD",
     "count" : 1,
     "file" : "tags/gtd.json"
+  }, {
+    "tag" : "dApp",
+    "count" : 1,
+    "file" : "tags/dapp.json"
+  }, {
+    "tag" : "ESLint",
+    "count" : 1,
+    "file" : "tags/eslint.json"
+  }, {
+    "tag" : "Bitcoin",
+    "count" : 1,
+    "file" : "tags/bitcoin.json"
   }, {
     "tag" : "Linux",
     "count" : 1,
@@ -154,9 +178,17 @@
     "count" : 1,
     "file" : "tags/gentoo.json"
   }, {
+    "tag" : "工具配置",
+    "count" : 1,
+    "file" : "tags/工具配置.json"
+  }, {
     "tag" : "HTML5",
     "count" : 1,
     "file" : "tags/html5.json"
+  }, {
+    "tag" : "npm",
+    "count" : 1,
+    "file" : "tags/npm.json"
   }, {
     "tag" : "吐槽",
     "count" : 1,

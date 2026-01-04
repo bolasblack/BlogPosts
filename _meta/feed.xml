@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
   <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh-CN" />
-  <updated>2020-05-05T22:19:00+08:00</updated>
+  <updated>2026-01-04T22:14:09+01:00</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
@@ -15,30 +15,174 @@
 
   
   <entry>
-    <title type="html">TypeScript 如何真正 keyof 一个枚举</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举.md" rel="alternate" type="text/html" title="TypeScript 如何真正 keyof 一个枚举" />
-    <published>2020-05-05T22:19:00+08:00</published>
-    <updated>2020-05-05T22:19:00+08:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举.md">&lt;p&gt;有一个朋友问我怎么才能 &lt;code&gt;keyof&lt;/code&gt; 一个 TypeScript
-里的枚举，因为如果你直接 &lt;code&gt;keyof Enum&lt;/code&gt; 的话，得到的结果是类似
-&lt;code&gt;keyof number&lt;/code&gt; ，而不是得到枚举的所有可能的 key 。&lt;/p&gt;
-&lt;p&gt;于是我简单写了一下跟他解释，顺手发上来：&lt;/p&gt;
-&lt;p&gt;在 TypeScript
-里，你在声明一个枚举的时候，其实声明了两个类型，一个是枚举容器的类型（是一个对象），一个是枚举成员的类型（是数字/字符串或者其他类型的子类型）。&lt;/p&gt;
-&lt;p&gt;TypeScript 的 &lt;code&gt;keyof&lt;/code&gt; 操作符预设后面跟着的是类型，所以我们
-&lt;code&gt;keyof Enum&lt;/code&gt; 时，其实相当于是在
-&lt;code&gt;keyof (作为 number 的子类型的 Enum)&lt;/code&gt; ，也就是相当于
-&lt;code&gt;keyof number&lt;/code&gt; ，所以会得到 &lt;code&gt;number&lt;/code&gt;
-的属性和方法名。&lt;/p&gt;
-&lt;p&gt;而 &lt;code&gt;typeof&lt;/code&gt; 操作符预设后面跟的是一个值，所以当我们这么写
-&lt;code&gt;keyof typeof Enum&lt;/code&gt; 的时候，我们是把 &lt;code&gt;Enum&lt;/code&gt;
-作为一个值（也就是上文提到的“对象”），展开来以后就是
-&lt;code&gt;keyof (作为类型的 Enum)&lt;/code&gt; ，所以能够得到枚举的 key 。&lt;/p&gt;
-&lt;p&gt;相关资料：&lt;/p&gt;
+    <title type="html">如何让一个非数组构造器骗过浏览器和框架</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md" rel="alternate" type="text/html" title="如何让一个非数组构造器骗过浏览器和框架" />
+    <published>2014-05-09T00:00:00+02:00</published>
+    <updated>2026-01-04T22:14:09+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md">&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; eve &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;setArray&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;makeArray&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;arguments&lt;/span&gt;))&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;eve&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;toString&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;function Array() { [native code] }&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;
+&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;eve&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;prototype&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;setArray&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;(elems) {&lt;/span&gt;
+&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;co&quot;&gt;//设置length以及重排索引&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;bu&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;apply&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; elems)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-14&quot;&gt;&lt;a href=&quot;#cb1-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;makeArray&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;(arr) {&lt;span class=&quot;co&quot;&gt;//把传入参数变成数组&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-15&quot;&gt;&lt;a href=&quot;#cb1-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; ret &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; []&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-16&quot;&gt;&lt;a href=&quot;#cb1-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;if&lt;/span&gt;( arr &lt;span class=&quot;op&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt; ){    &lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; i &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; arr&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-17&quot;&gt;&lt;a href=&quot;#cb1-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;co&quot;&gt;//单个元素，但window, string、 function有 &amp;#39;length&amp;#39;的属性，加其它的判断&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-18&quot;&gt;&lt;a href=&quot;#cb1-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;cf&quot;&gt;if&lt;/span&gt;( i &lt;span class=&quot;op&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;||&lt;/span&gt; arr&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;split&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;||&lt;/span&gt; arr&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;setInterval&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;||&lt;/span&gt; arr&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;call&lt;/span&gt; ){&lt;/span&gt;
+&lt;span id=&quot;cb1-19&quot;&gt;&lt;a href=&quot;#cb1-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        ret[&lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;] &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; arr&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-20&quot;&gt;&lt;a href=&quot;#cb1-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      }&lt;span class=&quot;cf&quot;&gt;else&lt;/span&gt;{&lt;/span&gt;
+&lt;span id=&quot;cb1-21&quot;&gt;&lt;a href=&quot;#cb1-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;cf&quot;&gt;try&lt;/span&gt;{&lt;/span&gt;
+&lt;span id=&quot;cb1-22&quot;&gt;&lt;a href=&quot;#cb1-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;          ret &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;call&lt;/span&gt;(arr)&lt;/span&gt;
+&lt;span id=&quot;cb1-23&quot;&gt;&lt;a href=&quot;#cb1-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        }&lt;span class=&quot;cf&quot;&gt;catch&lt;/span&gt;(e){&lt;/span&gt;
+&lt;span id=&quot;cb1-24&quot;&gt;&lt;a href=&quot;#cb1-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;          &lt;span class=&quot;cf&quot;&gt;while&lt;/span&gt;( i ) ret[&lt;span class=&quot;op&quot;&gt;--&lt;/span&gt;i] &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; arr[i]&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;co&quot;&gt;//Clone数组&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-25&quot;&gt;&lt;a href=&quot;#cb1-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        }&lt;/span&gt;
+&lt;span id=&quot;cb1-26&quot;&gt;&lt;a href=&quot;#cb1-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      }&lt;/span&gt;
+&lt;span id=&quot;cb1-27&quot;&gt;&lt;a href=&quot;#cb1-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }&lt;/span&gt;
+&lt;span id=&quot;cb1-28&quot;&gt;&lt;a href=&quot;#cb1-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; ret&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-29&quot;&gt;&lt;a href=&quot;#cb1-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-30&quot;&gt;&lt;a href=&quot;#cb1-30&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;splice&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; []&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;splice&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-31&quot;&gt;&lt;a href=&quot;#cb1-31&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Douglas Crockford: Duck typing arrays&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-32&quot;&gt;&lt;a href=&quot;#cb1-32&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;sort&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; []&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;sort&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-33&quot;&gt;&lt;a href=&quot;#cb1-33&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Most lib&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-34&quot;&gt;&lt;a href=&quot;#cb1-34&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() { &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;[object Array]&amp;#39;&lt;/span&gt; }&lt;/span&gt;
+&lt;span id=&quot;cb1-35&quot;&gt;&lt;a href=&quot;#cb1-35&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;
+&lt;span id=&quot;cb1-36&quot;&gt;&lt;a href=&quot;#cb1-36&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-37&quot;&gt;&lt;a href=&quot;#cb1-37&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Chrome&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-38&quot;&gt;&lt;a href=&quot;#cb1-38&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// b = new eve // =&amp;gt; []&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-39&quot;&gt;&lt;a href=&quot;#cb1-39&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Array.isArray(b) // =&amp;gt; false&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-40&quot;&gt;&lt;a href=&quot;#cb1-40&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Object.prototype.toString.call(b) // =&amp;gt; [object Object]&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-41&quot;&gt;&lt;a href=&quot;#cb1-41&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-42&quot;&gt;&lt;a href=&quot;#cb1-42&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Firefox&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-43&quot;&gt;&lt;a href=&quot;#cb1-43&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// b = new eve // =&amp;gt; [object Array]&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-44&quot;&gt;&lt;a href=&quot;#cb1-44&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Array.isArray(b) // =&amp;gt; true&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-45&quot;&gt;&lt;a href=&quot;#cb1-45&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Object.prototype.toString.call(b) // =&amp;gt; [object Array]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;以上是简化了司徒正美的代码后得到的结果，但还不能让 Chrome 的
+&lt;code&gt;Object.prototype.toString.call(b)&lt;/code&gt; 变为
+&lt;code&gt;[object Array]&lt;/code&gt; ，以及 &lt;code&gt;Array.isArray(b)&lt;/code&gt;
+的结果为 &lt;code&gt;true&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;查看 &lt;a href=&quot;http://es5.github.io/#x15.4.3.2&quot;&gt;ECMAScript 5&lt;/a&gt;
+，发现 &lt;code&gt;Array.isArray()&lt;/code&gt; 的实现是：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;If the value of the [[Class]] internal property of arg is &amp;quot;Array&amp;quot;, then return true.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在搜索如何篡改 &lt;code&gt;[[Class]] internal property&lt;/code&gt; 时，&lt;a
+href=&quot;http://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.tostring&quot;&gt;听说&lt;/a&gt;这个东西在
+ECMAScript 6 里会被移除，&lt;code&gt;Array.isArray()&lt;/code&gt;
+的实现方式会变成这样：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;If arg is an exotic Array object, then return true.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;发现好像这条路有点崎岖……&lt;/p&gt;
+&lt;p&gt;后来偶然记起 &lt;code&gt;instanceof&lt;/code&gt; 运算符的工作方式，是通过判断
+&lt;code&gt;instance.__proto__ === Class.prototype&lt;/code&gt;
+来得到结果的，所以就想看看通过 &lt;code&gt;__proto__&lt;/code&gt;
+能不能找到答案。&lt;/p&gt;
+&lt;p&gt;最终找到了一个看似通用的方案：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre
+class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;createConstructor&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
+&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; constructor &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
+&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; result &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;apply&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;arguments&lt;/span&gt;)&lt;/span&gt;
+&lt;span id=&quot;cb4-4&quot;&gt;&lt;a href=&quot;#cb4-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    result&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;__proto__&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; constructor&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;prototype&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-5&quot;&gt;&lt;a href=&quot;#cb4-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; result&lt;/span&gt;
+&lt;span id=&quot;cb4-6&quot;&gt;&lt;a href=&quot;#cb4-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;/span&gt;
+&lt;span id=&quot;cb4-7&quot;&gt;&lt;a href=&quot;#cb4-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  constructor&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;toString&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
+&lt;span id=&quot;cb4-8&quot;&gt;&lt;a href=&quot;#cb4-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;function Array() { [native code] }&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-9&quot;&gt;&lt;a href=&quot;#cb4-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;/span&gt;
+&lt;span id=&quot;cb4-10&quot;&gt;&lt;a href=&quot;#cb4-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  constructor&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;constructor&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; constructor&lt;/span&gt;
+&lt;span id=&quot;cb4-11&quot;&gt;&lt;a href=&quot;#cb4-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; constructor&lt;/span&gt;
+&lt;span id=&quot;cb4-12&quot;&gt;&lt;a href=&quot;#cb4-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;
+&lt;span id=&quot;cb4-13&quot;&gt;&lt;a href=&quot;#cb4-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-14&quot;&gt;&lt;a href=&quot;#cb4-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; eve &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;createConstructor&lt;/span&gt;()&lt;/span&gt;
+&lt;span id=&quot;cb4-15&quot;&gt;&lt;a href=&quot;#cb4-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-16&quot;&gt;&lt;a href=&quot;#cb4-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Chrome&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-17&quot;&gt;&lt;a href=&quot;#cb4-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// b = new eve // =&amp;gt; []&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-18&quot;&gt;&lt;a href=&quot;#cb4-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Array.isArray(b) // =&amp;gt; true&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-19&quot;&gt;&lt;a href=&quot;#cb4-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Object.prototype.toString.call(b) // =&amp;gt; [object Array]&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-20&quot;&gt;&lt;a href=&quot;#cb4-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-21&quot;&gt;&lt;a href=&quot;#cb4-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Firefox&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-22&quot;&gt;&lt;a href=&quot;#cb4-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// b = new eve // =&amp;gt; [object Array]&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-23&quot;&gt;&lt;a href=&quot;#cb4-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Array.isArray(b) // =&amp;gt; true&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-24&quot;&gt;&lt;a href=&quot;#cb4-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Object.prototype.toString.call(b) // =&amp;gt; [object Array]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;由于 &lt;code&gt;__proto__&lt;/code&gt; 已经被 ES6 &lt;a
+href=&quot;http://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.prototype.__proto__&quot;&gt;规范化&lt;/a&gt;了，而且目前的主流浏览器都支持
+&lt;code&gt;__proto__&lt;/code&gt; 属性，所以使用它应该就是比较合适的方案了。&lt;/p&gt;
+&lt;p&gt;由于老浏览器本身没有实现 &lt;code&gt;Array.isArray()&lt;/code&gt;
+接口，使用的一般都是通过判断 &lt;code&gt;Object.prototype.toString.call&lt;/code&gt;
+获得的字符串的方式，所以可以将两种办法混合使用，最终代码（代码未经老浏览器测试）：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre
+class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-2&quot;&gt;&lt;a href=&quot;#cb5-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; polyfillPrototype &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb5-3&quot;&gt;&lt;a href=&quot;#cb5-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;setArray&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;(elems) {&lt;/span&gt;
+&lt;span id=&quot;cb5-4&quot;&gt;&lt;a href=&quot;#cb5-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;co&quot;&gt;//设置length以及重排索引&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-5&quot;&gt;&lt;a href=&quot;#cb5-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;bu&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;apply&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; elems)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-6&quot;&gt;&lt;a href=&quot;#cb5-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-7&quot;&gt;&lt;a href=&quot;#cb5-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-8&quot;&gt;&lt;a href=&quot;#cb5-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;makeArray&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;( arr ) {&lt;span class=&quot;co&quot;&gt;//把传入参数变成数组&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-9&quot;&gt;&lt;a href=&quot;#cb5-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; ret &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; []&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-10&quot;&gt;&lt;a href=&quot;#cb5-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;if&lt;/span&gt;( arr &lt;span class=&quot;op&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt; ){    &lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; i &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; arr&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-11&quot;&gt;&lt;a href=&quot;#cb5-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;co&quot;&gt;//单个元素，但window, string、 function有 &amp;#39;length&amp;#39;的属性，加其它的判断&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-12&quot;&gt;&lt;a href=&quot;#cb5-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;cf&quot;&gt;if&lt;/span&gt;( i &lt;span class=&quot;op&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;||&lt;/span&gt; arr&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;split&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;||&lt;/span&gt; arr&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;setInterval&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;||&lt;/span&gt; arr&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;call&lt;/span&gt; ){&lt;/span&gt;
+&lt;span id=&quot;cb5-13&quot;&gt;&lt;a href=&quot;#cb5-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        ret[&lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;] &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; arr&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-14&quot;&gt;&lt;a href=&quot;#cb5-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      }&lt;span class=&quot;cf&quot;&gt;else&lt;/span&gt;{&lt;/span&gt;
+&lt;span id=&quot;cb5-15&quot;&gt;&lt;a href=&quot;#cb5-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;cf&quot;&gt;try&lt;/span&gt;{&lt;/span&gt;
+&lt;span id=&quot;cb5-16&quot;&gt;&lt;a href=&quot;#cb5-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;          ret &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;slice&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;call&lt;/span&gt;(arr)&lt;/span&gt;
+&lt;span id=&quot;cb5-17&quot;&gt;&lt;a href=&quot;#cb5-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        }&lt;span class=&quot;cf&quot;&gt;catch&lt;/span&gt;(e){&lt;/span&gt;
+&lt;span id=&quot;cb5-18&quot;&gt;&lt;a href=&quot;#cb5-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;          &lt;span class=&quot;cf&quot;&gt;while&lt;/span&gt;( i ) ret[&lt;span class=&quot;op&quot;&gt;--&lt;/span&gt;i] &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; arr[i]&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;co&quot;&gt;//Clone数组&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-19&quot;&gt;&lt;a href=&quot;#cb5-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        }&lt;/span&gt;
+&lt;span id=&quot;cb5-20&quot;&gt;&lt;a href=&quot;#cb5-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      }&lt;/span&gt;
+&lt;span id=&quot;cb5-21&quot;&gt;&lt;a href=&quot;#cb5-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }&lt;/span&gt;
+&lt;span id=&quot;cb5-22&quot;&gt;&lt;a href=&quot;#cb5-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; ret&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-23&quot;&gt;&lt;a href=&quot;#cb5-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-24&quot;&gt;&lt;a href=&quot;#cb5-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;splice&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; []&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;splice&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-25&quot;&gt;&lt;a href=&quot;#cb5-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;sort&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; []&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;sort&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-26&quot;&gt;&lt;a href=&quot;#cb5-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
+&lt;span id=&quot;cb5-27&quot;&gt;&lt;a href=&quot;#cb5-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;[object Array]&amp;#39;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-28&quot;&gt;&lt;a href=&quot;#cb5-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;/span&gt;
+&lt;span id=&quot;cb5-29&quot;&gt;&lt;a href=&quot;#cb5-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;
+&lt;span id=&quot;cb5-30&quot;&gt;&lt;a href=&quot;#cb5-30&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-31&quot;&gt;&lt;a href=&quot;#cb5-31&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; createConstructor &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
+&lt;span id=&quot;cb5-32&quot;&gt;&lt;a href=&quot;#cb5-32&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; protoChecker &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;new&lt;/span&gt; (&lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {})&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-33&quot;&gt;&lt;a href=&quot;#cb5-33&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      constructor&lt;/span&gt;
+&lt;span id=&quot;cb5-34&quot;&gt;&lt;a href=&quot;#cb5-34&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-35&quot;&gt;&lt;a href=&quot;#cb5-35&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;cf&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;st&quot;&gt;&amp;#39;__proto__&amp;#39;&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;in&lt;/span&gt; protoChecker) {&lt;/span&gt;
+&lt;span id=&quot;cb5-36&quot;&gt;&lt;a href=&quot;#cb5-36&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    constructor &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
+&lt;span id=&quot;cb5-37&quot;&gt;&lt;a href=&quot;#cb5-37&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; result &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;apply&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;arguments&lt;/span&gt;)&lt;/span&gt;
+&lt;span id=&quot;cb5-38&quot;&gt;&lt;a href=&quot;#cb5-38&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      result&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;__proto__&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; constructor&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;prototype&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-39&quot;&gt;&lt;a href=&quot;#cb5-39&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; result&lt;/span&gt;
+&lt;span id=&quot;cb5-40&quot;&gt;&lt;a href=&quot;#cb5-40&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }&lt;/span&gt;
+&lt;span id=&quot;cb5-41&quot;&gt;&lt;a href=&quot;#cb5-41&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    constructor&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;constructor&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; constructor&lt;/span&gt;
+&lt;span id=&quot;cb5-42&quot;&gt;&lt;a href=&quot;#cb5-42&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  } &lt;span class=&quot;cf&quot;&gt;else&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb5-43&quot;&gt;&lt;a href=&quot;#cb5-43&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    constructor &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
+&lt;span id=&quot;cb5-44&quot;&gt;&lt;a href=&quot;#cb5-44&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;setArray&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;makeArray&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;arguments&lt;/span&gt;))&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-45&quot;&gt;&lt;a href=&quot;#cb5-45&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-46&quot;&gt;&lt;a href=&quot;#cb5-46&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }&lt;/span&gt;
+&lt;span id=&quot;cb5-47&quot;&gt;&lt;a href=&quot;#cb5-47&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    constructor&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;prototype&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; polyfillPrototype&lt;/span&gt;
+&lt;span id=&quot;cb5-48&quot;&gt;&lt;a href=&quot;#cb5-48&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;/span&gt;
+&lt;span id=&quot;cb5-49&quot;&gt;&lt;a href=&quot;#cb5-49&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  constructor&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;toString&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
+&lt;span id=&quot;cb5-50&quot;&gt;&lt;a href=&quot;#cb5-50&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;function Array() { [native code] }&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-51&quot;&gt;&lt;a href=&quot;#cb5-51&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;/span&gt;
+&lt;span id=&quot;cb5-52&quot;&gt;&lt;a href=&quot;#cb5-52&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; constructor&lt;/span&gt;
+&lt;span id=&quot;cb5-53&quot;&gt;&lt;a href=&quot;#cb5-53&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;
+&lt;span id=&quot;cb5-54&quot;&gt;&lt;a href=&quot;#cb5-54&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-55&quot;&gt;&lt;a href=&quot;#cb5-55&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; eve &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;createConstructor&lt;/span&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;参考文章：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/microsoft/TypeScript/issues/14106&quot;&gt;keyof
-Enum - microsoft/TypeScript#14106 - GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;《模拟jQuery实现类数组对象》&lt;/code&gt;： &lt;a
+href=&quot;http://www.cnblogs.com/rubylouvre/archive/2009/11/29/1612865.html&quot;&gt;http://www.cnblogs.com/rubylouvre/archive/2009/11/29/1612865.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;《Array Subtypes》&lt;/code&gt;： &lt;a
+href=&quot;http://wiki.ecmascript.org/doku.php?id=strawman:array_subtypes&quot;&gt;http://wiki.ecmascript.org/doku.php?id=strawman:array_subtypes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;《[译]JavaScript: __proto__》&lt;/code&gt;： &lt;a
+href=&quot;http://www.cnblogs.com/ziyunfei/archive/2012/10/05/2710955.html&quot;&gt;http://www.cnblogs.com/ziyunfei/archive/2012/10/05/2710955.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;《Annotated ECMAScript 5.1》&lt;/code&gt;： &lt;a
+href=&quot;http://es5.github.io/&quot;&gt;http://es5.github.io/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;《unofficial ECMAScript 6》&lt;/code&gt;： &lt;a
+href=&quot;http://people.mozilla.org/~jorendorff/es6-draft.html&quot;&gt;http://people.mozilla.org/~jorendorff/es6-draft.html&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
 
@@ -49,175 +193,46 @@ Enum - microsoft/TypeScript#14106 - GitHub&lt;/a&gt;&lt;/li&gt;
     </author>
 
     
-    <category term="TypeScript" />
+    <category term="JavaScript" />
     
 
     
-    <category term="TypeScript" />
+    <category term="JavaScript" />
     
-    <category term="枚举" />
+    <category term="Array" />
+    
+    <category term="__proto__" />
+    
+    <category term="isArray" />
+    
+    <category term="构造器" />
+    
+    <category term="jQuery" />
     
   </entry>
   
   <entry>
-    <title type="html">尝试用 TypeScript 模拟一个带 Payload 的枚举</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md" rel="alternate" type="text/html" title="尝试用 TypeScript 模拟一个带 Payload 的枚举" />
-    <published>2020-05-02T17:28:03+08:00</published>
-    <updated>2020-05-05T22:19:00+08:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md">&lt;p&gt;这两天逛 GitHub 时突然又注意到了 &lt;a
-href=&quot;https://github.com/origamitower/folktale&quot;&gt;folktale&lt;/a&gt;
-，发现它现在带了一个 &lt;a
-href=&quot;https://folktale.origamitower.com/api/v2.3.0/en/folktale.adt.union.union.union.html&quot;&gt;adt/union&lt;/a&gt;
-。看起来 folktale 现在的 &lt;code&gt;Maybe&lt;/code&gt;, &lt;code&gt;Result&lt;/code&gt;,
-&lt;code&gt;Validation&lt;/code&gt; 都是从 union 里派生出来的，使用方法和 Swift/Rust
-里的枚举非常相似：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
-class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; Either &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;union&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;Either&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;Left&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (value) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; ({ value })&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;Right&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (value) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; ({ value })&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;/span&gt;
-&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Either&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;Right&lt;/span&gt;(&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;matchWith&lt;/span&gt;({&lt;/span&gt;
-&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;Left&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; ({ value }) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;vs&quot;&gt;`left &lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;${&lt;/span&gt;value&lt;span class=&quot;sc&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;vs&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;Right&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; ({ value }) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;vs&quot;&gt;`right &lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;${&lt;/span&gt;value&lt;span class=&quot;sc&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;vs&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  })&lt;/span&gt;
-&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;正好我想在 TypeScript 里模拟一个带 Payload
-的枚举机制已经想了很久了，觉得这个 API 设计得不错，可惜的是没有
-TypeScript
-的类型定义，在各种抓耳挠腮之下写了一个不完美的版本（下面解释）：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
-class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 这是一个假的函数，只是做个占位而已&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;union&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; BaseUnionPatterns&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;(&lt;/span&gt;
-&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  typeId&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  patterns&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; P&lt;/span&gt;
-&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;)&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; UnionTypes&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb2-6&quot;&gt;&lt;a href=&quot;#cb2-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-7&quot;&gt;&lt;a href=&quot;#cb2-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;
-&lt;span id=&quot;cb2-8&quot;&gt;&lt;a href=&quot;#cb2-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-9&quot;&gt;&lt;a href=&quot;#cb2-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export type&lt;/span&gt; UnionModelMatchPatterns&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; BaseUnionPatterns&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; R&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb2-10&quot;&gt;&lt;a href=&quot;#cb2-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  [K &lt;span class=&quot;kw&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;keyof&lt;/span&gt; P]&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (patternFnReturn&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;ReturnType&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P[K]&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; R&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-11&quot;&gt;&lt;a href=&quot;#cb2-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-12&quot;&gt;&lt;a href=&quot;#cb2-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-13&quot;&gt;&lt;a href=&quot;#cb2-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export type&lt;/span&gt; UnionModelMatchPatternsWithAny&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; BaseUnionPatterns&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; R&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb2-14&quot;&gt;&lt;a href=&quot;#cb2-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  [K &lt;span class=&quot;kw&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;keyof&lt;/span&gt; P]&lt;span class=&quot;op&quot;&gt;?:&lt;/span&gt; (patternFnReturn&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;ReturnType&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P[K]&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; R&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-15&quot;&gt;&lt;a href=&quot;#cb2-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;} &lt;span class=&quot;op&quot;&gt;&amp;amp;&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb2-16&quot;&gt;&lt;a href=&quot;#cb2-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  $$any&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (patternFnReturn&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;ReturnType&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P[&lt;span class=&quot;kw&quot;&gt;keyof&lt;/span&gt; P]&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; R&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-17&quot;&gt;&lt;a href=&quot;#cb2-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-18&quot;&gt;&lt;a href=&quot;#cb2-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-19&quot;&gt;&lt;a href=&quot;#cb2-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export type&lt;/span&gt; UnionInstance&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; BaseUnionPatterns&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; Type &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;keyof&lt;/span&gt; P&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb2-20&quot;&gt;&lt;a href=&quot;#cb2-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  equals&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (unionInstance&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; UnionInstance&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;boolean&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-21&quot;&gt;&lt;a href=&quot;#cb2-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  matchWith&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;R&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;(&lt;/span&gt;
-&lt;span id=&quot;cb2-22&quot;&gt;&lt;a href=&quot;#cb2-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    branches&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-23&quot;&gt;&lt;a href=&quot;#cb2-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;op&quot;&gt;|&lt;/span&gt; UnionModelMatchPatterns&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; R&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-24&quot;&gt;&lt;a href=&quot;#cb2-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;op&quot;&gt;|&lt;/span&gt; UnionModelMatchPatternsWithAny&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; R&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-25&quot;&gt;&lt;a href=&quot;#cb2-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  ) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; R&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-26&quot;&gt;&lt;a href=&quot;#cb2-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-27&quot;&gt;&lt;a href=&quot;#cb2-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-28&quot;&gt;&lt;a href=&quot;#cb2-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;interface&lt;/span&gt; UnionType&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; BaseUnionPatterns&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; K &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;keyof&lt;/span&gt; P&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb2-29&quot;&gt;&lt;a href=&quot;#cb2-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  (&lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;args&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; Parameters&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P[K]&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; UnionInstance&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; K&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-30&quot;&gt;&lt;a href=&quot;#cb2-30&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  hasInstance&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (model&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; UnionInstance&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;keyof&lt;/span&gt; P&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;boolean&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-31&quot;&gt;&lt;a href=&quot;#cb2-31&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;
-&lt;span id=&quot;cb2-32&quot;&gt;&lt;a href=&quot;#cb2-32&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-33&quot;&gt;&lt;a href=&quot;#cb2-33&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export type&lt;/span&gt; UnionTypes&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; BaseUnionPatterns&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb2-34&quot;&gt;&lt;a href=&quot;#cb2-34&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  [K &lt;span class=&quot;kw&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;keyof&lt;/span&gt; P]&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; UnionType&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; K&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-35&quot;&gt;&lt;a href=&quot;#cb2-35&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-36&quot;&gt;&lt;a href=&quot;#cb2-36&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-37&quot;&gt;&lt;a href=&quot;#cb2-37&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;interface&lt;/span&gt; BaseUnionPatterns {&lt;/span&gt;
-&lt;span id=&quot;cb2-38&quot;&gt;&lt;a href=&quot;#cb2-38&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  [type&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (&lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;args&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;any&lt;/span&gt;) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-39&quot;&gt;&lt;a href=&quot;#cb2-39&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;事情并不如愿，总归还是没有办法完全实现我想要的效果，最终的成效是：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre
-class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 在这段代码里&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-3&quot;&gt;&lt;a href=&quot;#cb3-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Maybe 变量的类型是对的&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-4&quot;&gt;&lt;a href=&quot;#cb3-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; Maybe &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;union&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;Maybe&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb3-5&quot;&gt;&lt;a href=&quot;#cb3-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// patterns 参数的类型约束是对的&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-6&quot;&gt;&lt;a href=&quot;#cb3-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Nothing&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-7&quot;&gt;&lt;a href=&quot;#cb3-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Just&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;(value&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; T) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; ({ value })&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-8&quot;&gt;&lt;a href=&quot;#cb3-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Other&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;(arg1&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; T&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; rest&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; T[]) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; [arg1]&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;concat&lt;/span&gt;(rest)&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-9&quot;&gt;&lt;a href=&quot;#cb3-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-10&quot;&gt;&lt;a href=&quot;#cb3-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-11&quot;&gt;&lt;a href=&quot;#cb3-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// a 变量的类型是对的&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-12&quot;&gt;&lt;a href=&quot;#cb3-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; a &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; Maybe&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;Just&lt;/span&gt;(&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-13&quot;&gt;&lt;a href=&quot;#cb3-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// b 变量的类型被成功推断&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-14&quot;&gt;&lt;a href=&quot;#cb3-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; b &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; a&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;matchWith&lt;/span&gt;({&lt;/span&gt;
-&lt;span id=&quot;cb3-15&quot;&gt;&lt;a href=&quot;#cb3-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// branches 的类型约束是对的&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-16&quot;&gt;&lt;a href=&quot;#cb3-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Nothing&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (arg) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;no value&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;co&quot;&gt;// arg 的类型确实是 null&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-17&quot;&gt;&lt;a href=&quot;#cb3-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Just&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (arg) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;vs&quot;&gt;`value: &lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;${&lt;/span&gt;arg&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;vs&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;co&quot;&gt;// arg 的类型是 { value: unknown } （问题一）&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-18&quot;&gt;&lt;a href=&quot;#cb3-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Other&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (arg) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;vs&quot;&gt;`values: &lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;${&lt;/span&gt;arg&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;join&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;,&amp;quot;&lt;/span&gt;)&lt;span class=&quot;sc&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;vs&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;co&quot;&gt;// arg 的类型是 unknown[] （问题二）&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-19&quot;&gt;&lt;a href=&quot;#cb3-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-20&quot;&gt;&lt;a href=&quot;#cb3-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;a&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;matchWith&lt;/span&gt;({&lt;/span&gt;
-&lt;span id=&quot;cb3-21&quot;&gt;&lt;a href=&quot;#cb3-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Just&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (arg) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;vs&quot;&gt;`value: &lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;${&lt;/span&gt;arg&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;vs&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-22&quot;&gt;&lt;a href=&quot;#cb3-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// TypeScript 里指定的 Symbol 没办法作为 key 的类型，所以只能用特殊 key $$any&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-23&quot;&gt;&lt;a href=&quot;#cb3-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// 来替代 folktale 里的 any Symbol （问题三）&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-24&quot;&gt;&lt;a href=&quot;#cb3-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  $$any&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (arg) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;vs&quot;&gt;`values: &lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;${&lt;/span&gt;arg&lt;span class=&quot;sc&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;vs&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-25&quot;&gt;&lt;a href=&quot;#cb3-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-26&quot;&gt;&lt;a href=&quot;#cb3-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-27&quot;&gt;&lt;a href=&quot;#cb3-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(b)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;我们来一个个看这些问题：&lt;/p&gt;
+    <title type="html">Vim 如何成为神器</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器.md" rel="alternate" type="text/html" title="Vim 如何成为神器" />
+    <published>2012-12-05T00:00:00+01:00</published>
+    <updated>2026-01-04T22:14:09+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器.md">&lt;p&gt;上网偶然间发现 @玉伯 同学正在广发地图炮轰击众 Vim
+党，作为一个从来不忠实的 Vim/Emacs
+众，遂围观，顺藤摸瓜的发现一些不错的东西。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;关于问题一，让人比较不爽，毕竟 &lt;code&gt;Maybe.Just&lt;/code&gt;
-的参数类型是出现过的，只是因为 &lt;code&gt;patterns&lt;/code&gt; 参数里的
-&lt;code&gt;Just&lt;/code&gt;
-函数是一个泛型函数，而我们在做类型转换的时候又没办法传递类型参数，所以没办法推断出
-&lt;code&gt;{ value: T }&lt;/code&gt; 里 &lt;code&gt;T&lt;/code&gt; 的类型；&lt;/li&gt;
-&lt;li&gt;关于问题二，其实可以理解的，毕竟整个 &lt;code&gt;a&lt;/code&gt;
-变量的生命周期里从来没提到过 &lt;code&gt;Other&lt;/code&gt; 的 Payload 类型；&lt;/li&gt;
-&lt;li&gt;关于问题三，和问题一一样，都是属于语言设施功能上的缺位，大概只能等
-TypeScript 支持相关的特性。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://weibo.com/1748374882/yF9lFwncv&quot;&gt;地图炮&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a
+href=&quot;https://github.com/lifesinger/lifesinger.github.com/issues/104&quot;&gt;从
+Vim 与 IDE 的讨论说起&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://shepherdwind.com/?p=393&quot;&gt;Vim 如何成为神器&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;后来结合问题一问题二一想，其实这两个问题可以尝试一起解决，我们只要在声明变量
-&lt;code&gt;a&lt;/code&gt;
-的时候给它传递一个更完整的类型信息就可以了，于是又一阵抓耳挠腮之后，终于写出来一个粗糙的方案：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre
-class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export type&lt;/span&gt; UnionV&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  T &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; UnionTypes&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  WrappedValues &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; T &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; UnionTypes&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kw&quot;&gt;infer&lt;/span&gt; P&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-4&quot;&gt;&lt;a href=&quot;#cb4-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;op&quot;&gt;?&lt;/span&gt; { [K &lt;span class=&quot;kw&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;keyof&lt;/span&gt; P]&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;ReturnType&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;P[K]&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; }&lt;/span&gt;
-&lt;span id=&quot;cb4-5&quot;&gt;&lt;a href=&quot;#cb4-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;never&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-6&quot;&gt;&lt;a href=&quot;#cb4-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; UnionInstance&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-7&quot;&gt;&lt;a href=&quot;#cb4-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  { [K &lt;span class=&quot;kw&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;keyof&lt;/span&gt; T]&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (&lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;args&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; Parameters&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;T[K]&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; WrappedValues[K] }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-8&quot;&gt;&lt;a href=&quot;#cb4-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;keyof&lt;/span&gt; T&lt;/span&gt;
-&lt;span id=&quot;cb4-9&quot;&gt;&lt;a href=&quot;#cb4-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-10&quot;&gt;&lt;a href=&quot;#cb4-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-11&quot;&gt;&lt;a href=&quot;#cb4-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; Maybe &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;union&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;Maybe&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb4-12&quot;&gt;&lt;a href=&quot;#cb4-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Nothing&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-13&quot;&gt;&lt;a href=&quot;#cb4-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Just&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;(value&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; T) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; ({ value })&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-14&quot;&gt;&lt;a href=&quot;#cb4-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Others&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;T&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;(con&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; T&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; rest&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; T[]) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; [con]&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;concat&lt;/span&gt;(rest)&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-15&quot;&gt;&lt;a href=&quot;#cb4-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-16&quot;&gt;&lt;a href=&quot;#cb4-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-17&quot;&gt;&lt;a href=&quot;#cb4-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;type&lt;/span&gt; MaybeNumber &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; UnionV&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-18&quot;&gt;&lt;a href=&quot;#cb4-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;typeof&lt;/span&gt; Maybe&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-19&quot;&gt;&lt;a href=&quot;#cb4-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  {&lt;/span&gt;
-&lt;span id=&quot;cb4-20&quot;&gt;&lt;a href=&quot;#cb4-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;co&quot;&gt;// 这里填进去 patterns 各个函数的返回值类型&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-21&quot;&gt;&lt;a href=&quot;#cb4-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    Nothing&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-22&quot;&gt;&lt;a href=&quot;#cb4-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    Just&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; { value&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;number&lt;/span&gt; }&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-23&quot;&gt;&lt;a href=&quot;#cb4-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    Others&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;number&lt;/span&gt;[]&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-24&quot;&gt;&lt;a href=&quot;#cb4-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;/span&gt;
-&lt;span id=&quot;cb4-25&quot;&gt;&lt;a href=&quot;#cb4-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-26&quot;&gt;&lt;a href=&quot;#cb4-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; a &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; Maybe&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;Just&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;a&amp;quot;&lt;/span&gt;) &lt;span class=&quot;im&quot;&gt;as&lt;/span&gt; MaybeNumber&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-27&quot;&gt;&lt;a href=&quot;#cb4-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 这回 b 的类型被成功推断为 number | null&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-28&quot;&gt;&lt;a href=&quot;#cb4-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; b &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; a&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;matchWith&lt;/span&gt;({&lt;/span&gt;
-&lt;span id=&quot;cb4-29&quot;&gt;&lt;a href=&quot;#cb4-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Nothing&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (arg) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; arg&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-30&quot;&gt;&lt;a href=&quot;#cb4-30&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Just&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (arg) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; arg&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;co&quot;&gt;// arg 的类型为 { value: number }&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-31&quot;&gt;&lt;a href=&quot;#cb4-31&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  Others&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (items) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; items&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;co&quot;&gt;// arg 的类型为 number[]&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-32&quot;&gt;&lt;a href=&quot;#cb4-32&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-33&quot;&gt;&lt;a href=&quot;#cb4-33&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(b)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;目前这套方案在 &lt;code&gt;patterns&lt;/code&gt; 的参数都是具体的类型时，不需要
-&lt;code&gt;UnionV&lt;/code&gt; 就能够工作得很好；在出现泛型函数时，我只能想到通过
-&lt;code&gt;UnionV&lt;/code&gt; 来为 tsc 提供额外的类型信息。&lt;/p&gt;
-&lt;p&gt;那么，我们这算是大功告成了吗？并没有，因为整套方案是真的不够优雅，&lt;code&gt;UnionV&lt;/code&gt;
-的第二个类型参数实在是让人倒胃口。而且如果你仔细看的话，会发现我上面这段代码里
-&lt;code&gt;Maybe.Just&lt;/code&gt; 的参数是一个字符串，而 tsc
-并没有报错。我知道是因为我用了转型，但是如果我这么写
-&lt;code&gt;a: MaybeNumber =&lt;/code&gt; ，tsc 会报错说
-&lt;code&gt;Type &#39;{ value: unknown; }&#39; is not assignable to type &#39;{ value: number; }&#39;.&lt;/code&gt;
-，所以……这就是为什么这个方案不够优雅的原因之二了。&lt;/p&gt;
-&lt;p&gt;目前还想不出来更好的方案，只能再等等了，看看 TypeScript
-接下来会不会提供这套方案需要的东西吧。&lt;/p&gt;
+&lt;p&gt;其中自然是觉得第三篇最有价值啦。&lt;/p&gt;
+&lt;p&gt;玉伯说的当然没错啦，评论当然也没错啦，IDE 神马的我真心需求啊，看我
+Emacs 用了不少时间了还是没配置到一点点合我的心意到现在还只是用来写写
+Ruby、Markdown 就知道这些蛋疼的编辑器有多消耗人生了。&lt;/p&gt;
+&lt;p&gt;不过可惜的是，似乎目前没啥 IDE 符合我的心意 Orz ……&lt;/p&gt;
+&lt;p&gt;所以决定去看看 IDEA 。。。&lt;/p&gt;
 </content>
 
     <author>
@@ -227,21 +242,23 @@ class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode types
     </author>
 
     
-    <category term="TypeScript" />
+    <category term="编辑器" />
     
 
     
-    <category term="TypeScript" />
+    <category term="编辑器" />
     
-    <category term="枚举" />
+    <category term="Vim" />
+    
+    <category term="神器" />
     
   </entry>
   
   <entry>
     <title type="html">无固有尺寸的 SVG 图片在各浏览器中的渲染尺寸问题</title>
     <link href="https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题.md" rel="alternate" type="text/html" title="无固有尺寸的 SVG 图片在各浏览器中的渲染尺寸问题" />
-    <published>2020-04-16T23:18:25+08:00</published>
-    <updated>2020-04-16T23:18:25+08:00</updated>
+    <published>2020-04-09T00:00:00+02:00</published>
+    <updated>2026-01-04T22:14:09+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题</id>
     <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题.md">&lt;h2 id=&quot;故事&quot;&gt;故事&lt;/h2&gt;
 &lt;p&gt;公司同事在做图片预览功能时发现，很多 SVG 图片在 Firefox 下通过
@@ -388,37 +405,23 @@ role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
   </entry>
   
   <entry>
-    <title type="html">关于 React 和 Angular 的看法</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2015-06-03-关于_React_和_Angular_的看法.md" rel="alternate" type="text/html" title="关于 React 和 Angular 的看法" />
-    <published>2015-06-03T22:02:02+08:00</published>
-    <updated>2016-11-28T00:40:41+08:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2015-06-03-关于_React_和_Angular_的看法</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2015-06-03-关于_React_和_Angular_的看法.md">&lt;p&gt;我最近也用了一段时间的 reactjs ，所以我想有还是稍微有点资格来谈论
-angularjs 和 reactjs 的。&lt;/p&gt;
-&lt;p&gt;有一些文章会提到 angularjs 的两个很关键的问题：controller
-拥有了自己的状态，和声明依赖比较容易出现循环依赖。&lt;/p&gt;
-&lt;p&gt;Facebook 确实提出了一个非常不错的解决方案，但这方案与 Virtual DOM
-没有直接的关系（一些文章总是提这东西，我承认这是一个很重要的特性，但和解决
-angularjs 的问题关系不大）。&lt;/p&gt;
-&lt;p&gt;这个方案是 &lt;a href=&quot;http://facebook.github.io/flux/&quot;&gt;Flux&lt;/a&gt;
-：通过发布事件的方式来提醒模型更新状态，进而更新所有相关 DOM
-，一个很巧妙的解决方案。而 Virtual DOM
-只是这个解决方案里保证性能的一环而已。&lt;/p&gt;
-&lt;p&gt;而 data-binding ，实话说看到一些 reactjs 的拥趸一天到晚扯
-data-binding 是邪恶的让我觉得很莫名其妙。data-binding
-只是一种模式而已，reactjs 内置了数据的单向绑定难道这就不是 data-binding
-？而且 reactjs 还带了一个扩展 &lt;a
-href=&quot;http://facebook.github.io/react/docs/two-way-binding-helpers.html&quot;&gt;ReactLink&lt;/a&gt;
-用来实现数据的双向绑定又是什么意思？难道在 Vitrual DOM 的
-&lt;code&gt;onChange&lt;/code&gt; 属性里传一个回调函数然后更新 &lt;code&gt;state&lt;/code&gt;
-或者发出事件更新模型就不是数据绑定了？那么其他框架实现双向绑定的方法
-“监听 DOM 事件，更新 ViewModel” 也不能算是双向绑定咯？因为这其实和在
-reactjs 里做的没有任何区别。&lt;/p&gt;
-&lt;p&gt;我的观点就是，reactjs 是一个不错的东西，Flux 解决了不少其他 MVVM
-框架的问题，而 data-binding
-绝对是一种进步，因为它大量的减少了开发者的代码量（早就有人 &lt;a
-href=&quot;https://github.com/spoike/refluxjs#using-refluxconnect&quot;&gt;实现&lt;/a&gt;
-了一个使用 flux 模式的双向绑定扩展了）。&lt;/p&gt;
+    <title type="html">Socket.io 如何切换 Namespace 和 querystring</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md" rel="alternate" type="text/html" title="Socket.io 如何切换 Namespace 和 querystring" />
+    <published>2014-07-01T00:00:00+02:00</published>
+    <updated>2026-01-04T22:14:09+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md">&lt;p&gt;目前的 Socket.io
+的情况似乎是，当我发起过一次连接后，接下来的所有新连接的 namespace 和
+query 等内容都会使用第一次的配置，蛋疼无比。&lt;/p&gt;
+&lt;p&gt;看了下代码，然后又尝试了一些时间，找出了办法：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; socket &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; io&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;connect&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;/path&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; { &lt;span class=&quot;dt&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; { &lt;span class=&quot;dt&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;value&amp;quot;&lt;/span&gt; } })&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 当需要切换的时候&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;socket&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;close&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;socket&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;opts&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;...&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;co&quot;&gt;// 设置 querystring&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;socket&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;opts&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;/newpath&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;co&quot;&gt;// 切换 namespace&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;socket&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;open&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 </content>
 
     <author>
@@ -434,17 +437,75 @@ href=&quot;https://github.com/spoike/refluxjs#using-refluxconnect&quot;&gt;实�
     
     <category term="JavaScript" />
     
-    <category term="reactjs" />
+  </entry>
+  
+  <entry>
+    <title type="html">Audio 标签的若干个坑</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑.md" rel="alternate" type="text/html" title="Audio 标签的若干个坑" />
+    <published>2014-08-21T00:00:00+02:00</published>
+    <updated>2026-01-04T22:14:09+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑.md">&lt;p&gt;这两天写了一点和 &lt;code&gt;Audio&lt;/code&gt;
+标签相关的代码，于是就被浏览器坑的昏天暗地，在这里做个笔记&lt;/p&gt;
+&lt;h2 id=&quot;状态码&quot;&gt;状态码&lt;/h2&gt;
+&lt;p&gt;Chrome, Safari, Firefox 实现的 &lt;code&gt;Audio&lt;/code&gt;
+标签是不支持对响应状态码为 &lt;code&gt;200&lt;/code&gt;
+的文件进行循环的，目前看起来这似乎已经变成了行业的潜规则似的。说是潜规则，是因为我没有在规范里找到任何与此有关的描述，我没有对
+IE 进行测试。这里也有人遇到了和我一样的问题：&lt;a
+href=&quot;http://stackoverflow.com/questions/8088364/html5-video-will-not-loop&quot;&gt;HTML5
+video will not loop&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&quot;audio-标签的-load-方法&quot;&gt;Audio 标签的 load 方法&lt;/h2&gt;
+&lt;p&gt;在 30/31 版本的 Firefox 中 &lt;code&gt;audio.load()&lt;/code&gt;
+方法是基本没什么作用的（我没有测试更低版本的）， 如果一个
+&lt;code&gt;Audio&lt;/code&gt; 标签 &lt;code&gt;preload&lt;/code&gt; 属性的值为
+&lt;code&gt;none&lt;/code&gt;
+，那么它不会自动地去加载这个音频文件，在其他浏览器中可以通过
+&lt;code&gt;audio.load()&lt;/code&gt;
+来触发下载音频文件的行为进而实现按需预加载的效果，但这在 Firefox
+下是无效的，只有调用 &lt;code&gt;audio.play()&lt;/code&gt; 时它才会遵循&lt;a
+href=&quot;http://www.w3.org/TR/html5/embedded-content-0.html#playing-the-media-resource&quot;&gt;规范&lt;/a&gt;触发下载资源的行为&lt;/p&gt;
+&lt;h2 id=&quot;循环播放的间隔&quot;&gt;循环播放的间隔&lt;/h2&gt;
+&lt;p&gt;不同浏览器实现的循环播放的间隔是不同的，测试代码：&lt;/p&gt;
+&lt;iframe width=&quot;100%&quot; height=&quot;300&quot; src=&quot;http://jsfiddle.net/kfpyk5qk/embedded/&quot; allowfullscreen=&quot;allowfullscreen&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;结果如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Chrome - 1
+1161
+# Chrome - 2
+10215
+
+# Firefox - 1
+1264
+# Firefox - 2
+10280
+
+# 最令人发指的 Safari - 1
+2324
+# 最令人发指的 Safari - 2
+11330&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;目前没有找到比较好的办法来处理这个问题。&lt;/p&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
     
-    <category term="angularjs" />
+    <category term="HTML5" />
+    
+
+    
+    <category term="HTML5" />
     
   </entry>
   
   <entry>
     <title type="html">OS X 下推荐的一些命令行工具</title>
     <link href="https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具.md" rel="alternate" type="text/html" title="OS X 下推荐的一些命令行工具" />
-    <published>2015-04-21T10:31:14+08:00</published>
-    <updated>2015-04-21T10:31:14+08:00</updated>
+    <published>2015-04-21T00:00:00+02:00</published>
+    <updated>2026-01-04T22:14:09+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具</id>
     <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具.md">&lt;p&gt;太常见的我就不记录了：&lt;/p&gt;
 &lt;ul&gt;
@@ -505,402 +566,10 @@ href=&quot;https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard&quot;&gt;reatt
   </entry>
   
   <entry>
-    <title type="html">Gentoo 上部署 ocserv</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2015-01-30-Gentoo_上部署_ocserv.md" rel="alternate" type="text/html" title="Gentoo 上部署 ocserv" />
-    <published>2015-01-30T22:08:08+08:00</published>
-    <updated>2015-04-12T00:43:30+08:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2015-01-30-Gentoo_上部署_ocserv</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2015-01-30-Gentoo_上部署_ocserv.md">&lt;p&gt;终于忍受不了 iOS 上翻墙的蛋疼劲了，VPN
-一锁屏就断。和废掉完全没区别。所以，查查资料，我们来装 ocserv 吧。&lt;/p&gt;
-&lt;h2 id=&quot;安装-gnutls&quot;&gt;安装 GnuTLS&lt;/h2&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; emerge &lt;span class=&quot;at&quot;&gt;-av&lt;/span&gt; gnutls&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;安装-ocserv&quot;&gt;安装 ocserv&lt;/h2&gt;
-&lt;p&gt;这个教程一抓一大吧，而且问题似乎都不大。&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~&lt;/span&gt;
-&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;wget&lt;/span&gt; ftp://ftp.infradead.org/pub/ocserv/ocserv-0.10.2.tar.xz&lt;/span&gt;
-&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;tar&lt;/span&gt; xvf ocserv-0.10.2.tar.xz&lt;/span&gt;
-&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ocserv-0.10.2&lt;/span&gt;
-&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;./configure&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-6&quot;&gt;&lt;a href=&quot;#cb2-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;make&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-j2&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; make install&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;这样子就编译安装完成了。接下来配置 ocserv 。&lt;/p&gt;
-&lt;h2 id=&quot;配置-ocserv&quot;&gt;配置 ocserv&lt;/h2&gt;
-&lt;p&gt;先建证书：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; mkdir &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; /etc/ocserv/certificates&lt;/span&gt;
-&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; /etc/ocserv/certificates&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;创建 &lt;code&gt;ca.tmpl&lt;/code&gt; 模板，这里的 &lt;code&gt;cn&lt;/code&gt; 和
-&lt;code&gt;organization&lt;/code&gt; 可以随便写：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cn = &amp;quot;Your CA name&amp;quot;
-organization = &amp;quot;Your fancy name&amp;quot;
-serial = 1
-expiration_days = 3650
-ca
-signing_key
-cert_signing_key
-crl_signing_key&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;创建 &lt;code&gt;server.tmpl&lt;/code&gt; 模板，这里的 &lt;code&gt;cn&lt;/code&gt;
-必须对应最终提供服务的 hostname 或 IP ：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cn = &amp;quot;Your hostname or IP&amp;quot;
-organization = &amp;quot;Your fancy name&amp;quot;
-expiration_days = 3650
-signing_key
-encryption_key
-tls_www_server&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;然后来建证书：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb6&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb6-1&quot;&gt;&lt;a href=&quot;#cb6-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; certtool &lt;span class=&quot;at&quot;&gt;--generate-privkey&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--outfile&lt;/span&gt; ca-key.pem&lt;/span&gt;
-&lt;span id=&quot;cb6-2&quot;&gt;&lt;a href=&quot;#cb6-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; certtool &lt;span class=&quot;at&quot;&gt;--generate-privkey&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--outfile&lt;/span&gt; server-key.pem&lt;/span&gt;
-&lt;span id=&quot;cb6-3&quot;&gt;&lt;a href=&quot;#cb6-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; certtool &lt;span class=&quot;at&quot;&gt;--generate-self-signed&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--load-privkey&lt;/span&gt; ca-key.pem &lt;span class=&quot;at&quot;&gt;--template&lt;/span&gt; ca.tmpl &lt;span class=&quot;at&quot;&gt;--outfile&lt;/span&gt; ca-cert.pem&lt;/span&gt;
-&lt;span id=&quot;cb6-4&quot;&gt;&lt;a href=&quot;#cb6-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; certtool &lt;span class=&quot;at&quot;&gt;--generate-certificate&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--load-privkey&lt;/span&gt; server-key.pem &lt;span class=&quot;at&quot;&gt;--load-ca-certificate&lt;/span&gt; ca-cert.pem &lt;span class=&quot;at&quot;&gt;--load-ca-privkey&lt;/span&gt; ca-key.pem &lt;span class=&quot;at&quot;&gt;--template&lt;/span&gt; server.tmpl &lt;span class=&quot;at&quot;&gt;--outfile&lt;/span&gt; server-cert.pem&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;然后来改配置：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; cp ~/ocserv-0.10.2/doc/sample.config /etc/ocserv/ocserv.conf&lt;/span&gt;
-&lt;span id=&quot;cb7-2&quot;&gt;&lt;a href=&quot;#cb7-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; vim /etc/ocserv/ocserv.conf&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;文件内容：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb8&quot;&gt;&lt;pre
-class=&quot;sourceCode conf&quot;&gt;&lt;code class=&quot;sourceCode toml&quot;&gt;&lt;span id=&quot;cb8-1&quot;&gt;&lt;a href=&quot;#cb8-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 登陆方式，目前先用密码登录&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-2&quot;&gt;&lt;a href=&quot;#cb8-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;auth&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;plain[/etc/ocserv/ocpasswd]&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-3&quot;&gt;&lt;a href=&quot;#cb8-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 允许同时连接的客户端数量&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-4&quot;&gt;&lt;a href=&quot;#cb8-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;max-clients&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-5&quot;&gt;&lt;a href=&quot;#cb8-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 限制同一客户端的并行登陆数量&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-6&quot;&gt;&lt;a href=&quot;#cb8-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;max-same-clients&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-7&quot;&gt;&lt;a href=&quot;#cb8-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 服务监听的IP（服务器 IP ，可不设置）&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-8&quot;&gt;&lt;a href=&quot;#cb8-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;listen-host&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fl&quot;&gt;1.2&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;.3.4&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-9&quot;&gt;&lt;a href=&quot;#cb8-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 服务监听的 TCP/UDP 端口，这个自己看着办，客户端以 IP:PORT 的格式来连接&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-10&quot;&gt;&lt;a href=&quot;#cb8-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 如果改了的话两个端口最好不同，我在使用时发现如果端口相同的话，会导致请求被阻塞的情况&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-11&quot;&gt;&lt;a href=&quot;#cb8-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;tcp-port&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;9000&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-12&quot;&gt;&lt;a href=&quot;#cb8-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;udp-port&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;9001&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-13&quot;&gt;&lt;a href=&quot;#cb8-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-14&quot;&gt;&lt;a href=&quot;#cb8-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 自动优化 VPN 的网络性能&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-15&quot;&gt;&lt;a href=&quot;#cb8-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;try-mtu-discovery&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cn&quot;&gt;true&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-16&quot;&gt;&lt;a href=&quot;#cb8-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 服务器证书与密钥&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-17&quot;&gt;&lt;a href=&quot;#cb8-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;server-cert&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;ocserv&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;certificates&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;server-cert.pem&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-18&quot;&gt;&lt;a href=&quot;#cb8-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;server-key&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;ocserv&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;certificates&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;server-key.pem&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-19&quot;&gt;&lt;a href=&quot;#cb8-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 客户端连上 VPN 后使用的 DNS&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-20&quot;&gt;&lt;a href=&quot;#cb8-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;dns&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fl&quot;&gt;8.8&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;.8.8&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-21&quot;&gt;&lt;a href=&quot;#cb8-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 注释掉所有的 route ，让服务器成为 gateway&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-22&quot;&gt;&lt;a href=&quot;#cb8-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#route = 192.168.1.0/255.255.255.0&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-23&quot;&gt;&lt;a href=&quot;#cb8-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 启用 cisco 客户端兼容性支持&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-24&quot;&gt;&lt;a href=&quot;#cb8-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;cisco-client-compat&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cn&quot;&gt;true&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-25&quot;&gt;&lt;a href=&quot;#cb8-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 开着这个会报错：error: &amp;#39;isolate-workers&amp;#39; is set to true, but not compiled with seccomp or Linux namespaces support&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-26&quot;&gt;&lt;a href=&quot;#cb8-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 好像是内核不支持，反正自己看着办&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-27&quot;&gt;&lt;a href=&quot;#cb8-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;isolate-workers&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cn&quot;&gt;false&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;最后生成帐号密码文件：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo ocpasswd -c /etc/ocserv/ocpasswd username&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;其他配置&quot;&gt;其他配置&lt;/h2&gt;
-&lt;p&gt;以 &lt;a
-href=&quot;https://www.linode.com/docs/security/securing-your-server#creating-a-firewall&quot;&gt;Linode
-的配置&lt;/a&gt; 为例，新建或修改 &lt;code&gt;/etc/iptables.firewall.rules&lt;/code&gt;
-文件：&lt;/p&gt;
-&lt;pre class=&quot;iptables&quot;&gt;&lt;code&gt;# 如果是新建文件才需要这行
-*filter
-
-# 这里的端口填 ocserv 配置里的 tcp-port 和 udp-port
--A INPUT -p tcp -m state --state NEW --dport 9000 -j ACCEPT
--A INPUT -p udp -m state --state NEW --dport 9001 -j ACCEPT
-
-# 注释这行，允许转发
-# -A FORWARD -j DROP
-
-# 如果是新建文件才需要这行
-COMMIT
-
-
-
-#启用NAT
-*nat
--A POSTROUTING -j MASQUERADE
-COMMIT&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;完成之后导入新配置并检查配置正确：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; iptables-restore &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt; /etc/iptables.firewall.rules&lt;/span&gt;
-&lt;span id=&quot;cb11-2&quot;&gt;&lt;a href=&quot;#cb11-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; iptables &lt;span class=&quot;at&quot;&gt;-L&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-3&quot;&gt;&lt;a href=&quot;#cb11-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; iptables &lt;span class=&quot;at&quot;&gt;-t&lt;/span&gt; nat &lt;span class=&quot;at&quot;&gt;-L&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;接着打开 IPv4 的流量转发：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo vim /etc/sysctl.conf&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;启用此项：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;net.ipv4.ip_forward=1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;刷新配置：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo sysctl -p /etc/sysctl.conf&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;测试一下&quot;&gt;测试一下&lt;/h2&gt;
-&lt;pre&gt;&lt;code&gt;sudo ocserv -f -d 1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;如果运行成功，就下载一个 AnyConnect 客户端来测试一下。&lt;/p&gt;
-&lt;p&gt;如果证书是自己签发的，那么 iOS 客户端在连接前先到
-&lt;code&gt;Settings&lt;/code&gt; 标签页关闭 &lt;code&gt;Block Untrusted Servers&lt;/code&gt;
-。&lt;/p&gt;
-&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
-&lt;h3
-id=&quot;ocserv-error-while-loading-shared-libraries-libgnutlsso28-cannot-open-shared-object-file-no-such-file-or-directory&quot;&gt;ocserv:
-error while loading shared libraries: libgnutls.so.28: cannot open
-shared object file: No such file or directory&lt;/h3&gt;
-&lt;p&gt;启动 ocserv 的命令改一下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib ocserv -f -d 1&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;无法访问国内网站&quot;&gt;无法访问国内网站&lt;/h3&gt;
-&lt;p&gt;错误信息：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;ocserv[15995]: main: 客户端IP:1035: unexpected DTLS content type: 23; possibly a firewall disassociated a UDP session&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;给 &lt;code&gt;/etc/ocserv/ocserv.conf&lt;/code&gt; 加两个路由：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;route = 0.0.0.0/128.0.0.0
-route = 128.0.0.0/128.0.0.0&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;无法访问外网&quot;&gt;无法访问外网&lt;/h3&gt;
-&lt;p&gt;去设置一下 iptables ，我被这个坑两次了。&lt;/p&gt;
-&lt;h2 id=&quot;余话&quot;&gt;余话&lt;/h2&gt;
-&lt;p&gt;关于开机自动启动 ocserv ，开机自动载入 iptables
-配置，客户端证书自动连接，这些东西我就不在这里写了，可以看下面的参考文章。&lt;/p&gt;
-&lt;p&gt;我建了一个 Gist ：Gentoo 的 ocserv 启动脚本：&lt;a
-href=&quot;https://gist.github.com/bolasblack/9f53b048e46f538cf08d&quot;&gt;https://gist.github.com/bolasblack/9f53b048e46f538cf08d&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;记得把 &lt;code&gt;PIDFILE&lt;/code&gt; 的路径改成
-&lt;code&gt;/etc/ocserv/ocserv.conf&lt;/code&gt; 里配置的 &lt;code&gt;pid-file&lt;/code&gt;
-路径。&lt;/p&gt;
-&lt;p&gt;最后，祝 GFW 早日被终结。&lt;/p&gt;
-&lt;p&gt;参考文章：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://bitinn.net/11084/&quot;&gt;折腾笔记：架设 OpenConnect Server
-给 iPhone 提供更顺畅的网络生活&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://blog.ihipop.info/2014/07/4782.html&quot;&gt;Gentoo 编译安装
-Ocserv 上 Cisco AnyConnect VPN&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a
-href=&quot;http://www.bauer-power.net/2014/06/how-to-install-gnutls-3123-from-source.html&quot;&gt;HOW
-TO INSTALL GNUTLS 3.1.23 FROM SOURCE IN UBUNTU 14.04&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="科学上网" />
-    
-
-    
-    <category term="科学上网" />
-    
-    <category term="gentoo" />
-    
-    <category term="ocserv" />
-    
-    <category term="iOS" />
-    
-  </entry>
-  
-  <entry>
-    <title type="html">Gentoo 上安装 Jenkins 的若干个坑</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-09-04-Gentoo_上安装_Jenkins_的若干个坑.md" rel="alternate" type="text/html" title="Gentoo 上安装 Jenkins 的若干个坑" />
-    <published>2014-09-04T13:09:07+08:00</published>
-    <updated>2015-04-09T17:52:38+08:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-09-04-Gentoo_上安装_Jenkins_的若干个坑</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-09-04-Gentoo_上安装_Jenkins_的若干个坑.md">&lt;p&gt;嗯，在 Gentoo 上装了一下 Jenkins ，记录一下遇到的坑吧。&lt;/p&gt;
-&lt;h2 id=&quot;overlay&quot;&gt;Overlay&lt;/h2&gt;
-&lt;p&gt;&lt;del&gt;Gentoo 官方的 portage 和 gentoo-zh 里都是没有 Jenkins
-的，所以得自己去找一下 overlay 。我在 &lt;a
-href=&quot;http://gpo.zugaina.org/&quot;&gt;&lt;span&gt;http://gpo.zugaina.org/&lt;/span&gt;&lt;/a&gt;
-这个网站找到了相应的&lt;a href=&quot;http://gpo.zugaina.org/&quot;&gt;文件&lt;/a&gt;
-，然后由于下文中会提到的一些事情，所以对文件做了一些改动，push
-到了自己的仓库 &lt;a
-href=&quot;https://github.com/bolasblack/overlay&quot;&gt;bolasblack/overlay&lt;/a&gt;
-。版本是 1.577 ，官方最新是 1.578 ，不过看了一下 changelog
-似乎没啥太大的变化，就懒得写了。&lt;/del&gt;&lt;/p&gt;
-&lt;p&gt;Jenkins 现在已经进入到了官方的 portage 里了，可以使用
-&lt;code&gt;emerge -av jenkins-bin&lt;/code&gt; 来安装。&lt;/p&gt;
-&lt;h2 id=&quot;部署上的一些零碎&quot;&gt;部署上的一些零碎&lt;/h2&gt;
-&lt;p&gt;Gentoo 的 &lt;a
-href=&quot;http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&amp;amp;chap=4&quot;&gt;Init
-Scripts&lt;/a&gt; 配置文件一般都在 &lt;code&gt;/etc/conf.d/servicename&lt;/code&gt; 里面，
-Jenkins 也不例外，改监听的端口什么的都去那边改。&lt;/p&gt;
-&lt;p&gt;虽然过了一年半了， Nginx 的配置文件还是可以参考 Jenkins 的 Wiki
-的：&lt;a
-href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Running+Hudson+behind+Nginx&quot;&gt;&lt;span&gt;https://wiki.jenkins-ci.org/display/JENKINS/Running+Hudson+behind+Nginx&lt;/span&gt;&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;这里有一份简化了感觉好像还能用的配置文件，就是不知道什么时候会不会遇到坑
-&lt;a
-href=&quot;https://gist.github.com/bolasblack/578d9f086a93ab69bf3b#file-jenkins-conf-L5&quot;&gt;&lt;span&gt;https://gist.github.com/bolasblack/578d9f086a93ab69bf3b&lt;/span&gt;&lt;/a&gt;
-。&lt;/p&gt;
-&lt;h2 id=&quot;no-valid-crumb-was-included-in-the-request&quot;&gt;No valid crumb was
-included in the request&lt;/h2&gt;
-&lt;p&gt;如果在点击某些选项后页面上什么都没出来，JS 控制台提示某个 POST
-请求被响应 403 ，Status Text
-是标题的话，那就是你在全局安全设置里开了“防止跨站点请求伪造”，然后被
-Nginx/Apache 坑了。&lt;/p&gt;
-&lt;p&gt;Apache 我只知道要禁用 &lt;code&gt;ignore_invalid_headers&lt;/code&gt; 。Nginx
-的话要在 &lt;code&gt;server&lt;/code&gt; 块里添加一行
-&lt;code&gt;ignore_invalid_headers off;&lt;/code&gt; 来防止 Nginx 过滤掉 Jenkins
-为了防止 CSRF 发出的 &lt;code&gt;.crumb&lt;/code&gt; 或者 &lt;code&gt;Crumb&lt;/code&gt;
-请求头。&lt;/p&gt;
-&lt;p&gt;示例代码：&lt;a
-href=&quot;https://gist.github.com/bolasblack/578d9f086a93ab69bf3b#file-jenkins-conf-L5&quot;&gt;&lt;span&gt;https://gist.github.com/bolasblack/578d9f086a93ab69bf3b#file-jenkins-conf-L5&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;参考链接：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a
-href=&quot;http://www.myexception.cn/ruby-rails/1617396.html&quot;&gt;http://www.myexception.cn/ruby-rails/1617396.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a
-href=&quot;https://issues.jenkins-ci.org/browse/JENKINS-12875&quot;&gt;https://issues.jenkins-ci.org/browse/JENKINS-12875&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;git-commit-乱码&quot;&gt;Git commit 乱码&lt;/h2&gt;
-&lt;p&gt;具体的处理方法是在系统变量 &lt;code&gt;JAVA_TOOL_OPTIONS&lt;/code&gt;
-里设置默认编码，我们需要的就是 &lt;code&gt;-Dfile.encoding=UTF-8&lt;/code&gt; 。&lt;/p&gt;
-&lt;p&gt;参考链接：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a
-href=&quot;http://bbbush.livejournal.com/392149.html&quot;&gt;http://bbbush.livejournal.com/392149.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a
-href=&quot;http://www.tuicool.com/articles/f6J3I3&quot;&gt;http://www.tuicool.com/articles/f6J3I3&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;ssh-username-with-private-key&quot;&gt;SSH Username with private
-key&lt;/h2&gt;
-&lt;p&gt;这个 key Jenkins 是不会自动创建的，需要你手动执行
-&lt;code&gt;sudo -u jenkins ssh-keygen -t rsa&lt;/code&gt; 来新建。&lt;/p&gt;
-&lt;p&gt;由于官方的 conf.d 里把 &lt;code&gt;jenkins&lt;/code&gt; 的家目录默认设置在了
-&lt;code&gt;/var/lib/jenkins&lt;/code&gt; ，所以找 ssh 的 pub key
-的时候也要去那个目录下找。&lt;/p&gt;
-&lt;h2 id=&quot;it-appears-that-your-reverse-proxy-set-up-is-broken&quot;&gt;It appears
-that your reverse proxy set up is broken&lt;/h2&gt;
-&lt;p&gt;我也不知道怎么解决，反正用了我自己那个 nginx 配置文件以后就解决了&lt;/p&gt;
-&lt;p&gt;可能有帮助的链接（反正我没得到帮助）：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a
-href=&quot;http://www.phase2technology.com/blog/running-jenkins-behind-nginx/&quot;&gt;http://www.phase2technology.com/blog/running-jenkins-behind-nginx/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2
-id=&quot;设置启用安全后所有页面都需要-basic-http-authorization&quot;&gt;设置“启用安全”后所有页面都需要
-Basic HTTP Authorization&lt;/h2&gt;
-&lt;p&gt;尝试一下在 &lt;code&gt;/var/lib/jenkins/home/config.xml&lt;/code&gt; 文件保持
-&lt;code&gt;&amp;lt;useSecurity&amp;gt;&lt;/code&gt; 的情况下删除
-&lt;code&gt;&amp;lt;authorizationStrategy&amp;gt;&lt;/code&gt; 和
-&lt;code&gt;&amp;lt;securityRealm&amp;gt;&lt;/code&gt; ，然后重新激活“启用安全”。&lt;/p&gt;
-&lt;p&gt;参考链接：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a
-href=&quot;http://stackoverflow.com/questions/29530558/how-to-disable-basic-http-auth-of-jenkins&quot;&gt;http://stackoverflow.com/questions/29530558/how-to-disable-basic-http-auth-of-jenkins&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;如何设置-jenkins-监听的地址&quot;&gt;如何设置 Jenkins 监听的地址&lt;/h2&gt;
-&lt;p&gt;修改 &lt;code&gt;/etc/conf.d/jenkins&lt;/code&gt; 文件的
-&lt;code&gt;JENKINS_ARGS=&quot;--httpListenAddress=127.0.0.1&quot;&lt;/code&gt;
-来把监听地址设置为 &lt;code&gt;127.0.0.1&lt;/code&gt; 。&lt;/p&gt;
-&lt;p&gt;也可以通过命令
-&lt;code&gt;java -jar  /opt/jenkins/jenkins.war --help&lt;/code&gt;
-来获取其他配置参数。&lt;/p&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="gentoo" />
-    
-
-    
-    <category term="gentoo" />
-    
-  </entry>
-  
-  <entry>
-    <title type="html">Audio 标签的若干个坑</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑.md" rel="alternate" type="text/html" title="Audio 标签的若干个坑" />
-    <published>2014-08-22T14:51:58+08:00</published>
-    <updated>2014-08-22T14:51:58+08:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑.md">&lt;p&gt;这两天写了一点和 &lt;code&gt;Audio&lt;/code&gt;
-标签相关的代码，于是就被浏览器坑的昏天暗地，在这里做个笔记&lt;/p&gt;
-&lt;h2 id=&quot;状态码&quot;&gt;状态码&lt;/h2&gt;
-&lt;p&gt;Chrome, Safari, Firefox 实现的 &lt;code&gt;Audio&lt;/code&gt;
-标签是不支持对响应状态码为 &lt;code&gt;200&lt;/code&gt;
-的文件进行循环的，目前看起来这似乎已经变成了行业的潜规则似的。说是潜规则，是因为我没有在规范里找到任何与此有关的描述，我没有对
-IE 进行测试。这里也有人遇到了和我一样的问题：&lt;a
-href=&quot;http://stackoverflow.com/questions/8088364/html5-video-will-not-loop&quot;&gt;HTML5
-video will not loop&lt;/a&gt;。&lt;/p&gt;
-&lt;h2 id=&quot;audio-标签的-load-方法&quot;&gt;Audio 标签的 load 方法&lt;/h2&gt;
-&lt;p&gt;在 30/31 版本的 Firefox 中 &lt;code&gt;audio.load()&lt;/code&gt;
-方法是基本没什么作用的（我没有测试更低版本的）， 如果一个
-&lt;code&gt;Audio&lt;/code&gt; 标签 &lt;code&gt;preload&lt;/code&gt; 属性的值为
-&lt;code&gt;none&lt;/code&gt;
-，那么它不会自动地去加载这个音频文件，在其他浏览器中可以通过
-&lt;code&gt;audio.load()&lt;/code&gt;
-来触发下载音频文件的行为进而实现按需预加载的效果，但这在 Firefox
-下是无效的，只有调用 &lt;code&gt;audio.play()&lt;/code&gt; 时它才会遵循&lt;a
-href=&quot;http://www.w3.org/TR/html5/embedded-content-0.html#playing-the-media-resource&quot;&gt;规范&lt;/a&gt;触发下载资源的行为&lt;/p&gt;
-&lt;h2 id=&quot;循环播放的间隔&quot;&gt;循环播放的间隔&lt;/h2&gt;
-&lt;p&gt;不同浏览器实现的循环播放的间隔是不同的，测试代码：&lt;/p&gt;
-&lt;iframe width=&quot;100%&quot; height=&quot;300&quot; src=&quot;http://jsfiddle.net/kfpyk5qk/embedded/&quot; allowfullscreen=&quot;allowfullscreen&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;结果如下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Chrome - 1
-1161
-# Chrome - 2
-10215
-
-# Firefox - 1
-1264
-# Firefox - 2
-10280
-
-# 最令人发指的 Safari - 1
-2324
-# 最令人发指的 Safari - 2
-11330&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;目前没有找到比较好的办法来处理这个问题。&lt;/p&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="HTML5" />
-    
-
-    
-    <category term="HTML5" />
-    
-  </entry>
-  
-  <entry>
-    <title type="html">Socket.io 如何切换 Namespace 和 querystring</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md" rel="alternate" type="text/html" title="Socket.io 如何切换 Namespace 和 querystring" />
-    <published>2014-07-01T23:29:20+08:00</published>
-    <updated>2014-07-01T23:29:20+08:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md">&lt;p&gt;目前的 Socket.io
-的情况似乎是，当我发起过一次连接后，接下来的所有新连接的 namespace 和
-query 等内容都会使用第一次的配置，蛋疼无比。&lt;/p&gt;
-&lt;p&gt;看了下代码，然后又尝试了一些时间，找出了办法：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
-class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; socket &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; io&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;connect&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;/path&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; { &lt;span class=&quot;dt&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; { &lt;span class=&quot;dt&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;value&amp;quot;&lt;/span&gt; } })&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 当需要切换的时候&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;socket&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;close&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;socket&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;opts&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;...&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;co&quot;&gt;// 设置 querystring&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;socket&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;opts&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;/newpath&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;co&quot;&gt;// 切换 namespace&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;socket&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;open&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="JavaScript" />
-    
-
-    
-    <category term="JavaScript" />
-    
-  </entry>
-  
-  <entry>
     <title type="html">Gentoo 安装问题集</title>
     <link href="https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集.md" rel="alternate" type="text/html" title="Gentoo 安装问题集" />
-    <published>2013-04-15T08:31:01+08:00</published>
-    <updated>2014-05-09T17:48:53+08:00</updated>
+    <published>2013-04-15T00:00:00+02:00</published>
+    <updated>2026-01-04T22:14:09+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集</id>
     <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集.md">&lt;p&gt;虽说我一直在用 Archlinux
 ，但是对于一个没什么立场的人来说，“换个东西玩玩”的想法永远比“不折腾”要来的有诱惑力的多。&lt;/p&gt;
@@ -961,6 +630,163 @@ href=&quot;http://www.linuxsir.org/bbs/thread384902.html&quot;&gt;http://www.lin
     <category term="Gentoo" />
     
     <category term="安装" />
+    
+  </entry>
+  
+  <entry>
+    <title type="html">吐槽淘宝开放平台的API</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API.md" rel="alternate" type="text/html" title="吐槽淘宝开放平台的API" />
+    <published>2012-12-13T00:00:00+01:00</published>
+    <updated>2026-01-04T22:14:09+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API.md">&lt;p&gt;生平不知道第几次见到如此坑爹的 API ，全部都是国内公司出品。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://wiki.dev.renren.com/wiki/API&quot;&gt;人人
+&lt;span&gt;http://wiki.dev.renren.com/wiki/API&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://open.taobao.com/doc/api_list.htm?id=102&quot;&gt;淘宝
+&lt;span&gt;http://open.taobao.com/doc/api_list.htm?id=102&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;那种令人作呕的接口调用方式简直就是丧心病狂。&lt;/p&gt;
+&lt;p&gt;更加令人发指的是，淘宝文档中提供的 &lt;a
+href=&quot;http://api.taobao.com/apitools/apiTools.htm?catId=38&amp;amp;apiName=taobao.taobaoke.widget.items.convert&quot;&gt;Demo&lt;/a&gt;
+竟然无法使用，不论是 Python 的还是 Java 的。&lt;/p&gt;
+&lt;p&gt;如果你不允许使用 SDK ，麻烦你说明好吗亲？！！再加上灭绝人性的 sign
+的算法，如果最后的 sign
+需要将所有的字符转化为大写字母，麻烦你在文档中说明而不是只在&lt;a
+href=&quot;http://open.taobao.com/doc/detail.htm?id=988&quot;&gt; PHP
+代码&lt;/a&gt;中写着好吗，亲！！！&lt;/p&gt;
+&lt;p&gt;更加不用提那个莫名其妙的 &lt;code&gt;partner_id&lt;/code&gt;
+参数，如果不看别人写的文章和 JSSDK
+发起的请求，我是绝对不会知道还存在这么个东西。&lt;/p&gt;
+&lt;p&gt;请问这个是从哪里出现的？为什么前无古人后无来者？&lt;/p&gt;
+&lt;p&gt;再加上淘宝 JSSDK 的 Demo
+页面那种完全无法令人理解的界面和说明，我有理由相信这个一定是临时工干的对不对？&lt;/p&gt;
+&lt;p&gt;相关资料：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://my.oschina.net/ryanhoo/blog/86876&quot;&gt;淘宝 API 计算
+SIGN 参数（error code:25 Invalid Signature）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a
+href=&quot;https://github.com/laoqiu/sinaapp/blob/master/webapp/scripts/taobaoapi.py&quot;&gt;Github/laoqiu/sinaapp
+taobaoapi.py&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a
+href=&quot;https://github.com/bolasblack/PythonLib/blob/master/taobaoapi.py&quot;&gt;我针对
+taobao.taobaoke.widget.items.convert 这类 widget 接口，根据 taobaoapi.py
+修改而来的文件&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="吐槽" />
+    
+
+    
+    <category term="吐槽" />
+    
+    <category term="淘宝" />
+    
+    <category term="开放平台" />
+    
+    <category term="api" />
+    
+  </entry>
+  
+  <entry>
+    <title type="html">AngularJS 使用笔记</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md" rel="alternate" type="text/html" title="AngularJS 使用笔记" />
+    <published>2014-03-27T00:00:00+01:00</published>
+    <updated>2026-01-04T22:14:09+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md">&lt;p&gt;编写一个 &lt;code&gt;appEval&lt;/code&gt; 指令（类似早期版本的
+&lt;code&gt;ngInit&lt;/code&gt;
+）能够很好的实现“表现与逻辑分离”的思想，比如要渲染出三个内容规则的按钮，就可以这样：&lt;/p&gt;
+&lt;pre class=&quot;jade&quot;&gt;&lt;code&gt;p.input-object.text-right(data-app-eval=&amp;quot;view_avaliableSendDays = [&amp;#39;今天&amp;#39;, &amp;#39;明天&amp;#39;, &amp;#39;后天&amp;#39;]&amp;quot;)
+  button.button(
+    type=&amp;quot;button&amp;quot;
+    data-ng-repeat=“view_day in view_avaliableSendDays&amp;quot;
+    data-ng-class=&amp;quot;{&amp;#39;button-positive&amp;#39;: startDayOffset = $index}&amp;quot;
+    data-ng-click=&amp;quot;startDayOffset = $index&amp;quot;
+  ) {{view_day}}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;很显然， &lt;code&gt;view_avaliableSendDays&lt;/code&gt;
+是不适合在控制器里进行定义的，在模板里定义则显得比较合理&lt;/p&gt;
+&lt;p&gt;但是在模板里定义也会引起一些问题，比如在没有意识到的情况下控制器里的变量污染了视图里的变量名，或者正好相反&lt;/p&gt;
+&lt;p&gt;这种时候比较合适的做法就是给视图专有的变量名加上特殊的前缀，比如
+&lt;code&gt;view_&lt;/code&gt; 这样子&lt;/p&gt;
+&lt;p&gt;附 &lt;code&gt;appEval&lt;/code&gt; 的代码：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
+class=&quot;sourceCode coffeescript&quot;&gt;&lt;code class=&quot;sourceCode coffee&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;module&lt;span class=&quot;kw&quot;&gt;.&lt;/span&gt;directive&lt;span class=&quot;kw&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;#39;appEval&amp;#39;&lt;/span&gt;&lt;span class=&quot;kw&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;[&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    link&lt;span class=&quot;kw&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;($scope, $elem, attrs) -&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      $scope&lt;span class=&quot;kw&quot;&gt;.&lt;/span&gt;$eval attrs&lt;span class=&quot;kw&quot;&gt;.&lt;/span&gt;appEval&lt;/span&gt;
+&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;])&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr /&gt;
+&lt;p&gt;如果是在使用 &lt;code&gt;Jade&lt;/code&gt; 的话，那么本着 “控制器里的嵌套 Scope
+越少越好” 的原则，推荐使用迭代器来替换 &lt;code&gt;ngRepeat&lt;/code&gt; ：&lt;/p&gt;
+&lt;pre class=&quot;jade&quot;&gt;&lt;code&gt;p.input-object.text-right
+  each day, index in [&amp;#39;今天&amp;#39;, &amp;#39;明天&amp;#39;, &amp;#39;后天&amp;#39;]
+    button.button(
+      type=&amp;quot;button&amp;quot;
+      data-ng-class=&amp;quot;{&amp;#39;button-positive&amp;#39;: startDayOffset === #{index}}&amp;quot;
+      data-ng-click=&amp;quot;startDayOffset = #{index}&amp;quot;
+    )= day&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;不过即使如此， &lt;code&gt;appEval&lt;/code&gt;
+依旧是有用武之地的。比如说用来初始化某个控制器的变量：&lt;/p&gt;
+&lt;pre class=&quot;jade&quot;&gt;&lt;code&gt;p.input-object.text-right(data-app-eval=&amp;quot;startDayOffset = 0&amp;quot;)
+  each day, index in [&amp;#39;今天&amp;#39;, &amp;#39;明天&amp;#39;, &amp;#39;后天&amp;#39;]
+    button.button(
+      type=&amp;quot;button&amp;quot;
+      data-ng-class=&amp;quot;{&amp;#39;button-positive&amp;#39;: startDayOffset === #{index}}&amp;quot;
+      data-ng-click=&amp;quot;startDayOffset = #{index}&amp;quot;
+    )= day&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;因为 &lt;code&gt;offset&lt;/code&gt;
+的值是由视图控制的，如果在控制器里设置了某个变量的默认值，那么当视图中的候选值调整后，控制器的代码也需要进行相应的调整。&lt;/p&gt;
+&lt;p&gt;如果把初始化默认值的代码放在视图中，维护起来会更加的便捷，而且不容易漏改。&lt;/p&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="JavaScript" />
+    
+
+    
+    <category term="JavaScript" />
+    
+  </entry>
+  
+  <entry>
+    <title type="html">hello world</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world.md" rel="alternate" type="text/html" title="hello world" />
+    <published>2012-11-28T00:00:00+01:00</published>
+    <updated>2026-01-04T22:14:09+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world.md">&lt;p&gt;想了不少时间了，终于打算把博客搬到 Github 上，自己就写 Markdown
+吧，懒得上 Wordpress 那么麻烦的东西了。&lt;/p&gt;
+&lt;p&gt;之前的东西或多或少的会搬过来一些，大概不会太多，就弄点自己觉得有价值的就行了。&lt;/p&gt;
+&lt;p&gt;这算是第一篇内容，水一个&lt;/p&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="水" />
+    
+
+    
+    <category term="水" />
     
   </entry>
   
