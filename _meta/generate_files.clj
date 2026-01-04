@@ -4,7 +4,6 @@
   (:require [babashka.fs :as fs]
             [babashka.process :refer [shell sh]]
             [clojure.string :as str]
-            [clojure.java.io :as io]
             [selmer.parser :as selmer]
             [clj-yaml.core :as yaml]
             [cheshire.core :as json])
@@ -81,6 +80,13 @@
       (:out result)
       md-content)))
 
+(defn ensure-tags-vector [tags]
+  "Ensure tags is a vector of strings"
+  (cond
+    (nil? tags) []
+    (sequential? tags) (vec (map str tags))
+    :else [(str tags)]))
+
 (defn get-post-metadata [file-path]
   "Get post metadata without content (for JSON generation)"
   (let [settings (read-settings)
@@ -95,15 +101,15 @@
         title (or (:title meta)
                   (-> basename
                       (str/replace #"^\d{4}-\d{2}-\d{2}-" "")
-                      (str/replace "_" " ")))]
+                      (str/replace "_" " ")))
+        tags (ensure-tags-vector (:tags meta))]
     {:id basename
      :path filename
      :title title
      :date date-str
      :created-at (or (format-date (:created-at git-dates)) default-date)
      :updated-at (or (format-date (:updated-at git-dates)) default-date)
-     :category (first (:category meta))
-     :tags (or (:tags meta) [])
+     :tags tags
      :url (post-url filename)}))
 
 (defn get-post-with-content [file-path]
@@ -114,6 +120,7 @@
         html-content (markdown-to-html content)]
     (assoc metadata
            :content html-content
+           :category (first (:tags metadata)) ;; for feed compatibility
            :post-url (:url metadata)
            :id-url (post-url (:id metadata)))))
 
@@ -151,12 +158,37 @@
     "index.json"
     (str "page-" page-num ".json")))
 
+(defn make-meta [total-posts total-pages]
+  {:total-posts total-posts
+   :total-pages total-pages
+   :per-page posts-per-page
+   :generated-at (.format (ZonedDateTime/now) DateTimeFormatter/ISO_OFFSET_DATE_TIME)})
+
+(defn build-tags-map [posts]
+  "Build a map of tag -> [posts]"
+  (reduce (fn [acc post]
+            (reduce (fn [acc2 tag]
+                      (update acc2 tag (fnil conj []) post))
+                    acc
+                    (:tags post)))
+          {}
+          posts))
+
+(defn tag-to-filename [tag]
+  "Convert tag to safe filename"
+  (-> tag
+      (str/lower-case)
+      (str/replace #"[^a-z0-9\u4e00-\u9fff]+" "-")
+      (str/replace #"^-|-$" "")
+      (str ".json")))
+
 (defn generate-posts-json []
   "Generate paginated JSON files for posts"
   (let [posts (get-all-posts)
         total-posts (count posts)
         pages (paginate posts posts-per-page)
         total-pages (count pages)
+        meta-info (make-meta total-posts total-pages)
         data-dir (fs/file script-dir "data")]
     ;; Create data directory if not exists
     (fs/create-dirs data-dir)
@@ -165,23 +197,42 @@
       (let [page-num (inc page-idx)
             is-first (= page-num 1)
             is-last (= page-num total-pages)
-            page-data (cond-> {:pagination {:current-page page-num
-                                            :has-prev (not is-first)
-                                            :has-next (not is-last)
-                                            :prev-file (when (not is-first)
-                                                         (page-filename (dec page-num)))
-                                            :next-file (when (not is-last)
-                                                         (page-filename (inc page-num)))}
-                               :posts (vec page-posts)}
-                        is-first (assoc :meta {:total-posts total-posts
-                                               :total-pages total-pages
-                                               :per-page posts-per-page
-                                               :generated-at (.format (ZonedDateTime/now)
-                                                                      DateTimeFormatter/ISO_OFFSET_DATE_TIME)}))
+            page-data {:meta meta-info
+                       :pagination {:current-page page-num
+                                    :has-prev (not is-first)
+                                    :has-next (not is-last)
+                                    :prev-file (when (not is-first)
+                                                 (page-filename (dec page-num)))
+                                    :next-file (when (not is-last)
+                                                 (page-filename (inc page-num)))}
+                       :posts (vec page-posts)}
             filename (page-filename page-num)]
         (spit (fs/file data-dir filename)
               (json/generate-string page-data {:pretty true}))))
-    (println (str "Generated " total-pages " JSON files in data/ directory"))))
+    ;; Generate per-tag JSON files
+    (let [tags-dir (fs/file data-dir "tags")
+          tags-map (build-tags-map posts)
+          tag-count (count tags-map)]
+      (fs/create-dirs tags-dir)
+      ;; Generate individual tag files
+      (doseq [[tag tag-posts] tags-map]
+        (let [filename (tag-to-filename tag)
+              tag-data {:meta meta-info
+                        :tag tag
+                        :count (count tag-posts)
+                        :posts (vec tag-posts)}]
+          (spit (fs/file tags-dir filename)
+                (json/generate-string tag-data {:pretty true}))))
+      ;; Generate tags index (list of all tags with counts and filenames)
+      (let [tags-index (for [[tag tag-posts] (sort-by (comp - count second) tags-map)]
+                         {:tag tag
+                          :count (count tag-posts)
+                          :file (str "tags/" (tag-to-filename tag))})
+            index-data {:meta meta-info
+                        :tags (vec tags-index)}]
+        (spit (fs/file data-dir "tags.json")
+              (json/generate-string index-data {:pretty true})))
+      (println (str "Generated " total-pages " page files + " tag-count " tag files in data/ directory")))))
 
 (defn generate-feed []
   "Generate Atom feed XML"

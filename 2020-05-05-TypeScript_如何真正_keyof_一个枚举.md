@@ -1,6 +1,5 @@
 ---
 title: TypeScript 如何真正 keyof 一个枚举
-category: [TypeScript]
 tags: [TypeScript, 枚举]
 ---
 
@@ -8,7 +7,7 @@ tags: [TypeScript, 枚举]
 
 于是我简单写了一下跟他解释，顺手发上来：
 
-在 TypeScript 里，你在声明一个枚举的时候，其实声明了两个类型，一个是枚举容器的类型（是一个对象），一个是枚举成员的类型（是数字/字符串或者其他类型的子类型）。 
+在 TypeScript 里，你在声明一个枚举的时候，其实声明了两个类型，一个是枚举容器的类型（是一个对象），一个是枚举成员的类型（是数字/字符串或者其他类型的子类型）。
 
 TypeScript 的 `keyof` 操作符预设后面跟着的是类型，所以我们 `keyof Enum` 时，其实相当于是在 `keyof (作为 number 的子类型的 Enum)` ，也就是相当于 `keyof number` ，所以会得到 `number` 的属性和方法名。
 
@@ -16,4 +15,4 @@ TypeScript 的 `keyof` 操作符预设后面跟着的是类型，所以我们 `k
 
 相关资料：
 
-* [keyof Enum - microsoft/TypeScript#14106 - GitHub](https://github.com/microsoft/TypeScript/issues/14106)
+- [keyof Enum - microsoft/TypeScript#14106 - GitHub](https://github.com/microsoft/TypeScript/issues/14106)

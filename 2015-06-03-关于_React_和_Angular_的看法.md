@@ -1,7 +1,6 @@
 ---
-title: "关于 React 和 Angular 的看法"
-category: ["JavaScript"]
-tags: ["reactjs", "angularjs"]
+title: 关于 React 和 Angular 的看法
+tags: [JavaScript, reactjs, angularjs]
 ---
 
 我最近也用了一段时间的 reactjs ，所以我想有还是稍微有点资格来谈论 angularjs 和 reactjs 的。

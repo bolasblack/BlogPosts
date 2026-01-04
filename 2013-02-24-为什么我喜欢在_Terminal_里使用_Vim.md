@@ -1,3 +1,9 @@
+---
+title: 为什么我喜欢在 Terminal 里使用 Vim
+description: ""
+tags: [编辑器, Vim, Shell]
+---
+
 其实很简单，因为 Shell 好用~
 
 在 Terminal 打开 Vim ，然后 <kbd>Ctrl-z</kbd> 。

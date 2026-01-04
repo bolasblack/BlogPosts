@@ -1,7 +1,6 @@
 ---
-title: "Gentoo 上部署 ocserv"
-category: ["科学上网"]
-tags: ["gentoo", "ocserv", "iOS"]
+title: Gentoo 上部署 ocserv
+tags: [科学上网, gentoo, ocserv, iOS]
 ---
 
 终于忍受不了 iOS 上翻墙的蛋疼劲了，VPN 一锁屏就断。和废掉完全没区别。所以，查查资料，我们来装 ocserv 吧。
@@ -201,6 +200,6 @@ sudo iptables -t nat -L
 
 参考文章：
 
-* [折腾笔记：架设OpenConnect Server给iPhone提供更顺畅的网络生活](http://bitinn.net/11084/)
-* [Gentoo编译安装Ocserv上Cisco AnyConnect VPN](http://blog.ihipop.info/2014/07/4782.html)
-* [HOW TO INSTALL GNUTLS 3.1.23 FROM SOURCE IN UBUNTU 14.04](http://www.bauer-power.net/2014/06/how-to-install-gnutls-3123-from-source.html)
+- [折腾笔记：架设 OpenConnect Server 给 iPhone 提供更顺畅的网络生活](http://bitinn.net/11084/)
+- [Gentoo 编译安装 Ocserv 上 Cisco AnyConnect VPN](http://blog.ihipop.info/2014/07/4782.html)
+- [HOW TO INSTALL GNUTLS 3.1.23 FROM SOURCE IN UBUNTU 14.04](http://www.bauer-power.net/2014/06/how-to-install-gnutls-3123-from-source.html)

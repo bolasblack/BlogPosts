@@ -1,9 +1,7 @@
 ---
-layout: post
-title: "基本完成了 todoist 的 Cli 客户端"
+title: 基本完成了 todoist 的 Cli 客户端
 description: ""
-category: 代码
-tags: [python, todoist, GTD, cli]
+tags: [代码, python, todoist, GTD, cli]
 ---
 
 这个已经写了很久了，之前也自称写完过，不过当时写完后没怎么用，主要问题是发现想要添加一个新待办事项的时候还需要开一个终端依旧有些蛋疼
