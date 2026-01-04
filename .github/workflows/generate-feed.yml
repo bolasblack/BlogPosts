@@ -18,20 +18,21 @@ jobs:
           ref: master
           fetch-depth: 0
 
-      - name: Checkout posts from posts branch
+      - name: Checkout posts and scripts from posts branch
         run: |
           git fetch origin posts
-          git checkout origin/posts -- '*.md'
+          git checkout origin/posts -- '*.md' '_meta/'
 
       - name: Setup mise
         uses: jdx/mise-action@v2
-        with:
-          install: true
-          working_directory: _meta
+
+      - name: Install tools
+        working-directory: _meta
+        run: mise install
 
       - name: Generate feed.xml
         working-directory: _meta
-        run: bb generate_feed.clj
+        run: mise exec -- bb generate_feed.clj
 
       - name: Check for changes
         id: check-changes
