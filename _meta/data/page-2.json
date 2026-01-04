@@ -1,4 +1,10 @@
 {
+  "meta" : {
+    "total-posts" : 19,
+    "total-pages" : 2,
+    "per-page" : 10,
+    "generated-at" : "2026-01-04T22:10:14.994815+01:00"
+  },
   "pagination" : {
     "current-page" : 2,
     "has-prev" : true,
@@ -7,94 +13,85 @@
     "next-file" : null
   },
   "posts" : [ {
-    "path" : "2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md",
-    "updated-at" : "2014-05-09T17:48:53+08:00",
-    "category" : null,
-    "tags" : [ ],
-    "date" : "2013-02-24",
-    "title" : "为什么我喜欢在 Terminal 里使用 Vim",
     "id" : "2013-02-24-为什么我喜欢在_Terminal_里使用_Vim",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md",
-    "created-at" : "2013-02-24T15:25:03+08:00"
+    "path" : "2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md",
+    "title" : "为什么我喜欢在 Terminal 里使用 Vim",
+    "date" : "2013-02-24",
+    "created-at" : "2013-02-24T15:25:03+08:00",
+    "updated-at" : "2014-05-09T17:48:53+08:00",
+    "tags" : [ "编辑器", "Vim", "Shell" ],
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md"
   }, {
-    "path" : "2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md",
-    "updated-at" : "2014-05-09T11:59:45+08:00",
-    "category" : "JavaScript",
-    "tags" : [ "Array", "__proto__", "isArray", "构造器", "jQuery" ],
-    "date" : "2014-05-09",
-    "title" : "如何让一个非数组构造器骗过浏览器和框架",
     "id" : "2014-05-09-如何让一个非数组构造器骗过浏览器和框架",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md",
-    "created-at" : "2014-05-09T11:59:45+08:00"
+    "path" : "2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md",
+    "title" : "如何让一个非数组构造器骗过浏览器和框架",
+    "date" : "2014-05-09",
+    "created-at" : "2014-05-09T11:59:45+08:00",
+    "updated-at" : "2014-05-09T11:59:45+08:00",
+    "tags" : [ "JavaScript", "Array", "__proto__", "isArray", "构造器", "jQuery" ],
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md"
   }, {
-    "path" : "2014-03-27-AngularJS_使用笔记.md",
-    "updated-at" : "2014-03-27T11:46:50+08:00",
-    "category" : "JavaScript",
-    "tags" : [ ],
-    "date" : "2014-03-27",
-    "title" : "AngularJS 使用笔记",
     "id" : "2014-03-27-AngularJS_使用笔记",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md",
-    "created-at" : "2014-03-27T10:15:10+08:00"
+    "path" : "2014-03-27-AngularJS_使用笔记.md",
+    "title" : "AngularJS 使用笔记",
+    "date" : "2014-03-27",
+    "created-at" : "2014-03-27T10:15:10+08:00",
+    "updated-at" : "2014-03-27T11:46:50+08:00",
+    "tags" : [ "JavaScript" ],
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md"
   }, {
-    "path" : "2012-12-05-Vim_如何成为神器.md",
-    "updated-at" : "2013-02-12T23:37:30+08:00",
-    "category" : "编",
-    "tags" : [ "Vim", "神器" ],
-    "date" : "2012-12-05",
-    "title" : "Vim 如何成为神器",
     "id" : "2012-12-05-Vim_如何成为神器",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器.md",
-    "created-at" : "2013-02-12T23:37:30+08:00"
-  }, {
-    "path" : "2012-12-13-吐槽淘宝开放平台的_API.md",
+    "path" : "2012-12-05-Vim_如何成为神器.md",
+    "title" : "Vim 如何成为神器",
+    "date" : "2012-12-05",
+    "created-at" : "2013-02-12T23:37:30+08:00",
     "updated-at" : "2013-02-12T23:37:30+08:00",
-    "category" : "吐",
-    "tags" : [ "淘宝", "开放平台", "api", "吐槽" ],
-    "date" : "2012-12-13",
-    "title" : "吐槽淘宝开放平台的API",
+    "tags" : [ "编辑器", "Vim", "神器" ],
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器.md"
+  }, {
     "id" : "2012-12-13-吐槽淘宝开放平台的_API",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API.md",
-    "created-at" : "2013-02-12T23:37:30+08:00"
-  }, {
-    "path" : "2012-11-28-hello_world.md",
+    "path" : "2012-12-13-吐槽淘宝开放平台的_API.md",
+    "title" : "吐槽淘宝开放平台的API",
+    "date" : "2012-12-13",
+    "created-at" : "2013-02-12T23:37:30+08:00",
     "updated-at" : "2013-02-12T23:37:30+08:00",
-    "category" : "水",
-    "tags" : [ ],
-    "date" : "2012-11-28",
-    "title" : "hello world",
+    "tags" : [ "吐槽", "淘宝", "开放平台", "api" ],
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API.md"
+  }, {
     "id" : "2012-11-28-hello_world",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world.md",
-    "created-at" : "2013-02-12T23:37:30+08:00"
-  }, {
-    "path" : "2011-04-20-定制你的_zsh_命令提示符.md",
+    "path" : "2012-11-28-hello_world.md",
+    "title" : "hello world",
+    "date" : "2012-11-28",
+    "created-at" : "2013-02-12T23:37:30+08:00",
     "updated-at" : "2013-02-12T23:37:30+08:00",
-    "category" : "Linux",
-    "tags" : [ "zsh", "命令提示符" ],
-    "date" : "2011-04-20",
-    "title" : "定制你的 zsh 命令提示符",
+    "tags" : [ "水" ],
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world.md"
+  }, {
     "id" : "2011-04-20-定制你的_zsh_命令提示符",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2011-04-20-定制你的_zsh_命令提示符.md",
-    "created-at" : "2013-02-12T23:37:30+08:00"
-  }, {
-    "path" : "2012-12-30-release_todoistCli.md",
+    "path" : "2011-04-20-定制你的_zsh_命令提示符.md",
+    "title" : "定制你的 zsh 命令提示符",
+    "date" : "2011-04-20",
+    "created-at" : "2013-02-12T23:37:30+08:00",
     "updated-at" : "2013-02-12T23:37:30+08:00",
-    "category" : "代",
-    "tags" : [ "python", "todoist", "GTD", "cli" ],
-    "date" : "2012-12-30",
-    "title" : "基本完成了 todoist 的 Cli 客户端",
+    "tags" : [ "Linux", "zsh", "命令提示符" ],
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2011-04-20-定制你的_zsh_命令提示符.md"
+  }, {
     "id" : "2012-12-30-release_todoistCli",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-30-release_todoistCli.md",
-    "created-at" : "2013-02-12T23:37:30+08:00"
-  }, {
-    "path" : "2012-12-02-release_backbone.elements.md",
+    "path" : "2012-12-30-release_todoistCli.md",
+    "title" : "基本完成了 todoist 的 Cli 客户端",
+    "date" : "2012-12-30",
+    "created-at" : "2013-02-12T23:37:30+08:00",
     "updated-at" : "2013-02-12T23:37:30+08:00",
-    "category" : "代",
-    "tags" : [ "backbone", "coffeescript", "github" ],
-    "date" : "2012-12-02",
-    "title" : "正式的发布了一个小项目",
+    "tags" : [ "代码", "python", "todoist", "GTD", "cli" ],
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-30-release_todoistCli.md"
+  }, {
     "id" : "2012-12-02-release_backbone.elements",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-02-release_backbone.elements.md",
-    "created-at" : "2013-02-12T23:37:30+08:00"
+    "path" : "2012-12-02-release_backbone.elements.md",
+    "title" : "正式的发布了一个小项目",
+    "date" : "2012-12-02",
+    "created-at" : "2013-02-12T23:37:30+08:00",
+    "updated-at" : "2013-02-12T23:37:30+08:00",
+    "tags" : [ "代码", "backbone", "coffeescript", "github" ],
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-02-release_backbone.elements.md"
   } ]
 }

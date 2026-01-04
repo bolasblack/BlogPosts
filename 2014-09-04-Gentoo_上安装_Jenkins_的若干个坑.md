@@ -1,6 +1,6 @@
 ---
-title: "Gentoo 上安装 Jenkins 的若干个坑"
-category: ["gentoo"]
+title: Gentoo 上安装 Jenkins 的若干个坑
+tags: [gentoo]
 ---
 
 嗯，在 Gentoo 上装了一下 Jenkins ，记录一下遇到的坑吧。
@@ -29,8 +29,8 @@ Apache 我只知道要禁用 `ignore_invalid_headers` 。Nginx 的话要在 `ser
 
 参考链接：
 
-* http://www.myexception.cn/ruby-rails/1617396.html
-* https://issues.jenkins-ci.org/browse/JENKINS-12875
+- http://www.myexception.cn/ruby-rails/1617396.html
+- https://issues.jenkins-ci.org/browse/JENKINS-12875
 
 ## Git commit 乱码
 
@@ -38,8 +38,8 @@ Apache 我只知道要禁用 `ignore_invalid_headers` 。Nginx 的话要在 `ser
 
 参考链接：
 
-* http://bbbush.livejournal.com/392149.html
-* http://www.tuicool.com/articles/f6J3I3
+- http://bbbush.livejournal.com/392149.html
+- http://www.tuicool.com/articles/f6J3I3
 
 ## SSH Username with private key
 
@@ -53,7 +53,7 @@ Apache 我只知道要禁用 `ignore_invalid_headers` 。Nginx 的话要在 `ser
 
 可能有帮助的链接（反正我没得到帮助）：
 
-* http://www.phase2technology.com/blog/running-jenkins-behind-nginx/
+- http://www.phase2technology.com/blog/running-jenkins-behind-nginx/
 
 ## 设置“启用安全”后所有页面都需要 Basic HTTP Authorization
 
@@ -61,7 +61,7 @@ Apache 我只知道要禁用 `ignore_invalid_headers` 。Nginx 的话要在 `ser
 
 参考链接：
 
-* http://stackoverflow.com/questions/29530558/how-to-disable-basic-http-auth-of-jenkins
+- http://stackoverflow.com/questions/29530558/how-to-disable-basic-http-auth-of-jenkins
 
 ## 如何设置 Jenkins 监听的地址
 
