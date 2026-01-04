@@ -26,11 +26,12 @@ jobs:
       - name: Setup mise
         uses: jdx/mise-action@v2
         with:
+          install: true
           working_directory: _meta
 
       - name: Generate feed.xml
         working-directory: _meta
-        run: mise exec -- bb generate_feed.clj
+        run: bb generate_feed.clj
 
       - name: Check for changes
         id: check-changes
