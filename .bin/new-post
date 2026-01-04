@@ -1,30 +1,40 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bb
 
-if [ $# -eq 0 ]; then
-  echo "Post Name: "
-  read postName
-else
-  postName="$@"
-fi
+(ns new-post
+  (:require [babashka.fs :as fs]
+            [babashka.process :refer [shell sh]]
+            [clojure.string :as str])
+  (:import [java.time LocalDate]
+           [java.time.format DateTimeFormatter]))
 
-postName=$(echo "$postName" | sed -e 's/^[[:space:]]*//')
+(defn get-repo-root []
+  (let [result (sh "git" "rev-parse" "--show-toplevel")]
+    (when (zero? (:exit result))
+      (str/trim (:out result)))))
 
-if [ -z "$postName" ]; then
-  exit 1
-fi
+(defn prompt-for-name []
+  (print "Post Name: ")
+  (flush)
+  (read-line))
 
-cd "$(git rev-parse --show-toplevel)"
+(defn -main [& args]
+  (let [post-name (if (seq args)
+                    (str/join " " args)
+                    (prompt-for-name))
+        post-name (str/trim post-name)]
+    (when (str/blank? post-name)
+      (System/exit 1))
 
-fileName="$(date "+%Y-%m-%d")-${postName// /_}.md"
+    (let [repo-root (get-repo-root)
+          date-str (.format (LocalDate/now) (DateTimeFormatter/ofPattern "yyyy-MM-dd"))
+          file-name (str date-str "-" (str/replace post-name " " "_") ".md")
+          file-path (fs/file repo-root file-name)
+          content (str "---\n"
+                       "title: " post-name "\n"
+                       "category: []\n"
+                       "tags: []\n"
+                       "---\n\n")]
+      (spit file-path content)
+      (println (str "Created " file-name)))))
 
-echo "$(cat <<EOF
----
-title: $postName
-category: []
-tags: []
----
-
-EOF
-)" > "$fileName"
-
-echo "Created $fileName"
+(apply -main *command-line-args*)
