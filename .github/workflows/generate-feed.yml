@@ -31,9 +31,9 @@ jobs:
         working-directory: _meta
         run: mise install
 
-      - name: Generate feed.xml
+      - name: Generate feed.xml and posts JSON
         working-directory: _meta
-        run: mise exec -- bb generate_feed.clj
+        run: mise exec -- bb generate_files.clj
 
       - name: Check for changes
         id: check-changes
@@ -50,5 +50,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Update feed.xml from posts branch"
+          git commit -m "Update feed.xml and posts JSON from posts branch"
           git push origin master
