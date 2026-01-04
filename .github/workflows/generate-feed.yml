@@ -12,11 +12,17 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout posts branch
+      - name: Checkout master branch
         uses: actions/checkout@v4
         with:
-          ref: posts
+          ref: master
           fetch-depth: 0
+
+      - name: Sync files from posts branch
+        run: |
+          git fetch origin posts
+          git rm -rf .
+          git checkout origin/posts -- .
 
       - name: Setup mise
         uses: jdx/mise-action@v2
@@ -32,7 +38,7 @@ jobs:
       - name: Check for changes
         id: check-changes
         run: |
-          if git diff --quiet _meta/feed.xml; then
+          if git diff --quiet HEAD; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -45,4 +51,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "Update feed.xml from posts branch"
-          git push origin HEAD:master --force
+          git push origin master
