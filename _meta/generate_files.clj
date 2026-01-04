@@ -64,6 +64,15 @@
           zdt (.atStartOfDay local-date (ZoneId/systemDefault))]
       (.format zdt DateTimeFormatter/ISO_OFFSET_DATE_TIME))))
 
+(defn earlier-date [date1 date2]
+  "Return the earlier of two ISO date strings. If one is nil, return the other."
+  (cond
+    (nil? date1) date2
+    (nil? date2) date1
+    :else (let [zdt1 (ZonedDateTime/parse date1)
+                zdt2 (ZonedDateTime/parse date2)]
+            (if (.isBefore zdt1 zdt2) date1 date2))))
+
 (defn parse-frontmatter [content]
   (let [parts (str/split content #"(?m)^---\s*$" 3)]
     (if (and (>= (count parts) 3) (str/blank? (first parts)))
@@ -107,7 +116,7 @@
      :path filename
      :title title
      :date date-str
-     :created-at (or (format-date (:created-at git-dates)) default-date)
+     :created-at (earlier-date default-date (format-date (:created-at git-dates)))
      :updated-at (or (format-date (:updated-at git-dates)) default-date)
      :tags tags
      :url (post-url filename)}))
