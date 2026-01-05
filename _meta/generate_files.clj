@@ -2,7 +2,7 @@
 
 (ns generate-files
   (:require [babashka.fs :as fs]
-            [babashka.process :refer [shell sh]]
+            [babashka.process :refer [sh]]
             [clojure.string :as str]
             [selmer.parser :as selmer]
             [clj-yaml.core :as yaml]
@@ -16,19 +16,27 @@
     (System/getProperty "user.dir")))
 
 (def repo-dir (fs/parent script-dir))
-(def posts-per-page 10)
 
-(defn read-settings []
-  (let [settings (yaml/parse-string (slurp (fs/file script-dir "settings.yml")))]
-    {:extname (get settings :extname ".md")
-     :github-repo (get settings :github_repo)
-     :url (get settings :url)
-     :title (get settings :title)
-     :description (get settings :description "")
-     :lang (get settings :lang)
-     :author-name (get settings :author_name)
-     :author-email (get settings :author_email)
-     :author-uri (get settings :author_uri)}))
+;; Constants
+(def posts-per-page 10)
+(def index-filename "index.json")
+(def tags-index-filename "tags.json")
+(def tags-dir-name "tags")
+
+(def read-settings
+  "Read and cache settings from settings.yml"
+  (memoize
+   (fn []
+     (let [settings (yaml/parse-string (slurp (fs/file script-dir "settings.yml")))]
+       {:extname (get settings :extname ".md")
+        :github-repo (get settings :github_repo)
+        :url (get settings :url)
+        :title (get settings :title)
+        :description (get settings :description "")
+        :lang (get settings :lang)
+        :author-name (get settings :author_name)
+        :author-email (get settings :author_email)
+        :author-uri (get settings :author_uri)}))))
 
 (defn meta-url [path]
   (let [settings (read-settings)]
@@ -109,16 +117,16 @@
     (sequential? tags) (vec (map str tags))
     :else [(str tags)]))
 
-(defn get-post-metadata [file-path]
-  "Get post metadata without content (for JSON generation)"
+(defn build-post-metadata
+  "Build post metadata from file content (internal helper)"
+  [file-path file-content]
   (let [settings (read-settings)
         filename (fs/file-name file-path)
         extname (:extname settings)
         lang (parse-lang-from-filename filename extname)
         basename-with-lang (str/replace filename (re-pattern (str extname "$")) "")
         basename (remove-lang-suffix basename-with-lang lang)
-        content (slurp file-path)
-        {:keys [meta]} (parse-frontmatter content)
+        {:keys [meta content]} (parse-frontmatter file-content)
         git-dates (git-file-dates file-path)
         default-date (date-from-filename filename)
         date-str (parse-date-from-filename filename)
@@ -135,47 +143,45 @@
      :created-at (earlier-date default-date (format-date (:created-at git-dates)))
      :updated-at (or (format-date (:updated-at git-dates)) default-date)
      :tags tags
-     :url (post-url filename)}))
+     :url (post-url filename)
+     :raw-content content}))
+
+(defn get-post-metadata [file-path]
+  "Get post metadata without content (for JSON generation)"
+  (let [metadata (build-post-metadata file-path (slurp file-path))]
+    (dissoc metadata :raw-content)))
 
 (defn get-post-with-content [file-path]
   "Get post with HTML content (for feed generation)"
-  (let [metadata (get-post-metadata file-path)
-        content (slurp file-path)
-        {:keys [content]} (parse-frontmatter content)
-        html-content (markdown-to-html content)]
-    (assoc metadata
-           :content html-content
-           :category (first (:tags metadata)) ;; for feed compatibility
-           :post-url (:url metadata)
-           :id-url (post-url (:id metadata)))))
+  (let [metadata (build-post-metadata file-path (slurp file-path))
+        html-content (markdown-to-html (:raw-content metadata))]
+    (-> metadata
+        (dissoc :raw-content)
+        (assoc :content html-content
+               :category (first (:tags metadata))
+               :post-url (:url metadata)
+               :id-url (post-url (:id metadata))))))
+
+(defn get-post-files []
+  "Get all post file paths matching the date pattern"
+  (let [extname (:extname (read-settings))]
+    (->> (fs/glob repo-dir (str "*" extname))
+         (map str)
+         (filter #(re-find #"^\d{4}-\d{2}-\d{2}-" (fs/file-name %))))))
 
 (defn get-all-posts []
   "Get all posts sorted by updated-at (newest first)"
-  (let [settings (read-settings)
-        extname (:extname settings)
-        md-files (->> (fs/glob repo-dir (str "*" extname))
-                      (map str)
-                      (filter #(re-find #"^\d{4}-\d{2}-\d{2}-" (fs/file-name %))))]
-    (->> md-files
-         (map get-post-metadata)
-         (sort-by :updated-at)
-         reverse)))
+  (->> (get-post-files)
+       (map get-post-metadata)
+       (sort-by :updated-at)
+       reverse))
 
 (defn get-posts-for-feed []
   "Get all posts with content for feed generation"
-  (let [settings (read-settings)
-        extname (:extname settings)
-        md-files (->> (fs/glob repo-dir (str "*" extname))
-                      (map str)
-                      (filter #(re-find #"^\d{4}-\d{2}-\d{2}-" (fs/file-name %))))]
-    (->> md-files
-         (map get-post-with-content)
-         (sort-by :updated-at)
-         reverse)))
-
-(defn group-posts-by-lang [posts]
-  "Group posts by language. nil lang means default language."
-  (group-by :lang posts))
+  (->> (get-post-files)
+       (map get-post-with-content)
+       (sort-by :updated-at)
+       reverse))
 
 (defn paginate [items per-page]
   "Paginate items into groups"
@@ -183,7 +189,7 @@
 
 (defn page-filename [page-num]
   (if (= page-num 1)
-    "index.json"
+    index-filename
     (str "page-" page-num ".json")))
 
 (defn make-meta [total-posts total-pages]
@@ -230,7 +236,7 @@
              :path (:path p)
              :url (:url p)
              :tags (:tags p)
-             :data-file (str (data-dir-name (:lang p)) "/index.json")})
+             :data-file (str (data-dir-name (:lang p)) "/" index-filename)})
           other-langs)))
 
 (defn add-translations-to-posts [posts translations-map]
@@ -242,6 +248,46 @@
               post)))
         posts))
 
+(defn generate-page-files [data-dir pages meta-info]
+  "Generate paginated JSON files for posts"
+  (let [total-pages (count pages)]
+    (doseq [[page-idx page-posts] (map-indexed vector pages)]
+      (let [page-num (inc page-idx)
+            is-first (= page-num 1)
+            is-last (= page-num total-pages)
+            page-data {:meta meta-info
+                       :pagination {:current-page page-num
+                                    :has-prev (not is-first)
+                                    :has-next (not is-last)
+                                    :prev-file (when-not is-first
+                                                 (page-filename (dec page-num)))
+                                    :next-file (when-not is-last
+                                                 (page-filename (inc page-num)))}
+                       :posts (vec page-posts)}]
+        (spit (fs/file data-dir (page-filename page-num))
+              (json/generate-string page-data {:pretty true}))))))
+
+(defn generate-tag-files [tags-dir tags-map meta-info]
+  "Generate individual tag JSON files"
+  (doseq [[tag tag-posts] tags-map]
+    (let [tag-data {:meta meta-info
+                    :tag tag
+                    :count (count tag-posts)
+                    :posts (vec tag-posts)}]
+      (spit (fs/file tags-dir (tag-to-filename tag))
+            (json/generate-string tag-data {:pretty true})))))
+
+(defn generate-tags-index [data-dir tags-map meta-info]
+  "Generate tags index file listing all tags"
+  (let [tags-index (for [[tag tag-posts] (sort-by (comp - count second) tags-map)]
+                     {:tag tag
+                      :count (count tag-posts)
+                      :file (str tags-dir-name "/" (tag-to-filename tag))})
+        index-data {:meta meta-info
+                    :tags (vec tags-index)}]
+    (spit (fs/file data-dir tags-index-filename)
+          (json/generate-string index-data {:pretty true}))))
+
 (defn generate-posts-json-for-lang [all-posts translations-map lang]
   "Generate paginated JSON files for posts of a specific language"
   (let [posts-raw (filter #(= (:lang %) lang) all-posts)
@@ -252,49 +298,14 @@
         meta-info (make-meta total-posts total-pages)
         data-dir (fs/file script-dir (data-dir-name lang))]
     (when (pos? total-posts)
-      ;; Create data directory if not exists
       (fs/create-dirs data-dir)
-      ;; Generate each page
-      (doseq [[page-idx page-posts] (map-indexed vector pages)]
-        (let [page-num (inc page-idx)
-              is-first (= page-num 1)
-              is-last (= page-num total-pages)
-              page-data {:meta meta-info
-                         :pagination {:current-page page-num
-                                      :has-prev (not is-first)
-                                      :has-next (not is-last)
-                                      :prev-file (when (not is-first)
-                                                   (page-filename (dec page-num)))
-                                      :next-file (when (not is-last)
-                                                   (page-filename (inc page-num)))}
-                         :posts (vec page-posts)}
-              filename (page-filename page-num)]
-          (spit (fs/file data-dir filename)
-                (json/generate-string page-data {:pretty true}))))
-      ;; Generate per-tag JSON files
-      (let [tags-dir (fs/file data-dir "tags")
-            tags-map (build-tags-map posts)
-            tag-count (count tags-map)]
+      (generate-page-files data-dir pages meta-info)
+      (let [tags-dir (fs/file data-dir tags-dir-name)
+            tags-map (build-tags-map posts)]
         (fs/create-dirs tags-dir)
-        ;; Generate individual tag files
-        (doseq [[tag tag-posts] tags-map]
-          (let [filename (tag-to-filename tag)
-                tag-data {:meta meta-info
-                          :tag tag
-                          :count (count tag-posts)
-                          :posts (vec tag-posts)}]
-            (spit (fs/file tags-dir filename)
-                  (json/generate-string tag-data {:pretty true}))))
-        ;; Generate tags index (list of all tags with counts and filenames)
-        (let [tags-index (for [[tag tag-posts] (sort-by (comp - count second) tags-map)]
-                           {:tag tag
-                            :count (count tag-posts)
-                            :file (str "tags/" (tag-to-filename tag))})
-              index-data {:meta meta-info
-                          :tags (vec tags-index)}]
-          (spit (fs/file data-dir "tags.json")
-                (json/generate-string index-data {:pretty true})))
-        {:lang lang :pages total-pages :tags tag-count}))))
+        (generate-tag-files tags-dir tags-map meta-info)
+        (generate-tags-index data-dir tags-map meta-info)
+        {:lang lang :pages total-pages :tags (count tags-map)}))))
 
 (defn generate-posts-json []
   "Generate paginated JSON files for posts, grouped by language"
