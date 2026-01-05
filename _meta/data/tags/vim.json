@@ -1,29 +1,31 @@
 {
   "meta" : {
-    "total-posts" : 21,
+    "total-posts" : 22,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-04T21:38:32.956845111Z"
+    "generated-at" : "2026-01-05T10:05:48.672441539Z"
   },
   "tag" : "Vim",
   "count" : 2,
   "posts" : [ {
-    "id" : "2013-02-24-为什么我喜欢在_Terminal_里使用_Vim",
     "path" : "2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md",
-    "title" : "为什么我喜欢在 Terminal 里使用 Vim",
-    "date" : "2013-02-24",
-    "created-at" : "2013-02-24T00:00:00Z",
     "updated-at" : "2026-01-04T21:17:00Z",
     "tags" : [ "编辑器", "Vim", "Shell" ],
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md"
+    "date" : "2013-02-24",
+    "title" : "为什么我喜欢在 Terminal 里使用 Vim",
+    "lang" : null,
+    "id" : "2013-02-24-为什么我喜欢在_Terminal_里使用_Vim",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md",
+    "created-at" : "2013-02-24T00:00:00Z"
   }, {
-    "id" : "2012-12-05-Vim_如何成为神器",
     "path" : "2012-12-05-Vim_如何成为神器.md",
-    "title" : "Vim 如何成为神器",
-    "date" : "2012-12-05",
-    "created-at" : "2012-12-05T00:00:00Z",
     "updated-at" : "2026-01-04T21:17:00Z",
     "tags" : [ "编辑器", "Vim", "神器" ],
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器.md"
+    "date" : "2012-12-05",
+    "title" : "Vim 如何成为神器",
+    "lang" : null,
+    "id" : "2012-12-05-Vim_如何成为神器",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器.md",
+    "created-at" : "2012-12-05T00:00:00Z"
   } ]
 }

@@ -1,9 +1,9 @@
 {
   "meta" : {
-    "total-posts" : 21,
+    "total-posts" : 22,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-04T21:38:32.956845111Z"
+    "generated-at" : "2026-01-05T10:05:48.672441539Z"
   },
   "tags" : [ {
     "tag" : "JavaScript",
@@ -46,6 +46,10 @@
     "count" : 1,
     "file" : "tags/github.json"
   }, {
+    "tag" : "Elm",
+    "count" : 1,
+    "file" : "tags/elm.json"
+  }, {
     "tag" : "命令提示符",
     "count" : 1,
     "file" : "tags/命令提示符.json"
@@ -62,6 +66,10 @@
     "count" : 1,
     "file" : "tags/isarray.json"
   }, {
+    "tag" : "架构",
+    "count" : 1,
+    "file" : "tags/架构.json"
+  }, {
     "tag" : "ocserv",
     "count" : 1,
     "file" : "tags/ocserv.json"
@@ -73,6 +81,10 @@
     "tag" : "reactjs",
     "count" : 1,
     "file" : "tags/reactjs.json"
+  }, {
+    "tag" : "Redux",
+    "count" : 1,
+    "file" : "tags/redux.json"
   }, {
     "tag" : "开放平台",
     "count" : 1,
@@ -109,6 +121,10 @@
     "tag" : "shell",
     "count" : 1,
     "file" : "tags/shell.json"
+  }, {
+    "tag" : "React",
+    "count" : 1,
+    "file" : "tags/react.json"
   }, {
     "tag" : "LLM",
     "count" : 1,
