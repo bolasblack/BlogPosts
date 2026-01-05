@@ -3,18 +3,19 @@
     "total-posts" : 21,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-04T22:28:22.192347+01:00"
+    "generated-at" : "2026-01-05T10:56:23.650615+01:00"
   },
   "tag" : "angularjs",
   "count" : 1,
   "posts" : [ {
-    "id" : "2015-06-03-关于_React_和_Angular_的看法",
     "path" : "2015-06-03-关于_React_和_Angular_的看法.md",
-    "title" : "关于 React 和 Angular 的看法",
-    "date" : "2015-06-03",
-    "created-at" : "2015-06-03T00:00:00+02:00",
     "updated-at" : "2026-01-04T22:14:09+01:00",
     "tags" : [ "JavaScript", "reactjs", "angularjs" ],
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2015-06-03-关于_React_和_Angular_的看法.md"
+    "date" : "2015-06-03",
+    "title" : "关于 React 和 Angular 的看法",
+    "lang" : null,
+    "id" : "2015-06-03-关于_React_和_Angular_的看法",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2015-06-03-关于_React_和_Angular_的看法.md",
+    "created-at" : "2015-06-03T00:00:00+02:00"
   } ]
 }

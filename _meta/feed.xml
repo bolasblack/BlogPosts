@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xml" href="https://github.com/bolasblack/BlogPosts/blob/master/_meta/feed.xslt.xml"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh">
   <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
-  <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh-CN" />
+  <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh" />
   <updated>2026-01-04T22:14:09+01:00</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
   <title type="html">c4605&#39;s blog</title>
