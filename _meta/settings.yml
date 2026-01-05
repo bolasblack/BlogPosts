@@ -1,7 +1,8 @@
 extname: .md
 github_repo: bolasblack/BlogPosts
 
-url: http://plafer.info/
+url: https://plafer.info/
+article_url: "#/goto/articles/{mdUrl}"
 title: "c4605's blog"
 description: ""
 lang: "zh"

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xml" href="https://github.com/bolasblack/BlogPosts/blob/master/_meta/feed.xslt.xml"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh">
-  <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
-  <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh" />
+  <link href="https://plafer.info/" rel="self" type="application/atom+xml" />
+  <link href="https://plafer.info/" rel="alternate" type="text/html" hreflang="zh" />
   <updated>2026-01-05T10:05:48Z</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
   <title type="html">c4605&#39;s blog</title>
@@ -16,11 +16,11 @@
   
   <entry>
     <title type="html">比特币钱包生态有多土狗：从开始到放弃</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md" rel="alternate" type="text/html" title="比特币钱包生态有多土狗：从开始到放弃" />
+    <link href="https://plafer.info/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md" rel="alternate" type="text/html" title="比特币钱包生态有多土狗：从开始到放弃" />
     <published>2026-01-03T00:00:00Z</published>
     <updated>2026-01-05T10:05:48Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md">&lt;p&gt;如果你正在开发一个比特币
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md">&lt;p&gt;如果你正在开发一个比特币
 dApp，你可能已经发现了，比特币社区的生态实在是太土狗了。&lt;/p&gt;
 &lt;p&gt;最简单的例子就是比特币钱包，大家似乎热衷于给其他人制定标准，但大家似乎又不热衷于实现这个标准。&lt;/p&gt;
 &lt;h2 id=&quot;标准什么标准&quot;&gt;&quot;标准&quot;？什么标准？&lt;/h2&gt;
@@ -158,11 +158,11 @@ href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;GitHu
   
   <entry>
     <title type="html">我搞了一个 Elm 风格的 useEffectReducer hook</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react.md" rel="alternate" type="text/html" title="我搞了一个 Elm 风格的 useEffectReducer hook" />
+    <link href="https://plafer.info/#/goto/articles/2025-11-12-elm-style-useeffectreducer-hook-for-react.md" rel="alternate" type="text/html" title="我搞了一个 Elm 风格的 useEffectReducer hook" />
     <published>2025-11-12T00:00:00Z</published>
     <updated>2026-01-05T10:05:48Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2025-11-12-elm-style-useeffectreducer-hook-for-react.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a
 href=&quot;https://github.com/bolasblack/react-components/tree/develop/packages/useEffectReducer&quot;&gt;bolasblack/react-components/tree/develop/packages/useEffectReducer&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;什么是-elm-风格&quot;&gt;什么是 &quot;Elm 风格&quot;？&lt;/h2&gt;
 &lt;p&gt;Elm 有一个 &lt;strong&gt;Model-View-Update&lt;/strong&gt;
@@ -287,11 +287,11 @@ Not Need an Effect&lt;/a&gt;&quot;&lt;/li&gt;
   
   <entry>
     <title type="html">我把我的配置共享仓库转移到了 LLM-oriented 模式</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.md" rel="alternate" type="text/html" title="我把我的配置共享仓库转移到了 LLM-oriented 模式" />
+    <link href="https://plafer.info/#/goto/articles/2026-01-02-moved-to-llm-oriented.md" rel="alternate" type="text/html" title="我把我的配置共享仓库转移到了 LLM-oriented 模式" />
     <published>2026-01-02T00:00:00Z</published>
     <updated>2026-01-05T10:05:48Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.md">&lt;h2 id=&quot;啥是-llm-oriented-的配置共享方案&quot;&gt;啥是 &quot;LLM-oriented
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2026-01-02-moved-to-llm-oriented.md">&lt;h2 id=&quot;啥是-llm-oriented-的配置共享方案&quot;&gt;啥是 &quot;LLM-oriented
 的配置共享方案&quot;&lt;/h2&gt;
 &lt;p&gt;简单来说，就是让配置共享项目提供 &lt;a
 href=&quot;https://llmstxt.org/&quot;&gt;llms.txt&lt;/a&gt; ，使用方依此让 LLM
@@ -454,11 +454,11 @@ diff -&amp;gt; 搞明白啥变了 -&amp;gt; 手动修改 -&amp;gt; 测试验证&
   
   <entry>
     <title type="html">如何让一个非数组构造器骗过浏览器和框架</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md" rel="alternate" type="text/html" title="如何让一个非数组构造器骗过浏览器和框架" />
+    <link href="https://plafer.info/#/goto/articles/2014-05-09-%E5%A6%82%E4%BD%95%E8%AE%A9%E4%B8%80%E4%B8%AA%E9%9D%9E%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%99%A8%E9%AA%97%E8%BF%87%E6%B5%8F%E8%A7%88%E5%99%A8%E5%92%8C%E6%A1%86%E6%9E%B6.md" rel="alternate" type="text/html" title="如何让一个非数组构造器骗过浏览器和框架" />
     <published>2014-05-09T00:00:00Z</published>
     <updated>2026-01-04T21:17:00Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md">&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2014-05-09-%E5%A6%82%E4%BD%95%E8%AE%A9%E4%B8%80%E4%B8%AA%E9%9D%9E%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%99%A8%E9%AA%97%E8%BF%87%E6%B5%8F%E8%A7%88%E5%99%A8%E5%92%8C%E6%A1%86%E6%9E%B6.md">&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
 class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; eve &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
 &lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;setArray&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;makeArray&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;arguments&lt;/span&gt;))&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
@@ -651,11 +651,11 @@ href=&quot;http://people.mozilla.org/~jorendorff/es6-draft.html&quot;&gt;http://
   
   <entry>
     <title type="html">hello world</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world.md" rel="alternate" type="text/html" title="hello world" />
+    <link href="https://plafer.info/#/goto/articles/2012-11-28-hello_world.md" rel="alternate" type="text/html" title="hello world" />
     <published>2012-11-28T00:00:00Z</published>
     <updated>2026-01-04T21:17:00Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world.md">&lt;p&gt;想了不少时间了，终于打算把博客搬到 Github 上，自己就写 Markdown
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2012-11-28-hello_world.md">&lt;p&gt;想了不少时间了，终于打算把博客搬到 Github 上，自己就写 Markdown
 吧，懒得上 Wordpress 那么麻烦的东西了。&lt;/p&gt;
 &lt;p&gt;之前的东西或多或少的会搬过来一些，大概不会太多，就弄点自己觉得有价值的就行了。&lt;/p&gt;
 &lt;p&gt;这算是第一篇内容，水一个&lt;/p&gt;
@@ -678,11 +678,11 @@ href=&quot;http://people.mozilla.org/~jorendorff/es6-draft.html&quot;&gt;http://
   
   <entry>
     <title type="html">正式的发布了一个小项目</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-02-release_backbone.elements.md" rel="alternate" type="text/html" title="正式的发布了一个小项目" />
+    <link href="https://plafer.info/#/goto/articles/2012-12-02-release_backbone.elements.md" rel="alternate" type="text/html" title="正式的发布了一个小项目" />
     <published>2012-12-02T00:00:00Z</published>
     <updated>2026-01-04T21:17:00Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2012-12-02-release_backbone.elements</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-02-release_backbone.elements.md">&lt;p&gt;算是正式的吧，算是发布吧。搞了一个下午，修了最近发现的一个
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2012-12-02-release_backbone.elements.md">&lt;p&gt;算是正式的吧，算是发布吧。搞了一个下午，修了最近发现的一个
 BUG，写了半天的文档，终于算是完了。&lt;/p&gt;
 &lt;p&gt;项目主要是用于扩展 &lt;a href=&quot;backbonejs.org&quot;&gt;backbone&lt;/a&gt;
 的视图（View）层，给他加个 elements 配置，然后能在 &lt;code&gt;this&lt;/code&gt;
@@ -716,11 +716,11 @@ href=&quot;http://bolasblack.github.com/backbone.elements/&quot;&gt;backbone.ele
   
   <entry>
     <title type="html">为什么我喜欢在 Terminal 里使用 Vim</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md" rel="alternate" type="text/html" title="为什么我喜欢在 Terminal 里使用 Vim" />
+    <link href="https://plafer.info/#/goto/articles/2013-02-24-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%96%9C%E6%AC%A2%E5%9C%A8_Terminal_%E9%87%8C%E4%BD%BF%E7%94%A8_Vim.md" rel="alternate" type="text/html" title="为什么我喜欢在 Terminal 里使用 Vim" />
     <published>2013-02-24T00:00:00Z</published>
     <updated>2026-01-04T21:17:00Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md">&lt;p&gt;其实很简单，因为 Shell 好用~&lt;/p&gt;
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2013-02-24-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%96%9C%E6%AC%A2%E5%9C%A8_Terminal_%E9%87%8C%E4%BD%BF%E7%94%A8_Vim.md">&lt;p&gt;其实很简单，因为 Shell 好用~&lt;/p&gt;
 &lt;p&gt;在 Terminal 打开 Vim ，然后 &lt;kbd&gt;Ctrl-z&lt;/kbd&gt; 。&lt;/p&gt;
 &lt;p&gt;“biu!”，不见了。&lt;/p&gt;
 &lt;p&gt;再开个 node ，然后 &lt;kbd&gt;Ctrl-z&lt;/kbd&gt; 。&lt;/p&gt;
@@ -755,11 +755,11 @@ href=&quot;http://bolasblack.github.com/backbone.elements/&quot;&gt;backbone.ele
   
   <entry>
     <title type="html">吐槽淘宝开放平台的API</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API.md" rel="alternate" type="text/html" title="吐槽淘宝开放平台的API" />
+    <link href="https://plafer.info/#/goto/articles/2012-12-13-%E5%90%90%E6%A7%BD%E6%B7%98%E5%AE%9D%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E7%9A%84_API.md" rel="alternate" type="text/html" title="吐槽淘宝开放平台的API" />
     <published>2012-12-13T00:00:00Z</published>
     <updated>2026-01-04T21:17:00Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API.md">&lt;p&gt;生平不知道第几次见到如此坑爹的 API ，全部都是国内公司出品。&lt;/p&gt;
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2012-12-13-%E5%90%90%E6%A7%BD%E6%B7%98%E5%AE%9D%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E7%9A%84_API.md">&lt;p&gt;生平不知道第几次见到如此坑爹的 API ，全部都是国内公司出品。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://wiki.dev.renren.com/wiki/API&quot;&gt;人人
 &lt;span&gt;http://wiki.dev.renren.com/wiki/API&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
@@ -818,11 +818,11 @@ taobao.taobaoke.widget.items.convert 这类 widget 接口，根据 taobaoapi.py
   
   <entry>
     <title type="html">定制你的 zsh 命令提示符</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2011-04-20-定制你的_zsh_命令提示符.md" rel="alternate" type="text/html" title="定制你的 zsh 命令提示符" />
+    <link href="https://plafer.info/#/goto/articles/2011-04-20-%E5%AE%9A%E5%88%B6%E4%BD%A0%E7%9A%84_zsh_%E5%91%BD%E4%BB%A4%E6%8F%90%E7%A4%BA%E7%AC%A6.md" rel="alternate" type="text/html" title="定制你的 zsh 命令提示符" />
     <published>2011-04-20T00:00:00Z</published>
     <updated>2026-01-04T21:17:00Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2011-04-20-定制你的_zsh_命令提示符</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2011-04-20-定制你的_zsh_命令提示符.md">&lt;p&gt;官方文档地址：&lt;a href=&quot;http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html&quot;&gt;&lt;a
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2011-04-20-%E5%AE%9A%E5%88%B6%E4%BD%A0%E7%9A%84_zsh_%E5%91%BD%E4%BB%A4%E6%8F%90%E7%A4%BA%E7%AC%A6.md">&lt;p&gt;官方文档地址：&lt;a href=&quot;http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html&quot;&gt;&lt;a
 href=&quot;http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html&quot;&gt;http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;我自己的命令提示符&lt;/p&gt;
 &lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
@@ -970,11 +970,11 @@ The part of the prompt string to be truncated runs to the end of the string, or 
   
   <entry>
     <title type="html">TypeScript 如何真正 keyof 一个枚举</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举.md" rel="alternate" type="text/html" title="TypeScript 如何真正 keyof 一个枚举" />
+    <link href="https://plafer.info/#/goto/articles/2020-05-05-TypeScript_%E5%A6%82%E4%BD%95%E7%9C%9F%E6%AD%A3_keyof_%E4%B8%80%E4%B8%AA%E6%9E%9A%E4%B8%BE.md" rel="alternate" type="text/html" title="TypeScript 如何真正 keyof 一个枚举" />
     <published>2020-05-05T00:00:00Z</published>
     <updated>2026-01-04T21:17:00Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举.md">&lt;p&gt;有一个朋友问我怎么才能 &lt;code&gt;keyof&lt;/code&gt; 一个 TypeScript
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2020-05-05-TypeScript_%E5%A6%82%E4%BD%95%E7%9C%9F%E6%AD%A3_keyof_%E4%B8%80%E4%B8%AA%E6%9E%9A%E4%B8%BE.md">&lt;p&gt;有一个朋友问我怎么才能 &lt;code&gt;keyof&lt;/code&gt; 一个 TypeScript
 里的枚举，因为如果你直接 &lt;code&gt;keyof Enum&lt;/code&gt; 的话，得到的结果是类似
 &lt;code&gt;keyof number&lt;/code&gt; ，而不是得到枚举的所有可能的 key 。&lt;/p&gt;
 &lt;p&gt;于是我简单写了一下跟他解释，顺手发上来：&lt;/p&gt;

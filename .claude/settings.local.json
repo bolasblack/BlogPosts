@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mise exec -- bb generate_files.clj)",
+      "Bash(grep -E '\\\\[.*\\\\]\\\\\\(\\\\./.*\\\\.md\\\\\\)' /Users/c4605/workSpace/BlogPosts/*.md)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}
