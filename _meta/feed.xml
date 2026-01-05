@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh">
   <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
   <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh" />
-  <updated>2026-01-04T22:14:09+01:00</updated>
+  <updated>2026-01-05T11:04:28+01:00</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
@@ -13,6 +13,444 @@
     <uri>https://github.com/bolasblack</uri>
   </author>
 
+  
+  <entry>
+    <title type="html">比特币钱包生态有多土狗：从开始到放弃</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md" rel="alternate" type="text/html" title="比特币钱包生态有多土狗：从开始到放弃" />
+    <published>2026-01-03T00:00:00+01:00</published>
+    <updated>2026-01-05T11:04:28+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md">&lt;p&gt;如果你正在开发一个比特币
+dApp，你可能已经发现了，比特币社区的生态实在是太土狗了。&lt;/p&gt;
+&lt;p&gt;最简单的例子就是比特币钱包，大家似乎热衷于给其他人制定标准，但大家似乎又不热衷于实现这个标准。&lt;/p&gt;
+&lt;h2 id=&quot;标准什么标准&quot;&gt;&quot;标准&quot;？什么标准？&lt;/h2&gt;
+&lt;p&gt;让例子更详细一点：&lt;/p&gt;
+&lt;h3
+id=&quot;wbips制定标准的人自己都不遵守&quot;&gt;WBIPs：制定标准的人自己都不遵守&lt;/h3&gt;
+&lt;p&gt;Leather 和 Xverse 搞了一个 &lt;a
+href=&quot;https://wbips.netlify.app/&quot;&gt;WBIPs&lt;/a&gt;
+，说是要制定一个统一的比特币钱包 API 标准，但：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;signPsbt 的 finalize 参数&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a
+href=&quot;https://github.com/wbips/wbips-docs/blob/a7862572785686da8c0097125366086fea3c70d6/pages/request_api/signPsbt.md&quot;&gt;&lt;code&gt;signPsbt&lt;/code&gt;&lt;/a&gt;
+标准里定义了 &lt;code&gt;finalize&lt;/code&gt; 参数，但两个发起者都没实现：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Leather 的&lt;a
+href=&quot;https://github.com/leather-io/mono/blob/2570b8e89e1a7d67ff2ec469c42b321f5d956e92/packages/rpc/src/methods/bitcoin/sign-psbt.ts#L25-L35&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Xverse 的&lt;a
+href=&quot;https://github.com/secretkeylabs/sats-connect-core/blob/cfbbdfde28a646f1b5114dad39ec76da85c3ffe9/src/request/types/btcMethods.ts#L178-L192&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;钱包自动发现机制的实现完全不对啊老师&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a
+href=&quot;https://github.com/wbips/wbips-docs/blob/a7862572785686da8c0097125366086fea3c70d6/pages/wbips/WBIP004.md&quot;&gt;WBIP004&lt;/a&gt;
+定义了钱包插件的自动发现机制，第一步是往 &lt;code&gt;wbip_providers&lt;/code&gt;
+里注入钱包 provider。&lt;/p&gt;
+&lt;p&gt;但实际上 Xverse 和 Leather 都是往 &lt;code&gt;window.btc_providers&lt;/code&gt;
+里注入的：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Leather 的&lt;a
+href=&quot;https://github.com/leather-io/mono/blob/2570b8e89e1a7d67ff2ec469c42b321f5d956e92/packages/provider/src/add-leather-to-providers.ts#L21-L52&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Xverse 的&lt;a
+href=&quot;https://github.com/secretkeylabs/xverse-web-extension/blob/bdbd6a008fd3d8f04ea18eca0374fae67d90114c/src/inpage/index.ts#L53&quot;&gt;代码&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;另外两个主流钱包根本不 care&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;更不用说实际上占有大量流量的 &lt;strong&gt;UniSat&lt;/strong&gt; 和 &lt;strong&gt;OKX
+Wallet&lt;/strong&gt; 似乎对支持 WBIPs 没有丝毫兴趣。&lt;/p&gt;
+&lt;h3 id=&quot;sats-connect标准之上的标准&quot;&gt;sats-connect：标准之上的标准&lt;/h3&gt;
+&lt;p&gt;然后在 WBIPs 之外，Xverse 还搞了一个 &lt;a
+href=&quot;https://github.com/xverseapp/sats-connect&quot;&gt;sats-connect&lt;/a&gt;
+，似乎想在 WBIPs 之外再扩展一些自己的 API ，实现一套标准之上的标准。&lt;/p&gt;
+&lt;p&gt;这不算差，尤其是它还兼容了 UniSat API 。Magic Eden 还号称 &quot;兼容
+sats-connect&quot;。&lt;/p&gt;
+&lt;p&gt;&quot;这听起来简直太棒了！sats-connect
+简直就是版本答案！世界救主！&quot;，对吧？你肯定是这么想的。&lt;/p&gt;
+&lt;p&gt;不过完美世界的上空&quot;还剩下两朵小小的乌云&quot;：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;&lt;strong&gt;sats-connect 不支持 OKX Wallet&lt;/strong&gt;（虽然 OKX Wallet 的
+API 现在已经迁移到和 UniSat 兼容了，但 sats-connect
+没办法自动发现它）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Magic Eden 的自动发现跟的是另一个标准&lt;/strong&gt;：&lt;a
+href=&quot;https://github.com/ExodusMovement/bitcoin-wallet-standard&quot;&gt;&lt;code&gt;ExodusMovement/bitcoin-wallet-standard&lt;/code&gt;&lt;/a&gt;，而不是
+WBIPs 标准。所以你没办法靠 sats-connect 来自动发现它。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;等下又来一个标准&quot;&gt;等下，又来一个标准？&lt;/h3&gt;
+&lt;p&gt;&quot;等下卧槽，这个 &lt;code&gt;ExodusMovement/bitcoin-wallet-standard&lt;/code&gt;
+又是个什么标准？我 TM 从来没听说过啊！&quot;&lt;/p&gt;
+&lt;p&gt;对的，在我尝试集成 Magic Eden
+之前，我也没听说过，现在我听说了，你也听说了。&lt;/p&gt;
+&lt;h3 id=&quot;更多-fun-facts&quot;&gt;更多 Fun Facts&lt;/h3&gt;
+&lt;p&gt;噢，还有一个 &quot;fun fact&quot; ，如果你的用户同时安装了 Xverse 和 Magic Eden
+，而且你没有处理好，那么你的用户在点击连接钱包时，可能会&lt;strong&gt;随机收到来自两个中其中一个钱包的确认请求&lt;/strong&gt;，人生真是处处充满惊喜。&lt;/p&gt;
+&lt;p&gt;噢，再加一个 &quot;fun fact&quot; ，Magic Eden 虽然号称 &quot;兼容
+sats-connect&quot;，但实际上它兼容的是&lt;strong&gt;旧版本的 API&lt;/strong&gt; 。&lt;/p&gt;
+&lt;h2 id=&quot;来点示例代码&quot;&gt;来点示例代码&lt;/h2&gt;
+&lt;p&gt;你可能会觉得那大不了我就自己在项目里都集成一遍呗。那让我们来看看为了实现一个简单的连接钱包功能，代码的差异：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// UniSat - 直接调用 window 对象&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; unisatResponse &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;unisat&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;requestAccounts&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Leather - 又是另一套 API&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; leatherResponse &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;LeatherProvider&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;request&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;getAddresses&amp;quot;&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Xverse - 来自官方文档&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;import&lt;/span&gt; { request } &lt;span class=&quot;im&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;sats-connect&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; xverseResponse &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;request&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;getAddresses&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Magic Eden - 来自官方文档&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;import&lt;/span&gt; { getAddress&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; AddressPurpose&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; BitcoinNetworkType } &lt;span class=&quot;im&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;sats-connect&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;getAddress&lt;/span&gt;({&lt;/span&gt;
+&lt;span id=&quot;cb1-14&quot;&gt;&lt;a href=&quot;#cb1-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  getProvider&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; getBtcProvider&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-15&quot;&gt;&lt;a href=&quot;#cb1-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  payload&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-16&quot;&gt;&lt;a href=&quot;#cb1-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    purposes&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [AddressPurpose&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;Ordinals&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; AddressPurpose&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;Payment&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-17&quot;&gt;&lt;a href=&quot;#cb1-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    message&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Address for receiving Ordinals and payments&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-18&quot;&gt;&lt;a href=&quot;#cb1-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    network&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-19&quot;&gt;&lt;a href=&quot;#cb1-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      type&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; BitcoinNetworkType&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;Mainnet&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-20&quot;&gt;&lt;a href=&quot;#cb1-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-21&quot;&gt;&lt;a href=&quot;#cb1-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-22&quot;&gt;&lt;a href=&quot;#cb1-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  onFinish&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; (response) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-23&quot;&gt;&lt;a href=&quot;#cb1-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;onFinish response, &amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; response&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;addresses&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-24&quot;&gt;&lt;a href=&quot;#cb1-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    connectionStatus&lt;span class=&quot;op&quot;&gt;?.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;setAccounts&lt;/span&gt;(response&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;addresses&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;unknown&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;as&lt;/span&gt; Account[])&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-25&quot;&gt;&lt;a href=&quot;#cb1-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-26&quot;&gt;&lt;a href=&quot;#cb1-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  onCancel&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-27&quot;&gt;&lt;a href=&quot;#cb1-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;alert&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;Request canceled&amp;quot;&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-28&quot;&gt;&lt;a href=&quot;#cb1-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-29&quot;&gt;&lt;a href=&quot;#cb1-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;四个钱包，四种写法。&lt;/p&gt;
+&lt;p&gt;如果你得在你的项目里集成 6
+个钱包呢？恭喜你，你会需要把我上面提到的问题都过一遍，和我一起愉快地浪费掉一大把人生的时间。&lt;/p&gt;
+&lt;h2 id=&quot;总结一下&quot;&gt;总结一下&lt;/h2&gt;
+&lt;p&gt;&quot;去他妈的傻逼比特币钱包生态，太他妈土狗了！&quot;，你/我心想。&lt;/p&gt;
+&lt;h2 id=&quot;所以我写了一个库&quot;&gt;所以我写了一个库&lt;/h2&gt;
+&lt;p&gt;所以我写了一个 &lt;a
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;bitcoin-wallet-connector&lt;/a&gt;
+，可以让其他人少浪费一点时间在这些破事上。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;下一篇文章&lt;/strong&gt;我会详细介绍这个库的使用方法和设计理念。如果你已经等不及了，可以先看看：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://bitcoin-wallet-connector.netlify.app/iframe.html?id=components-bitcoinconnectionprovider--default&amp;amp;viewMode=story&quot;&gt;在线
+Demo&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;GitHub
+仓库&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="Bitcoin" />
+    
+
+    
+    <category term="Bitcoin" />
+    
+    <category term="钱包" />
+    
+    <category term="dApp" />
+    
+    <category term="Web3" />
+    
+  </entry>
+  
+  <entry>
+    <title type="html">我把我的配置共享仓库转移到了 LLM-oriented 模式</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.md" rel="alternate" type="text/html" title="我把我的配置共享仓库转移到了 LLM-oriented 模式" />
+    <published>2026-01-02T00:00:00+01:00</published>
+    <updated>2026-01-05T11:04:28+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.md">&lt;h2 id=&quot;啥是-llm-oriented-的配置共享方案&quot;&gt;啥是 &quot;LLM-oriented
+的配置共享方案&quot;&lt;/h2&gt;
+&lt;p&gt;简单来说，就是让配置共享项目提供 &lt;a
+href=&quot;https://llmstxt.org/&quot;&gt;llms.txt&lt;/a&gt; ，使用方依此让 LLM
+去下载/更新项目的配置文件，以保持配置的更新。而不是通过 npm registry
+来分发配置。&lt;/p&gt;
+&lt;h2 id=&quot;那为不用-npm-了&quot;&gt;那为不用 npm 了？&lt;/h2&gt;
+&lt;p&gt;传统的工具配置共享方式，无论是通过 &lt;code&gt;extends&lt;/code&gt; 继承还是
+preset
+预设，都面临一个根本性的矛盾：&lt;strong&gt;便利性与灵活性的两难选择&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&quot;继承模式的优点&quot;&gt;继承模式的优点&lt;/h3&gt;
+&lt;p&gt;当你使用类似 &lt;code&gt;extends: &quot;@company/eslint-config&quot;&lt;/code&gt;
+的方式时，好处显而易见：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;升级简单&lt;/strong&gt;：只需
+&lt;code&gt;npm update&lt;/code&gt;，所有使用该配置的项目都能获得更新&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;一致性保证&lt;/strong&gt;：团队中所有项目使用相同的规则&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;维护集中&lt;/strong&gt;：配置的改进和 bug
+修复只需要在一个地方进行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;但现实很骨感&quot;&gt;但现实很骨感&lt;/h3&gt;
+&lt;p&gt;问题出现在你需要做任何&quot;非标准&quot;操作的时候：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;&lt;strong&gt;自定义需求&lt;/strong&gt;：项目有特殊需求，需要覆盖某些规则&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;依赖版本冲突&lt;/strong&gt;：你需要升级
+ESLint，但上游配置包还没有跟进（比如 ESLint 更新到 flat mode config
+了，你需要用到最新版的 ESLint 了，但是我懒，我还没更新 🤪）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;规则分歧&lt;/strong&gt;：上游更新了某个规则，但你的项目不适用（问题是你一开始可能不知道，等出问题了才发现&quot;卧槽我被坑了&quot;）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这时候，你有两个选择：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;选择 A：在继承基础上打补丁&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// eslint.config.js&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;default&lt;/span&gt; [&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;baseConfig&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  {&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;rules&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;co&quot;&gt;// 覆盖一个规则&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;st&quot;&gt;&amp;quot;some-rule&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;off&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;co&quot;&gt;// 再覆盖一个&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;st&quot;&gt;&amp;quot;another-rule&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [&lt;span class=&quot;st&quot;&gt;&amp;quot;error&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; { &lt;span class=&quot;dt&quot;&gt;different&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;options&amp;quot;&lt;/span&gt; }]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// 还要处理插件版本冲突...&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;]&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;补丁越打越多，最终你的&quot;继承&quot;变成了一层又一层的覆盖，反而比从头写还难维护。&lt;/p&gt;
+&lt;p&gt;ESLint 其实已经还好了，Prettier 和 lint-staged 这种没有 extends/merge
+机制的就更麻烦了，我之前写了一个超级麻烦的 lint-staged 配置（看这里 &lt;a
+href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt;
+和 &lt;a
+href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.helpers.js&quot;&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt;&lt;/a&gt;，看起来挺
+decent
+的（好吧至少我自己这么觉得），其实超级难用，还把一个非常简单的事情搞的极其复杂&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;选择 B：Eject（弹出）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;很多脚手架工具提供了 &lt;code&gt;eject&lt;/code&gt;
+命令，把所有配置文件复制到你的项目里，让你获得完全控制权。&lt;/p&gt;
+&lt;p&gt;但 eject 之后：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;你失去了自动升级的能力，你得自己去更新，没办法享受上游已经测试过的插件之间的兼容性&lt;/li&gt;
+&lt;li&gt;当上游有重要更新时，你需要手动 diff 和合并&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;这就是两难困境&lt;/strong&gt;：继承模式下你受制于上游，eject
+之后你要承担维护成本。&lt;/p&gt;
+&lt;h2 id=&quot;llm-是个好东西&quot;&gt;LLM 是个好东西&lt;/h2&gt;
+&lt;p&gt;现在我们有了 LLM 了，时代变了&lt;/p&gt;
+&lt;h3 id=&quot;新的工作流&quot;&gt;新的工作流&lt;/h3&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;&lt;strong&gt;获取最新配置&lt;/strong&gt;：LLM 直接从 llms.md/llms.txt
+获取最新的推荐配置&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;智能合并&lt;/strong&gt;：LLM
+理解你的项目上下文，把新配置合并到现有配置中&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;保留自定义&lt;/strong&gt;：你的自定义修改会被识别并保留&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;按需更新&lt;/strong&gt;：当你需要升级时，让 LLM
+帮你处理合并冲突&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;为什么这比传统方式更好&quot;&gt;为什么这比传统方式更好？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;所有配置都在你的代码库中&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;没有隐藏的 &lt;code&gt;node_modules&lt;/code&gt;
+深处的配置文件，没有&quot;这个规则是从哪里来的&quot;的困惑。每一行配置都清清楚楚地在你的项目里。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;升级变得可控&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;升级不再是一个&quot;要么全要，要么不要&quot;的决定。LLM 可以帮你：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查看上游有什么变化&lt;/li&gt;
+&lt;li&gt;理解每个变化的影响&lt;/li&gt;
+&lt;li&gt;选择性地应用更新&lt;/li&gt;
+&lt;li&gt;自动处理合并冲突&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;自定义是一等公民&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;你的自定义不再是&quot;补丁&quot;，而是配置的一部分。LLM
+在更新时会理解并尊重这些自定义。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;依赖版本自由&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;你可以随时升级任何依赖，不需要等待上游配置包更新。遇到问题？还能让
+LLM 帮你调整配置（他们读起配置来也变简单了）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;上游的配置文件变的更简单了&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;还是看我的 lint-staged 配置文件&lt;/p&gt;
+&lt;p&gt;以前的版本：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a
+href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;为了方便下游能复用配置，还能自定义 lint-staged
+的配置，不得不写的帮助函数 &lt;a
+href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.helpers.js&quot;&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;现在的版本：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a
+href=&quot;https://github.com/bolasblack/js-metarepo/blob/25d4495adcba67bda9daf65b04a204acc01cb795/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt;
+算了，这个实在是太简单了，我直接 inline 了得了：
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
+class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;module&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;*.{ts,tsx,js,jsx}&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [&lt;span class=&quot;st&quot;&gt;&amp;quot;prettier --write&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;eslint&amp;quot;&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;*.{css,scss,sass,less,md,mdx}&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [&lt;span class=&quot;st&quot;&gt;&amp;quot;prettier --write&amp;quot;&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt; 已经不存在了，因为没必要&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2
+id=&quot;你说了这么多但这看起来不还是倒退吗&quot;&gt;你说了这么多，但这看起来不还是倒退吗？&lt;/h2&gt;
+&lt;p&gt;是，也不是。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;是&lt;/strong&gt;：配置文件确实在每个项目中独立存在，和最早的时候一样&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不是&lt;/strong&gt;：因为维护成本发生了本质变化：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;以前&lt;/strong&gt;：人工去看 CHANGELOG 或者看和上游配置文件的
+diff -&amp;gt; 搞明白啥变了 -&amp;gt; 手动修改 -&amp;gt; 测试验证&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;现在&lt;/strong&gt;：告诉 LLM &quot;升级到最新推荐配置&quot; -&amp;gt; 审查 LLM
+的改动 -&amp;gt; 完成&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;维护的认知负担从&quot;我需要理解所有这些配置&quot;变成了&quot;我需要审查 LLM
+的建议&quot;。这是和最早的时候不同的地方。&lt;/p&gt;
+&lt;h2 id=&quot;总结ai-版我自己编不出来&quot;&gt;总结（AI 版，我自己编不出来）&lt;/h2&gt;
+&lt;p&gt;传统的配置共享是在&quot;一刀切的便利&quot;和&quot;完全自主的复杂&quot;之间做选择。LLM-oriented
+的方式让我们可以两者兼得：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;保持配置的完全所有权和透明度&lt;/li&gt;
+&lt;li&gt;同时享受智能辅助的升级和维护&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这不是技术的倒退，而是利用新工具重新定义了最佳实践。&lt;/p&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="LLM" />
+    
+
+    
+    <category term="LLM" />
+    
+    <category term="工具配置" />
+    
+    <category term="ESLint" />
+    
+    <category term="npm" />
+    
+  </entry>
+  
+  <entry>
+    <title type="html">我搞了一个 Elm 风格的 useEffectReducer hook</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react.md" rel="alternate" type="text/html" title="我搞了一个 Elm 风格的 useEffectReducer hook" />
+    <published>2025-11-12T00:00:00+01:00</published>
+    <updated>2026-01-05T11:04:28+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a
+href=&quot;https://github.com/bolasblack/react-components/tree/develop/packages/useEffectReducer&quot;&gt;bolasblack/react-components/tree/develop/packages/useEffectReducer&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;什么是-elm-风格&quot;&gt;什么是 &quot;Elm 风格&quot;？&lt;/h2&gt;
+&lt;p&gt;Elm 有一个 &lt;strong&gt;Model-View-Update&lt;/strong&gt;
+模式，其中每次更新都会返回下一个 model 和要执行的命令：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+class=&quot;sourceCode elm&quot;&gt;&lt;code class=&quot;sourceCode elm&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;update&lt;/span&gt; : &lt;span class=&quot;dt&quot;&gt;Msg&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Model&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;-&amp;gt;&lt;/span&gt; ( &lt;span class=&quot;dt&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Cmd&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Msg&lt;/span&gt; )&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这种设计将所有关于 &lt;em&gt;&quot;事件 X 发生时会发生什么&quot;&lt;/em&gt; 的逻辑集中在
+&lt;strong&gt;一个地方&lt;/strong&gt; —— update 函数 —— 而不是将副作用分散在各种
+&lt;code&gt;useEffect&lt;/code&gt; 中。&lt;/p&gt;
+&lt;p&gt;它还保持了 reducer 的纯洁性，同时让
+&lt;strong&gt;副作用何时发生、发生什么&lt;/strong&gt;
+变得明确，并可被运行时解释执行。&lt;/p&gt;
+&lt;p&gt;React 官方文档也呼应了这一理念：effect 应该是一个
+&lt;em&gt;逃生舱&lt;/em&gt;，而不是默认选择 —— 参见 &lt;a
+href=&quot;https://react.dev/learn/you-might-not-need-an-effect&quot;&gt;You Might
+Not Need an Effect&lt;/a&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果你想了解这种建模方式如何让 UI 逻辑变得优雅且易于维护，可以看看
+David Khourshid 的经典文章 &lt;a
+href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;&lt;strong&gt;&quot;No,
+disabling a button is not app logic.&quot;&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;为什么-又-造一个-elm-风格的-reducer&quot;&gt;为什么 &lt;em&gt;又&lt;/em&gt; 造一个
+Elm 风格的 reducer？&lt;/h2&gt;
+&lt;p&gt;因为没有完全满足我的需求的版本：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;有些已经归档了。&lt;/strong&gt; 例如，&lt;a
+href=&quot;https://github.com/davidkpiano/useEffectReducer&quot;&gt;&lt;code&gt;useEffectReducer&lt;/code&gt;&lt;/a&gt;
+和 &lt;a
+href=&quot;https://github.com/soywod/react-use-bireducer&quot;&gt;&lt;code&gt;react-use-bireducer&lt;/code&gt;&lt;/a&gt;
+现在都是只读状态。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;保持精简。&lt;/strong&gt; 只需一个文件，几乎没有依赖 ——
+随时可以复制、修改或删除。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Effect 作为普通对象 + 独立的解释器。&lt;/strong&gt;
+返回可序列化的 effect descriptors，然后在一个专门的地方实现实际的 effect
+逻辑。这样更容易测试
+reducer（只需断言描述符），而无需真正执行副作用。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;降低门槛。&lt;/strong&gt; 目标是让 Elm
+风格的方法变得易于上手，而不需要深入了解 Elm 的 &lt;code&gt;Cmd Msg&lt;/code&gt;
+系统，也不需要学习像 &lt;a href=&quot;https://xstate.js.org/&quot;&gt;XState&lt;/a&gt;
+这样的完整状态机库。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;来点代码&quot;&gt;来点代码&lt;/h2&gt;
+&lt;p&gt;我们用 &lt;code&gt;useEffectReducer&lt;/code&gt; 重新实现一下 David Khourshid
+文章 &lt;a
+href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;&lt;strong&gt;&quot;No,
+disabling a button is not app logic.&quot;&lt;/strong&gt;&lt;/a&gt; 中的示例。&lt;/p&gt;
+&lt;p&gt;两种实现都可以在 GitHub 上找到：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;useEffectReducer 版本:&lt;/strong&gt; &lt;a
+href=&quot;https://github.com/bolasblack/react-components/blob/eb47a2416e8cc95bb4fa7e6fbf776ac2432a2468/packages/useEffectReducer/src/useEffectReducer.stories.tsx#L121-L203&quot;&gt;useEffectReducer.stories.tsx
+→ L121–203&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;useReducer 版本:&lt;/strong&gt; &lt;a
+href=&quot;https://github.com/bolasblack/react-components/blob/eb47a2416e8cc95bb4fa7e6fbf776ac2432a2468/packages/useEffectReducer/src/useEffectReducer.stories.tsx#L24-L119&quot;&gt;useEffectReducer.stories.tsx
+→ L24–119&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;其他人的工作&quot;&gt;其他人的工作&lt;/h2&gt;
+&lt;p&gt;将 &lt;strong&gt;Elm 风格的 &quot;状态 + 副作用&quot; reducer&lt;/strong&gt; 引入 React
+的优秀现有实现：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/davidkpiano/useEffectReducer&quot;&gt;&lt;code&gt;davidkpiano/useEffectReducer&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— 作者 &lt;em&gt;David Khourshid&lt;/em&gt;；已归档&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/soywod/react-use-bireducer&quot;&gt;&lt;code&gt;soywod/react-use-bireducer&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— 返回 &lt;code&gt;[state, effects]&lt;/code&gt; 并通过独立的 effect reducer
+处理副作用；已归档&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/ncthbrt/react-use-elmish&quot;&gt;&lt;code&gt;ncthbrt/react-use-elmish&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— Elmish 风格的 hook，结合了 reducer 逻辑和异步辅助函数&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/redux-loop/redux-loop&quot;&gt;&lt;code&gt;redux-loop&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— Redux 增强器，添加类似 Elm 的 effect 元组&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/dai-shi/use-reducer-async&quot;&gt;&lt;code&gt;dai-shi/use-reducer-async&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— 扩展 &lt;code&gt;dispatch&lt;/code&gt; 以支持异步 action&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://gist.github.com/sophiebits/145c47544430c82abd617c9cdebefee8&quot;&gt;&lt;code&gt;useReducerWithEmitEffect&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— Sophie Alpert 的 gist，启发了本工作的大部分内容&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;好文章&quot;&gt;好文章&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Christian Ekrem - &quot;&lt;a
+href=&quot;https://cekrem.github.io/posts/chapter-2-take-2/&quot;&gt;Chapter 2, Take
+2: Why I Changed Course&lt;/a&gt;&quot;&lt;/li&gt;
+&lt;li&gt;David Khourshid – &quot;&lt;a
+href=&quot;https://dev.to/davidkpiano/redux-is-half-of-a-pattern-1-2-1hd7&quot;&gt;Redux
+is half of a pattern (1/2)&lt;/a&gt;&quot;&lt;/li&gt;
+&lt;li&gt;David Khourshid – &quot;&lt;a
+href=&quot;https://medium.com/@DavidKPiano/there-are-so-many-fundamental-misunderstandings-about-xstate-and-state-machines-in-general-in-13aec57d2f85&quot;&gt;There
+are so many fundamental misunderstandings about XState (and state
+machines in general)&lt;/a&gt;&quot;&lt;/li&gt;
+&lt;li&gt;David Khourshid – &quot;&lt;a
+href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;No,
+disabling a button is not app logic.&lt;/a&gt;&quot;&lt;/li&gt;
+&lt;li&gt;React docs – &quot;&lt;a
+href=&quot;https://react.dev/learn/you-might-not-need-an-effect&quot;&gt;You Might
+Not Need an Effect&lt;/a&gt;&quot;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="架构" />
+    
+
+    
+    <category term="架构" />
+    
+    <category term="React" />
+    
+    <category term="Elm" />
+    
+    <category term="Redux" />
+    
+  </entry>
   
   <entry>
     <title type="html">如何让一个非数组构造器骗过浏览器和框架</title>
@@ -630,163 +1068,6 @@ href=&quot;http://www.linuxsir.org/bbs/thread384902.html&quot;&gt;http://www.lin
     <category term="Gentoo" />
     
     <category term="安装" />
-    
-  </entry>
-  
-  <entry>
-    <title type="html">吐槽淘宝开放平台的API</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API.md" rel="alternate" type="text/html" title="吐槽淘宝开放平台的API" />
-    <published>2012-12-13T00:00:00+01:00</published>
-    <updated>2026-01-04T22:14:09+01:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API.md">&lt;p&gt;生平不知道第几次见到如此坑爹的 API ，全部都是国内公司出品。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://wiki.dev.renren.com/wiki/API&quot;&gt;人人
-&lt;span&gt;http://wiki.dev.renren.com/wiki/API&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://open.taobao.com/doc/api_list.htm?id=102&quot;&gt;淘宝
-&lt;span&gt;http://open.taobao.com/doc/api_list.htm?id=102&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;那种令人作呕的接口调用方式简直就是丧心病狂。&lt;/p&gt;
-&lt;p&gt;更加令人发指的是，淘宝文档中提供的 &lt;a
-href=&quot;http://api.taobao.com/apitools/apiTools.htm?catId=38&amp;amp;apiName=taobao.taobaoke.widget.items.convert&quot;&gt;Demo&lt;/a&gt;
-竟然无法使用，不论是 Python 的还是 Java 的。&lt;/p&gt;
-&lt;p&gt;如果你不允许使用 SDK ，麻烦你说明好吗亲？！！再加上灭绝人性的 sign
-的算法，如果最后的 sign
-需要将所有的字符转化为大写字母，麻烦你在文档中说明而不是只在&lt;a
-href=&quot;http://open.taobao.com/doc/detail.htm?id=988&quot;&gt; PHP
-代码&lt;/a&gt;中写着好吗，亲！！！&lt;/p&gt;
-&lt;p&gt;更加不用提那个莫名其妙的 &lt;code&gt;partner_id&lt;/code&gt;
-参数，如果不看别人写的文章和 JSSDK
-发起的请求，我是绝对不会知道还存在这么个东西。&lt;/p&gt;
-&lt;p&gt;请问这个是从哪里出现的？为什么前无古人后无来者？&lt;/p&gt;
-&lt;p&gt;再加上淘宝 JSSDK 的 Demo
-页面那种完全无法令人理解的界面和说明，我有理由相信这个一定是临时工干的对不对？&lt;/p&gt;
-&lt;p&gt;相关资料：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://my.oschina.net/ryanhoo/blog/86876&quot;&gt;淘宝 API 计算
-SIGN 参数（error code:25 Invalid Signature）&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a
-href=&quot;https://github.com/laoqiu/sinaapp/blob/master/webapp/scripts/taobaoapi.py&quot;&gt;Github/laoqiu/sinaapp
-taobaoapi.py&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a
-href=&quot;https://github.com/bolasblack/PythonLib/blob/master/taobaoapi.py&quot;&gt;我针对
-taobao.taobaoke.widget.items.convert 这类 widget 接口，根据 taobaoapi.py
-修改而来的文件&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="吐槽" />
-    
-
-    
-    <category term="吐槽" />
-    
-    <category term="淘宝" />
-    
-    <category term="开放平台" />
-    
-    <category term="api" />
-    
-  </entry>
-  
-  <entry>
-    <title type="html">AngularJS 使用笔记</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md" rel="alternate" type="text/html" title="AngularJS 使用笔记" />
-    <published>2014-03-27T00:00:00+01:00</published>
-    <updated>2026-01-04T22:14:09+01:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md">&lt;p&gt;编写一个 &lt;code&gt;appEval&lt;/code&gt; 指令（类似早期版本的
-&lt;code&gt;ngInit&lt;/code&gt;
-）能够很好的实现“表现与逻辑分离”的思想，比如要渲染出三个内容规则的按钮，就可以这样：&lt;/p&gt;
-&lt;pre class=&quot;jade&quot;&gt;&lt;code&gt;p.input-object.text-right(data-app-eval=&amp;quot;view_avaliableSendDays = [&amp;#39;今天&amp;#39;, &amp;#39;明天&amp;#39;, &amp;#39;后天&amp;#39;]&amp;quot;)
-  button.button(
-    type=&amp;quot;button&amp;quot;
-    data-ng-repeat=“view_day in view_avaliableSendDays&amp;quot;
-    data-ng-class=&amp;quot;{&amp;#39;button-positive&amp;#39;: startDayOffset = $index}&amp;quot;
-    data-ng-click=&amp;quot;startDayOffset = $index&amp;quot;
-  ) {{view_day}}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;很显然， &lt;code&gt;view_avaliableSendDays&lt;/code&gt;
-是不适合在控制器里进行定义的，在模板里定义则显得比较合理&lt;/p&gt;
-&lt;p&gt;但是在模板里定义也会引起一些问题，比如在没有意识到的情况下控制器里的变量污染了视图里的变量名，或者正好相反&lt;/p&gt;
-&lt;p&gt;这种时候比较合适的做法就是给视图专有的变量名加上特殊的前缀，比如
-&lt;code&gt;view_&lt;/code&gt; 这样子&lt;/p&gt;
-&lt;p&gt;附 &lt;code&gt;appEval&lt;/code&gt; 的代码：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
-class=&quot;sourceCode coffeescript&quot;&gt;&lt;code class=&quot;sourceCode coffee&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;module&lt;span class=&quot;kw&quot;&gt;.&lt;/span&gt;directive&lt;span class=&quot;kw&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;#39;appEval&amp;#39;&lt;/span&gt;&lt;span class=&quot;kw&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;[&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    link&lt;span class=&quot;kw&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;($scope, $elem, attrs) -&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      $scope&lt;span class=&quot;kw&quot;&gt;.&lt;/span&gt;$eval attrs&lt;span class=&quot;kw&quot;&gt;.&lt;/span&gt;appEval&lt;/span&gt;
-&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;])&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;hr /&gt;
-&lt;p&gt;如果是在使用 &lt;code&gt;Jade&lt;/code&gt; 的话，那么本着 “控制器里的嵌套 Scope
-越少越好” 的原则，推荐使用迭代器来替换 &lt;code&gt;ngRepeat&lt;/code&gt; ：&lt;/p&gt;
-&lt;pre class=&quot;jade&quot;&gt;&lt;code&gt;p.input-object.text-right
-  each day, index in [&amp;#39;今天&amp;#39;, &amp;#39;明天&amp;#39;, &amp;#39;后天&amp;#39;]
-    button.button(
-      type=&amp;quot;button&amp;quot;
-      data-ng-class=&amp;quot;{&amp;#39;button-positive&amp;#39;: startDayOffset === #{index}}&amp;quot;
-      data-ng-click=&amp;quot;startDayOffset = #{index}&amp;quot;
-    )= day&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;不过即使如此， &lt;code&gt;appEval&lt;/code&gt;
-依旧是有用武之地的。比如说用来初始化某个控制器的变量：&lt;/p&gt;
-&lt;pre class=&quot;jade&quot;&gt;&lt;code&gt;p.input-object.text-right(data-app-eval=&amp;quot;startDayOffset = 0&amp;quot;)
-  each day, index in [&amp;#39;今天&amp;#39;, &amp;#39;明天&amp;#39;, &amp;#39;后天&amp;#39;]
-    button.button(
-      type=&amp;quot;button&amp;quot;
-      data-ng-class=&amp;quot;{&amp;#39;button-positive&amp;#39;: startDayOffset === #{index}}&amp;quot;
-      data-ng-click=&amp;quot;startDayOffset = #{index}&amp;quot;
-    )= day&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;因为 &lt;code&gt;offset&lt;/code&gt;
-的值是由视图控制的，如果在控制器里设置了某个变量的默认值，那么当视图中的候选值调整后，控制器的代码也需要进行相应的调整。&lt;/p&gt;
-&lt;p&gt;如果把初始化默认值的代码放在视图中，维护起来会更加的便捷，而且不容易漏改。&lt;/p&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="JavaScript" />
-    
-
-    
-    <category term="JavaScript" />
-    
-  </entry>
-  
-  <entry>
-    <title type="html">hello world</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world.md" rel="alternate" type="text/html" title="hello world" />
-    <published>2012-11-28T00:00:00+01:00</published>
-    <updated>2026-01-04T22:14:09+01:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world.md">&lt;p&gt;想了不少时间了，终于打算把博客搬到 Github 上，自己就写 Markdown
-吧，懒得上 Wordpress 那么麻烦的东西了。&lt;/p&gt;
-&lt;p&gt;之前的东西或多或少的会搬过来一些，大概不会太多，就弄点自己觉得有价值的就行了。&lt;/p&gt;
-&lt;p&gt;这算是第一篇内容，水一个&lt;/p&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="水" />
-    
-
-    
-    <category term="水" />
     
   </entry>
   

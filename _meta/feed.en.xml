@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
   <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2026-01-03T00:00:00+01:00</updated>
+  <updated>2026-01-05T11:04:28+01:00</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
@@ -18,7 +18,7 @@
     <title type="html">The Bitcoin Wallet Extensions Ecosystem is a Mess: A Developer&#39;s Rant</title>
     <link href="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md" rel="alternate" type="text/html" title="The Bitcoin Wallet Extensions Ecosystem is a Mess: A Developer&#39;s Rant" />
     <published>2026-01-03T00:00:00+01:00</published>
-    <updated>2026-01-03T00:00:00+01:00</updated>
+    <updated>2026-01-05T11:04:28+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess</id>
     <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md">&lt;p&gt;If you&#39;re building a Bitcoin dApp, you&#39;ve probably already discovered
 that the Bitcoin community&#39;s ecosystem is an absolute dumpster fire.&lt;/p&gt;
@@ -179,10 +179,140 @@ Repository&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
   </entry>
   
   <entry xml:lang="en">
+    <title type="html">I built (another) Elm-style useEffectReducer hook for React</title>
+    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react.en.md" rel="alternate" type="text/html" title="I built (another) Elm-style useEffectReducer hook for React" />
+    <published>2025-11-12T00:00:00+01:00</published>
+    <updated>2026-01-05T11:04:28+01:00</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react</id>
+    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react.en.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a
+href=&quot;https://github.com/bolasblack/react-components/tree/develop/packages/useEffectReducer&quot;&gt;bolasblack/react-components/tree/develop/packages/useEffectReducer&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;what-is-elm-style&quot;&gt;What is &quot;Elm-style&quot;?&lt;/h2&gt;
+&lt;p&gt;Elm popularized the &lt;strong&gt;Model-View-Update&lt;/strong&gt; pattern, where
+each update returns both the next model and the commands to run:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+class=&quot;sourceCode elm&quot;&gt;&lt;code class=&quot;sourceCode elm&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;update&lt;/span&gt; : &lt;span class=&quot;dt&quot;&gt;Msg&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Model&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;-&amp;gt;&lt;/span&gt; ( &lt;span class=&quot;dt&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Cmd&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Msg&lt;/span&gt; )&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This design keeps all logic about &lt;em&gt;&quot;what happens when event X
+occurs&quot;&lt;/em&gt; in &lt;strong&gt;one place&lt;/strong&gt; — the update function —
+instead of scattering side effects across random
+&lt;code&gt;useEffect&lt;/code&gt;s.&lt;/p&gt;
+&lt;p&gt;It also keeps reducers pure while making &lt;strong&gt;when and what side
+effects happen&lt;/strong&gt; explicit and interpretable by a runtime.&lt;/p&gt;
+&lt;p&gt;React&#39;s docs echo this philosophy: effects should be an &lt;em&gt;escape
+hatch&lt;/em&gt;, not the default — see &lt;a
+href=&quot;https://react.dev/learn/you-might-not-need-an-effect&quot;&gt;You Might
+Not Need an Effect&lt;/a&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If you want to see how this kind of modeling makes UI logic elegant
+and maintainable, check out David Khourshid&#39;s classic post &lt;a
+href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;&lt;strong&gt;&quot;No,
+disabling a button is not app logic.&quot;&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;so-why-another-elm-style-reducer&quot;&gt;So why &lt;em&gt;another&lt;/em&gt;
+Elm-style reducer?&lt;/h2&gt;
+&lt;p&gt;The author wanted a variant with different trade-offs:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Some are archived.&lt;/strong&gt; For example, &lt;a
+href=&quot;https://github.com/davidkpiano/useEffectReducer&quot;&gt;&lt;code&gt;useEffectReducer&lt;/code&gt;&lt;/a&gt;
+and &lt;a
+href=&quot;https://github.com/soywod/react-use-bireducer&quot;&gt;&lt;code&gt;react-use-bireducer&lt;/code&gt;&lt;/a&gt;
+are now read-only.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Keep it tiny.&lt;/strong&gt; Fits in one file with almost no
+dependencies — copy, tweak, or delete it whenever you want.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Effects as plain objects + separate interpreter.&lt;/strong&gt;
+Returns serializable effect descriptors and implements the actual effect
+logic in one dedicated place. It&#39;s easier to test reducers (assert on
+descriptors) without invoking real side effects.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Lower the barrier.&lt;/strong&gt; The goal is to make the
+Elm-style approach approachable without requiring deep knowledge of
+Elm&#39;s &lt;code&gt;Cmd Msg&lt;/code&gt; system or learning a full-blown state machine
+library like &lt;a href=&quot;https://xstate.js.org/&quot;&gt;XState&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;example-usage&quot;&gt;Example usage&lt;/h2&gt;
+&lt;p&gt;The article reimplements the example from David Khourshid&#39;s article
+&lt;a
+href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;&lt;strong&gt;&quot;No,
+disabling a button is not app logic.&quot;&lt;/strong&gt;&lt;/a&gt; using
+&lt;code&gt;useEffectReducer&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Both implementations are available on GitHub:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;useEffectReducer version:&lt;/strong&gt; &lt;a
+href=&quot;https://github.com/bolasblack/react-components/blob/eb47a2416e8cc95bb4fa7e6fbf776ac2432a2468/packages/useEffectReducer/src/useEffectReducer.stories.tsx#L121-L203&quot;&gt;useEffectReducer.stories.tsx
+→ L121–203&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;useReducer version:&lt;/strong&gt; &lt;a
+href=&quot;https://github.com/bolasblack/react-components/blob/eb47a2416e8cc95bb4fa7e6fbf776ac2432a2468/packages/useEffectReducer/src/useEffectReducer.stories.tsx#L24-L119&quot;&gt;useEffectReducer.stories.tsx
+→ L24–119&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;related-work&quot;&gt;Related work&lt;/h2&gt;
+&lt;p&gt;Excellent existing takes on bringing &lt;strong&gt;Elm-style &quot;state +
+effects&quot; reducers&lt;/strong&gt; into React:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/davidkpiano/useEffectReducer&quot;&gt;&lt;code&gt;davidkpiano/useEffectReducer&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— by &lt;em&gt;David Khourshid&lt;/em&gt;; archived&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/soywod/react-use-bireducer&quot;&gt;&lt;code&gt;soywod/react-use-bireducer&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— returns &lt;code&gt;[state, effects]&lt;/code&gt; and processes effects through a
+separate effect reducer; archived&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/ncthbrt/react-use-elmish&quot;&gt;&lt;code&gt;ncthbrt/react-use-elmish&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— Elmish-style hook combining reducer logic with async helpers&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/redux-loop/redux-loop&quot;&gt;&lt;code&gt;redux-loop&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— Redux enhancer adding Elm-like effect tuples&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://github.com/dai-shi/use-reducer-async&quot;&gt;&lt;code&gt;dai-shi/use-reducer-async&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— extends &lt;code&gt;dispatch&lt;/code&gt; for async actions&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a
+href=&quot;https://gist.github.com/sophiebits/145c47544430c82abd617c9cdebefee8&quot;&gt;&lt;code&gt;useReducerWithEmitEffect&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
+— Sophie Alpert&#39;s gist that inspired much of this work&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;good-articles&quot;&gt;Good Articles&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Christian Ekrem - &quot;&lt;a
+href=&quot;https://cekrem.github.io/posts/chapter-2-take-2/&quot;&gt;Chapter 2, Take
+2: Why I Changed Course&lt;/a&gt;&quot;&lt;/li&gt;
+&lt;li&gt;David Khourshid – &quot;&lt;a
+href=&quot;https://dev.to/davidkpiano/redux-is-half-of-a-pattern-1-2-1hd7&quot;&gt;Redux
+is half of a pattern (1/2)&lt;/a&gt;&quot;&lt;/li&gt;
+&lt;li&gt;David Khourshid – &quot;&lt;a
+href=&quot;https://medium.com/@DavidKPiano/there-are-so-many-fundamental-misunderstandings-about-xstate-and-state-machines-in-general-in-13aec57d2f85&quot;&gt;There
+are so many fundamental misunderstandings about XState (and state
+machines in general)&lt;/a&gt;&quot;&lt;/li&gt;
+&lt;li&gt;David Khourshid – &quot;&lt;a
+href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;No,
+disabling a button is not app logic.&lt;/a&gt;&quot;&lt;/li&gt;
+&lt;li&gt;React docs – &quot;&lt;a
+href=&quot;https://react.dev/learn/you-might-not-need-an-effect&quot;&gt;You Might
+Not Need an Effect&lt;/a&gt;&quot;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="architecture" />
+    
+
+    
+    <category term="architecture" />
+    
+    <category term="React" />
+    
+    <category term="Elm" />
+    
+    <category term="Redux" />
+    
+  </entry>
+  
+  <entry xml:lang="en">
     <title type="html">I Moved My Config Sharing Repo to LLM-oriented Mode</title>
     <link href="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.en.md" rel="alternate" type="text/html" title="I Moved My Config Sharing Repo to LLM-oriented Mode" />
     <published>2026-01-02T00:00:00+01:00</published>
-    <updated>2026-01-02T00:00:00+01:00</updated>
+    <updated>2026-01-05T11:04:28+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented</id>
     <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.en.md">&lt;h2 id=&quot;what-is-llm-oriented-config-sharing&quot;&gt;What is &quot;LLM-oriented
 Config Sharing&quot;?&lt;/h2&gt;
@@ -369,136 +499,6 @@ practices with new tools.&lt;/p&gt;
     <category term="ESLint" />
     
     <category term="npm" />
-    
-  </entry>
-  
-  <entry xml:lang="en">
-    <title type="html">I built (another) Elm-style useEffectReducer hook for React</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react.en.md" rel="alternate" type="text/html" title="I built (another) Elm-style useEffectReducer hook for React" />
-    <published>2025-11-12T00:00:00+01:00</published>
-    <updated>2025-11-12T00:00:00+01:00</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react.en.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a
-href=&quot;https://github.com/bolasblack/react-components/tree/develop/packages/useEffectReducer&quot;&gt;bolasblack/react-components/tree/develop/packages/useEffectReducer&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;what-is-elm-style&quot;&gt;What is &quot;Elm-style&quot;?&lt;/h2&gt;
-&lt;p&gt;Elm popularized the &lt;strong&gt;Model-View-Update&lt;/strong&gt; pattern, where
-each update returns both the next model and the commands to run:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
-class=&quot;sourceCode elm&quot;&gt;&lt;code class=&quot;sourceCode elm&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;update&lt;/span&gt; : &lt;span class=&quot;dt&quot;&gt;Msg&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Model&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;-&amp;gt;&lt;/span&gt; ( &lt;span class=&quot;dt&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Cmd&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Msg&lt;/span&gt; )&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This design keeps all logic about &lt;em&gt;&quot;what happens when event X
-occurs&quot;&lt;/em&gt; in &lt;strong&gt;one place&lt;/strong&gt; — the update function —
-instead of scattering side effects across random
-&lt;code&gt;useEffect&lt;/code&gt;s.&lt;/p&gt;
-&lt;p&gt;It also keeps reducers pure while making &lt;strong&gt;when and what side
-effects happen&lt;/strong&gt; explicit and interpretable by a runtime.&lt;/p&gt;
-&lt;p&gt;React&#39;s docs echo this philosophy: effects should be an &lt;em&gt;escape
-hatch&lt;/em&gt;, not the default — see &lt;a
-href=&quot;https://react.dev/learn/you-might-not-need-an-effect&quot;&gt;You Might
-Not Need an Effect&lt;/a&gt;.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;If you want to see how this kind of modeling makes UI logic elegant
-and maintainable, check out David Khourshid&#39;s classic post &lt;a
-href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;&lt;strong&gt;&quot;No,
-disabling a button is not app logic.&quot;&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;so-why-another-elm-style-reducer&quot;&gt;So why &lt;em&gt;another&lt;/em&gt;
-Elm-style reducer?&lt;/h2&gt;
-&lt;p&gt;The author wanted a variant with different trade-offs:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Some are archived.&lt;/strong&gt; For example, &lt;a
-href=&quot;https://github.com/davidkpiano/useEffectReducer&quot;&gt;&lt;code&gt;useEffectReducer&lt;/code&gt;&lt;/a&gt;
-and &lt;a
-href=&quot;https://github.com/soywod/react-use-bireducer&quot;&gt;&lt;code&gt;react-use-bireducer&lt;/code&gt;&lt;/a&gt;
-are now read-only.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Keep it tiny.&lt;/strong&gt; Fits in one file with almost no
-dependencies — copy, tweak, or delete it whenever you want.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Effects as plain objects + separate interpreter.&lt;/strong&gt;
-Returns serializable effect descriptors and implements the actual effect
-logic in one dedicated place. It&#39;s easier to test reducers (assert on
-descriptors) without invoking real side effects.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Lower the barrier.&lt;/strong&gt; The goal is to make the
-Elm-style approach approachable without requiring deep knowledge of
-Elm&#39;s &lt;code&gt;Cmd Msg&lt;/code&gt; system or learning a full-blown state machine
-library like &lt;a href=&quot;https://xstate.js.org/&quot;&gt;XState&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;example-usage&quot;&gt;Example usage&lt;/h2&gt;
-&lt;p&gt;The article reimplements the example from David Khourshid&#39;s article
-&lt;a
-href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;&lt;strong&gt;&quot;No,
-disabling a button is not app logic.&quot;&lt;/strong&gt;&lt;/a&gt; using
-&lt;code&gt;useEffectReducer&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Both implementations are available on GitHub:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;useEffectReducer version:&lt;/strong&gt; &lt;a
-href=&quot;https://github.com/bolasblack/react-components/blob/eb47a2416e8cc95bb4fa7e6fbf776ac2432a2468/packages/useEffectReducer/src/useEffectReducer.stories.tsx#L121-L203&quot;&gt;useEffectReducer.stories.tsx
-→ L121–203&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;useReducer version:&lt;/strong&gt; &lt;a
-href=&quot;https://github.com/bolasblack/react-components/blob/eb47a2416e8cc95bb4fa7e6fbf776ac2432a2468/packages/useEffectReducer/src/useEffectReducer.stories.tsx#L24-L119&quot;&gt;useEffectReducer.stories.tsx
-→ L24–119&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;related-work&quot;&gt;Related work&lt;/h2&gt;
-&lt;p&gt;Excellent existing takes on bringing &lt;strong&gt;Elm-style &quot;state +
-effects&quot; reducers&lt;/strong&gt; into React:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/davidkpiano/useEffectReducer&quot;&gt;&lt;code&gt;davidkpiano/useEffectReducer&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— by &lt;em&gt;David Khourshid&lt;/em&gt;; archived&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/soywod/react-use-bireducer&quot;&gt;&lt;code&gt;soywod/react-use-bireducer&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— returns &lt;code&gt;[state, effects]&lt;/code&gt; and processes effects through a
-separate effect reducer; archived&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/ncthbrt/react-use-elmish&quot;&gt;&lt;code&gt;ncthbrt/react-use-elmish&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— Elmish-style hook combining reducer logic with async helpers&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/redux-loop/redux-loop&quot;&gt;&lt;code&gt;redux-loop&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— Redux enhancer adding Elm-like effect tuples&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/dai-shi/use-reducer-async&quot;&gt;&lt;code&gt;dai-shi/use-reducer-async&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— extends &lt;code&gt;dispatch&lt;/code&gt; for async actions&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://gist.github.com/sophiebits/145c47544430c82abd617c9cdebefee8&quot;&gt;&lt;code&gt;useReducerWithEmitEffect&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— Sophie Alpert&#39;s gist that inspired much of this work&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;good-articles&quot;&gt;Good Articles&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Christian Ekrem - &quot;&lt;a
-href=&quot;https://cekrem.github.io/posts/chapter-2-take-2/&quot;&gt;Chapter 2, Take
-2: Why I Changed Course&lt;/a&gt;&quot;&lt;/li&gt;
-&lt;li&gt;David Khourshid – &quot;&lt;a
-href=&quot;https://dev.to/davidkpiano/redux-is-half-of-a-pattern-1-2-1hd7&quot;&gt;Redux
-is half of a pattern (1/2)&lt;/a&gt;&quot;&lt;/li&gt;
-&lt;li&gt;David Khourshid – &quot;&lt;a
-href=&quot;https://medium.com/@DavidKPiano/there-are-so-many-fundamental-misunderstandings-about-xstate-and-state-machines-in-general-in-13aec57d2f85&quot;&gt;There
-are so many fundamental misunderstandings about XState (and state
-machines in general)&lt;/a&gt;&quot;&lt;/li&gt;
-&lt;li&gt;David Khourshid – &quot;&lt;a
-href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;No,
-disabling a button is not app logic.&lt;/a&gt;&quot;&lt;/li&gt;
-&lt;li&gt;React docs – &quot;&lt;a
-href=&quot;https://react.dev/learn/you-might-not-need-an-effect&quot;&gt;You Might
-Not Need an Effect&lt;/a&gt;&quot;&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="architecture" />
-    
-
-    
-    <category term="architecture" />
-    
-    <category term="React" />
-    
-    <category term="Elm" />
-    
-    <category term="Redux" />
     
   </entry>
   

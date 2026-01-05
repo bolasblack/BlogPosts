@@ -216,9 +216,36 @@
     (str "data." lang)
     "data"))
 
-(defn generate-posts-json-for-lang [all-posts lang]
+(defn build-translations-map [all-posts]
+  "Build a map of post id -> [posts with same id but different langs]"
+  (group-by :id all-posts))
+
+(defn find-translations [post translations-map]
+  "Find all translations for a post (other language versions)"
+  (let [same-id-posts (get translations-map (:id post) [])
+        other-langs (filter #(not= (:lang %) (:lang post)) same-id-posts)]
+    (mapv (fn [p]
+            {:lang (:lang p)
+             :title (:title p)
+             :path (:path p)
+             :url (:url p)
+             :tags (:tags p)
+             :data-file (str (data-dir-name (:lang p)) "/index.json")})
+          other-langs)))
+
+(defn add-translations-to-posts [posts translations-map]
+  "Add translations field to each post"
+  (mapv (fn [post]
+          (let [translations (find-translations post translations-map)]
+            (if (seq translations)
+              (assoc post :translations translations)
+              post)))
+        posts))
+
+(defn generate-posts-json-for-lang [all-posts translations-map lang]
   "Generate paginated JSON files for posts of a specific language"
-  (let [posts (filter #(= (:lang %) lang) all-posts)
+  (let [posts-raw (filter #(= (:lang %) lang) all-posts)
+        posts (add-translations-to-posts posts-raw translations-map)
         total-posts (count posts)
         pages (paginate posts posts-per-page)
         total-pages (count pages)
@@ -272,8 +299,9 @@
 (defn generate-posts-json []
   "Generate paginated JSON files for posts, grouped by language"
   (let [all-posts (get-all-posts)
+        translations-map (build-translations-map all-posts)
         langs (distinct (map :lang all-posts))
-        results (keep #(generate-posts-json-for-lang all-posts %) langs)]
+        results (keep #(generate-posts-json-for-lang all-posts translations-map %) langs)]
     (doseq [{:keys [lang pages tags]} results]
       (println (str "Generated " pages " page files + " tags " tag files in " (data-dir-name lang) "/ directory")))))
 
