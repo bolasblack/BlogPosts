@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xml" href="https://github.com/bolasblack/BlogPosts/blob/master/_meta/feed.xslt.xml"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
-  <link href="https://plafer.info/" rel="self" type="application/atom+xml" />
-  <link href="https://plafer.info/" rel="alternate" type="text/html" hreflang="en" />
+  <link href="https://blog.c4605.com/" rel="self" type="application/atom+xml" />
+  <link href="https://blog.c4605.com/" rel="alternate" type="text/html" hreflang="en" />
   <updated>2026-01-05T10:05:48Z</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta/</id>
   <title type="html">c4605&#39;s blog</title>
@@ -16,11 +16,11 @@
   
   <entry xml:lang="en">
     <title type="html">The Bitcoin Wallet Extensions Ecosystem is a Mess: A Developer&#39;s Rant</title>
-    <link href="https://plafer.info/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md" rel="alternate" type="text/html" title="The Bitcoin Wallet Extensions Ecosystem is a Mess: A Developer&#39;s Rant" />
+    <link href="https://blog.c4605.com/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md" rel="alternate" type="text/html" title="The Bitcoin Wallet Extensions Ecosystem is a Mess: A Developer&#39;s Rant" />
     <published>2026-01-03T00:00:00Z</published>
     <updated>2026-01-05T10:05:48Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess</id>
-    <content type="html" xml:base="https://plafer.info/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md">&lt;p&gt;If you&#39;re building a Bitcoin dApp, you&#39;ve probably already discovered
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md">&lt;p&gt;If you&#39;re building a Bitcoin dApp, you&#39;ve probably already discovered
 that the Bitcoin community&#39;s ecosystem is an absolute dumpster fire.&lt;/p&gt;
 &lt;p&gt;The simplest example is Bitcoin wallets. Everyone seems eager to
 create standards for others, but nobody seems eager to actually
@@ -180,11 +180,11 @@ Repository&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
   
   <entry xml:lang="en">
     <title type="html">I Moved My Config Sharing Repo to LLM-oriented Mode</title>
-    <link href="https://plafer.info/#/goto/articles/2026-01-02-moved-to-llm-oriented.en.md" rel="alternate" type="text/html" title="I Moved My Config Sharing Repo to LLM-oriented Mode" />
+    <link href="https://blog.c4605.com/#/goto/articles/2026-01-02-moved-to-llm-oriented.en.md" rel="alternate" type="text/html" title="I Moved My Config Sharing Repo to LLM-oriented Mode" />
     <published>2026-01-02T00:00:00Z</published>
     <updated>2026-01-05T10:05:48Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented</id>
-    <content type="html" xml:base="https://plafer.info/#/goto/articles/2026-01-02-moved-to-llm-oriented.en.md">&lt;h2 id=&quot;what-is-llm-oriented-config-sharing&quot;&gt;What is &quot;LLM-oriented
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-02-moved-to-llm-oriented.en.md">&lt;h2 id=&quot;what-is-llm-oriented-config-sharing&quot;&gt;What is &quot;LLM-oriented
 Config Sharing&quot;?&lt;/h2&gt;
 &lt;p&gt;Simply put, config sharing projects provide &lt;a
 href=&quot;https://llmstxt.org/&quot;&gt;llms.txt&lt;/a&gt;, and consumers use it to let
@@ -374,11 +374,11 @@ practices with new tools.&lt;/p&gt;
   
   <entry xml:lang="en">
     <title type="html">I built (another) Elm-style useEffectReducer hook for React</title>
-    <link href="https://plafer.info/#/goto/articles/2025-11-12-elm-style-useeffectreducer-hook-for-react.en.md" rel="alternate" type="text/html" title="I built (another) Elm-style useEffectReducer hook for React" />
+    <link href="https://blog.c4605.com/#/goto/articles/2025-11-12-elm-style-useeffectreducer-hook-for-react.en.md" rel="alternate" type="text/html" title="I built (another) Elm-style useEffectReducer hook for React" />
     <published>2025-11-12T00:00:00Z</published>
     <updated>2026-01-05T10:05:48Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react</id>
-    <content type="html" xml:base="https://plafer.info/#/goto/articles/2025-11-12-elm-style-useeffectreducer-hook-for-react.en.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2025-11-12-elm-style-useeffectreducer-hook-for-react.en.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a
 href=&quot;https://github.com/bolasblack/react-components/tree/develop/packages/useEffectReducer&quot;&gt;bolasblack/react-components/tree/develop/packages/useEffectReducer&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;what-is-elm-style&quot;&gt;What is &quot;Elm-style&quot;?&lt;/h2&gt;
 &lt;p&gt;Elm popularized the &lt;strong&gt;Model-View-Update&lt;/strong&gt; pattern, where
