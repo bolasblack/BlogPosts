@@ -3,7 +3,7 @@
     "total-posts" : 22,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-05T13:22:32.759438588Z"
+    "generated-at" : "2026-01-05T20:50:46.786901711Z"
   },
   "pagination" : {
     "current-page" : 1,
@@ -13,21 +13,21 @@
     "next-file" : "page-2.json"
   },
   "posts" : [ {
-    "path" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md",
+    "path" : "2026-01-02-moved-to-llm-oriented.md",
     "updated-at" : "2026-01-05T10:05:48Z",
-    "tags" : [ "Bitcoin", "钱包", "dApp", "Web3" ],
-    "date" : "2026-01-03",
-    "title" : "比特币钱包生态有多土狗：从开始到放弃",
+    "tags" : [ "LLM", "工具配置", "ESLint", "npm" ],
+    "date" : "2026-01-02",
+    "title" : "我把我的配置共享仓库转移到了 LLM-oriented 模式",
     "lang" : null,
-    "id" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md",
-    "created-at" : "2026-01-03T00:00:00Z",
+    "id" : "2026-01-02-moved-to-llm-oriented",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.md",
+    "created-at" : "2026-01-02T00:00:00Z",
     "translations" : [ {
       "lang" : "en",
-      "title" : "The Bitcoin Wallet Extensions Ecosystem is a Mess: A Developer's Rant",
-      "path" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md",
-      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md",
-      "tags" : [ "Bitcoin", "wallet", "dApp", "Web3" ],
+      "title" : "I Moved My Config Sharing Repo to LLM-oriented Mode",
+      "path" : "2026-01-02-moved-to-llm-oriented.en.md",
+      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.en.md",
+      "tags" : [ "LLM", "tooling", "ESLint", "npm" ],
       "data-file" : "data.en/index.json"
     } ]
   }, {
@@ -49,92 +49,92 @@
       "data-file" : "data.en/index.json"
     } ]
   }, {
-    "path" : "2026-01-02-moved-to-llm-oriented.md",
+    "path" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md",
     "updated-at" : "2026-01-05T10:05:48Z",
-    "tags" : [ "LLM", "工具配置", "ESLint", "npm" ],
-    "date" : "2026-01-02",
-    "title" : "我把我的配置共享仓库转移到了 LLM-oriented 模式",
+    "tags" : [ "Bitcoin", "钱包", "dApp", "Web3" ],
+    "date" : "2026-01-03",
+    "title" : "比特币钱包生态有多土狗：从开始到放弃",
     "lang" : null,
-    "id" : "2026-01-02-moved-to-llm-oriented",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.md",
-    "created-at" : "2026-01-02T00:00:00Z",
+    "id" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md",
+    "created-at" : "2026-01-03T00:00:00Z",
     "translations" : [ {
       "lang" : "en",
-      "title" : "I Moved My Config Sharing Repo to LLM-oriented Mode",
-      "path" : "2026-01-02-moved-to-llm-oriented.en.md",
-      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.en.md",
-      "tags" : [ "LLM", "tooling", "ESLint", "npm" ],
+      "title" : "The Bitcoin Wallet Extensions Ecosystem is a Mess: A Developer's Rant",
+      "path" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md",
+      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md",
+      "tags" : [ "Bitcoin", "wallet", "dApp", "Web3" ],
       "data-file" : "data.en/index.json"
     } ]
   }, {
-    "path" : "2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md",
+    "path" : "2014-08-21-Audio_标签的若干个坑.md",
     "updated-at" : "2026-01-04T21:17:00Z",
-    "tags" : [ "JavaScript", "Array", "__proto__", "isArray", "构造器", "jQuery" ],
-    "date" : "2014-05-09",
-    "title" : "如何让一个非数组构造器骗过浏览器和框架",
+    "tags" : [ "HTML5" ],
+    "date" : "2014-08-21",
+    "title" : "Audio 标签的若干个坑",
     "lang" : null,
-    "id" : "2014-05-09-如何让一个非数组构造器骗过浏览器和框架",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md",
-    "created-at" : "2014-05-09T00:00:00Z"
+    "id" : "2014-08-21-Audio_标签的若干个坑",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑.md",
+    "created-at" : "2014-08-21T00:00:00Z"
   }, {
-    "path" : "2012-11-28-hello_world.md",
+    "path" : "2013-04-15-Gentoo_安装问题集.md",
     "updated-at" : "2026-01-04T21:17:00Z",
-    "tags" : [ "水" ],
-    "date" : "2012-11-28",
-    "title" : "hello world",
+    "tags" : [ "Gentoo", "安装" ],
+    "date" : "2013-04-15",
+    "title" : "Gentoo 安装问题集",
     "lang" : null,
-    "id" : "2012-11-28-hello_world",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-11-28-hello_world.md",
-    "created-at" : "2012-11-28T00:00:00Z"
+    "id" : "2013-04-15-Gentoo_安装问题集",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集.md",
+    "created-at" : "2013-04-15T00:00:00Z"
   }, {
-    "path" : "2012-12-02-release_backbone.elements.md",
+    "path" : "2012-12-05-Vim_如何成为神器.md",
     "updated-at" : "2026-01-04T21:17:00Z",
-    "tags" : [ "代码", "backbone", "coffeescript", "github" ],
-    "date" : "2012-12-02",
-    "title" : "正式的发布了一个小项目",
+    "tags" : [ "编辑器", "Vim", "神器" ],
+    "date" : "2012-12-05",
+    "title" : "Vim 如何成为神器",
     "lang" : null,
-    "id" : "2012-12-02-release_backbone.elements",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-02-release_backbone.elements.md",
-    "created-at" : "2012-12-02T00:00:00Z"
+    "id" : "2012-12-05-Vim_如何成为神器",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器.md",
+    "created-at" : "2012-12-05T00:00:00Z"
   }, {
-    "path" : "2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md",
+    "path" : "2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md",
     "updated-at" : "2026-01-04T21:17:00Z",
-    "tags" : [ "编辑器", "Vim", "Shell" ],
-    "date" : "2013-02-24",
-    "title" : "为什么我喜欢在 Terminal 里使用 Vim",
+    "tags" : [ "JavaScript" ],
+    "date" : "2014-07-01",
+    "title" : "Socket.io 如何切换 Namespace 和 querystring",
     "lang" : null,
-    "id" : "2013-02-24-为什么我喜欢在_Terminal_里使用_Vim",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2013-02-24-为什么我喜欢在_Terminal_里使用_Vim.md",
-    "created-at" : "2013-02-24T00:00:00Z"
+    "id" : "2014-07-01-Socket.io_如何切换_Namespace_和_querystring",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md",
+    "created-at" : "2014-07-01T00:00:00Z"
   }, {
-    "path" : "2012-12-13-吐槽淘宝开放平台的_API.md",
-    "updated-at" : "2026-01-04T21:17:00Z",
-    "tags" : [ "吐槽", "淘宝", "开放平台", "api" ],
-    "date" : "2012-12-13",
-    "title" : "吐槽淘宝开放平台的API",
-    "lang" : null,
-    "id" : "2012-12-13-吐槽淘宝开放平台的_API",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2012-12-13-吐槽淘宝开放平台的_API.md",
-    "created-at" : "2012-12-13T00:00:00Z"
-  }, {
-    "path" : "2011-04-20-定制你的_zsh_命令提示符.md",
-    "updated-at" : "2026-01-04T21:17:00Z",
-    "tags" : [ "Linux", "zsh", "命令提示符" ],
-    "date" : "2011-04-20",
-    "title" : "定制你的 zsh 命令提示符",
-    "lang" : null,
-    "id" : "2011-04-20-定制你的_zsh_命令提示符",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2011-04-20-定制你的_zsh_命令提示符.md",
-    "created-at" : "2011-04-20T00:00:00Z"
-  }, {
-    "path" : "2020-05-05-TypeScript_如何真正_keyof_一个枚举.md",
+    "path" : "2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md",
     "updated-at" : "2026-01-04T21:17:00Z",
     "tags" : [ "TypeScript", "枚举" ],
-    "date" : "2020-05-05",
-    "title" : "TypeScript 如何真正 keyof 一个枚举",
+    "date" : "2020-05-01",
+    "title" : "尝试用 TypeScript 模拟一个带 Payload 的枚举",
     "lang" : null,
-    "id" : "2020-05-05-TypeScript_如何真正_keyof_一个枚举",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举.md",
-    "created-at" : "2020-05-05T00:00:00Z"
+    "id" : "2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md",
+    "created-at" : "2020-05-01T00:00:00Z"
+  }, {
+    "path" : "2014-03-27-AngularJS_使用笔记.md",
+    "updated-at" : "2026-01-04T21:17:00Z",
+    "tags" : [ "JavaScript" ],
+    "date" : "2014-03-27",
+    "title" : "AngularJS 使用笔记",
+    "lang" : null,
+    "id" : "2014-03-27-AngularJS_使用笔记",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md",
+    "created-at" : "2014-03-27T00:00:00Z"
+  }, {
+    "path" : "2015-01-30-Gentoo_上部署_ocserv.md",
+    "updated-at" : "2026-01-04T21:17:00Z",
+    "tags" : [ "科学上网", "gentoo", "ocserv", "iOS" ],
+    "date" : "2015-01-30",
+    "title" : "Gentoo 上部署 ocserv",
+    "lang" : null,
+    "id" : "2015-01-30-Gentoo_上部署_ocserv",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2015-01-30-Gentoo_上部署_ocserv.md",
+    "created-at" : "2015-01-30T00:00:00Z"
   } ]
 }
