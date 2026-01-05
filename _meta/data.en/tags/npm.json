@@ -3,13 +3,13 @@
     "total-posts" : 3,
     "total-pages" : 1,
     "per-page" : 10,
-    "generated-at" : "2026-01-05T10:05:48.679744749Z"
+    "generated-at" : "2026-01-05T10:12:44.392703796Z"
   },
   "tag" : "npm",
   "count" : 1,
   "posts" : [ {
     "path" : "2026-01-02-moved-to-llm-oriented.en.md",
-    "updated-at" : "2026-01-02T00:00:00Z",
+    "updated-at" : "2026-01-05T10:05:48Z",
     "tags" : [ "LLM", "tooling", "ESLint", "npm" ],
     "date" : "2026-01-02",
     "title" : "I Moved My Config Sharing Repo to LLM-oriented Mode",

@@ -3,13 +3,13 @@
     "total-posts" : 22,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-05T10:05:48.672441539Z"
+    "generated-at" : "2026-01-05T10:12:44.396456089Z"
   },
   "tag" : "Redux",
   "count" : 1,
   "posts" : [ {
     "path" : "2025-11-12-elm-style-useeffectreducer-hook-for-react.md",
-    "updated-at" : "2025-11-12T00:00:00Z",
+    "updated-at" : "2026-01-05T10:05:48Z",
     "tags" : [ "架构", "React", "Elm", "Redux" ],
     "date" : "2025-11-12",
     "title" : "我搞了一个 Elm 风格的 useEffectReducer hook",

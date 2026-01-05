@@ -3,13 +3,13 @@
     "total-posts" : 3,
     "total-pages" : 1,
     "per-page" : 10,
-    "generated-at" : "2026-01-05T10:05:48.679744749Z"
+    "generated-at" : "2026-01-05T10:12:44.392703796Z"
   },
   "tag" : "wallet",
   "count" : 1,
   "posts" : [ {
     "path" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md",
-    "updated-at" : "2026-01-03T00:00:00Z",
+    "updated-at" : "2026-01-05T10:05:48Z",
     "tags" : [ "Bitcoin", "wallet", "dApp", "Web3" ],
     "date" : "2026-01-03",
     "title" : "The Bitcoin Wallet Extensions Ecosystem is a Mess: A Developer's Rant",
