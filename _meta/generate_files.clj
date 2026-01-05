@@ -6,7 +6,8 @@
             [clojure.string :as str]
             [selmer.parser :as selmer]
             [clj-yaml.core :as yaml]
-            [cheshire.core :as json])
+            [cheshire.core :as json]
+            [com.grzm.uri-template :as uri-template])
   (:import [java.time ZonedDateTime LocalDate ZoneId]
            [java.time.format DateTimeFormatter]))
 
@@ -31,6 +32,7 @@
        {:extname (get settings :extname ".md")
         :github-repo (get settings :github_repo)
         :url (get settings :url)
+        :article-url (get settings :article_url)
         :title (get settings :title)
         :description (get settings :description "")
         :lang (get settings :lang)
@@ -104,11 +106,72 @@
       {:meta {}
        :content (str/trim content)})))
 
+(defn expand-uri-template
+  "Expand a RFC 6570 URI Template with given variables using uri-template library"
+  [template vars]
+  (let [;; Convert keyword keys to strings for uri-template library
+        string-vars (into {} (map (fn [[k v]] [(name k) v]) vars))]
+    (uri-template/expand template string-vars)))
+
+(defn local-article-link?
+  "Check if a link is a local article reference"
+  [href]
+  (and href
+       (or (str/starts-with? href "./")
+           (str/starts-with? href "../")
+           (re-find #"^\d{4}-\d{2}-\d{2}-.*\.md$" href))
+       (str/ends-with? href ".md")))
+
+(defn article-url
+  "Generate article URL using article_url template, or fallback to GitHub URL.
+   If article_url doesn't start with http, it's relative to the url field."
+  [filename lang]
+  (let [settings (read-settings)
+        article-url-template (:article-url settings)
+        base-url (:url settings)]
+    (if article-url-template
+      (let [expanded (expand-uri-template article-url-template
+                                          (cond-> {:mdUrl filename}
+                                            lang (assoc :lang lang)))]
+        (if (str/starts-with? expanded "http")
+          expanded
+          ;; Relative URL - join with base url
+          (let [base (str/replace base-url #"/$" "")
+                path (if (str/starts-with? expanded "/")
+                       expanded
+                       (str "/" expanded))]
+            (str base path))))
+      (post-url filename))))
+
+(defn resolve-article-link
+  "Convert a local article link to a blog URL using article_url template"
+  [href]
+  (let [;; Extract filename from path like ./xxx.md or ../xxx.md
+        filename (-> href (str/replace #"^\.\.?/" ""))
+        settings (read-settings)
+        extname (:extname settings)
+        ;; Parse language from filename
+        lang (parse-lang-from-filename filename extname)]
+    ;; Reuse article-url function which handles relative URLs
+    (article-url filename lang)))
+
+(defn replace-local-article-links
+  "Replace local article links in markdown content with blog URLs"
+  [md-content]
+  ;; Match markdown links: [text](./xxx.md) or [text](xxx.md)
+  (str/replace md-content
+               #"\[([^\]]*)\]\(([^)]+\.md)\)"
+               (fn [[match text href]]
+                 (if (local-article-link? href)
+                   (str "[" text "](" (resolve-article-link href) ")")
+                   match))))
+
 (defn markdown-to-html [md-content]
-  (let [result (sh {:in md-content} "pandoc" "-f" "gfm" "-t" "html")]
+  (let [processed-content (replace-local-article-links md-content)
+        result (sh {:in processed-content} "pandoc" "-f" "gfm" "-t" "html")]
     (if (zero? (:exit result))
       (:out result)
-      md-content)))
+      processed-content)))
 
 (defn ensure-tags-vector [tags]
   "Ensure tags is a vector of strings"
@@ -154,12 +217,13 @@
 (defn get-post-with-content [file-path]
   "Get post with HTML content (for feed generation)"
   (let [metadata (build-post-metadata file-path (slurp file-path))
-        html-content (markdown-to-html (:raw-content metadata))]
+        html-content (markdown-to-html (:raw-content metadata))
+        blog-url (article-url (:path metadata) (:lang metadata))]
     (-> metadata
         (dissoc :raw-content)
         (assoc :content html-content
                :category (first (:tags metadata))
-               :post-url (:url metadata)
+               :post-url blog-url
                :id-url (post-url (:id metadata))))))
 
 (defn get-post-files []

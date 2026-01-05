@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xml" href="https://github.com/bolasblack/BlogPosts/blob/master/_meta/feed.xslt.xml"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh">
-  <link href="http://plafer.info/" rel="self" type="application/atom+xml" />
-  <link href="http://plafer.info/" rel="alternate" type="text/html" hreflang="zh" />
+  <link href="https://plafer.info/" rel="self" type="application/atom+xml" />
+  <link href="https://plafer.info/" rel="alternate" type="text/html" hreflang="zh" />
   <updated>2026-01-05T11:04:28+01:00</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta//</id>
   <title type="html">c4605&#39;s blog</title>
@@ -16,11 +16,11 @@
   
   <entry>
     <title type="html">比特币钱包生态有多土狗：从开始到放弃</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md" rel="alternate" type="text/html" title="比特币钱包生态有多土狗：从开始到放弃" />
+    <link href="https://plafer.info/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md" rel="alternate" type="text/html" title="比特币钱包生态有多土狗：从开始到放弃" />
     <published>2026-01-03T00:00:00+01:00</published>
     <updated>2026-01-05T11:04:28+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md">&lt;p&gt;如果你正在开发一个比特币
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md">&lt;p&gt;如果你正在开发一个比特币
 dApp，你可能已经发现了，比特币社区的生态实在是太土狗了。&lt;/p&gt;
 &lt;p&gt;最简单的例子就是比特币钱包，大家似乎热衷于给其他人制定标准，但大家似乎又不热衷于实现这个标准。&lt;/p&gt;
 &lt;h2 id=&quot;标准什么标准&quot;&gt;&quot;标准&quot;？什么标准？&lt;/h2&gt;
@@ -158,11 +158,11 @@ href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;GitHu
   
   <entry>
     <title type="html">我把我的配置共享仓库转移到了 LLM-oriented 模式</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.md" rel="alternate" type="text/html" title="我把我的配置共享仓库转移到了 LLM-oriented 模式" />
+    <link href="https://plafer.info/#/goto/articles/2026-01-02-moved-to-llm-oriented.md" rel="alternate" type="text/html" title="我把我的配置共享仓库转移到了 LLM-oriented 模式" />
     <published>2026-01-02T00:00:00+01:00</published>
     <updated>2026-01-05T11:04:28+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented.md">&lt;h2 id=&quot;啥是-llm-oriented-的配置共享方案&quot;&gt;啥是 &quot;LLM-oriented
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2026-01-02-moved-to-llm-oriented.md">&lt;h2 id=&quot;啥是-llm-oriented-的配置共享方案&quot;&gt;啥是 &quot;LLM-oriented
 的配置共享方案&quot;&lt;/h2&gt;
 &lt;p&gt;简单来说，就是让配置共享项目提供 &lt;a
 href=&quot;https://llmstxt.org/&quot;&gt;llms.txt&lt;/a&gt; ，使用方依此让 LLM
@@ -325,11 +325,11 @@ diff -&amp;gt; 搞明白啥变了 -&amp;gt; 手动修改 -&amp;gt; 测试验证&
   
   <entry>
     <title type="html">我搞了一个 Elm 风格的 useEffectReducer hook</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react.md" rel="alternate" type="text/html" title="我搞了一个 Elm 风格的 useEffectReducer hook" />
+    <link href="https://plafer.info/#/goto/articles/2025-11-12-elm-style-useeffectreducer-hook-for-react.md" rel="alternate" type="text/html" title="我搞了一个 Elm 风格的 useEffectReducer hook" />
     <published>2025-11-12T00:00:00+01:00</published>
     <updated>2026-01-05T11:04:28+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2025-11-12-elm-style-useeffectreducer-hook-for-react.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a
 href=&quot;https://github.com/bolasblack/react-components/tree/develop/packages/useEffectReducer&quot;&gt;bolasblack/react-components/tree/develop/packages/useEffectReducer&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;什么是-elm-风格&quot;&gt;什么是 &quot;Elm 风格&quot;？&lt;/h2&gt;
 &lt;p&gt;Elm 有一个 &lt;strong&gt;Model-View-Update&lt;/strong&gt;
@@ -454,11 +454,11 @@ Not Need an Effect&lt;/a&gt;&quot;&lt;/li&gt;
   
   <entry>
     <title type="html">如何让一个非数组构造器骗过浏览器和框架</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md" rel="alternate" type="text/html" title="如何让一个非数组构造器骗过浏览器和框架" />
+    <link href="https://plafer.info/#/goto/articles/2014-05-09-%E5%A6%82%E4%BD%95%E8%AE%A9%E4%B8%80%E4%B8%AA%E9%9D%9E%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%99%A8%E9%AA%97%E8%BF%87%E6%B5%8F%E8%A7%88%E5%99%A8%E5%92%8C%E6%A1%86%E6%9E%B6.md" rel="alternate" type="text/html" title="如何让一个非数组构造器骗过浏览器和框架" />
     <published>2014-05-09T00:00:00+02:00</published>
     <updated>2026-01-04T22:14:09+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-05-09-如何让一个非数组构造器骗过浏览器和框架.md">&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2014-05-09-%E5%A6%82%E4%BD%95%E8%AE%A9%E4%B8%80%E4%B8%AA%E9%9D%9E%E6%95%B0%E7%BB%84%E6%9E%84%E9%80%A0%E5%99%A8%E9%AA%97%E8%BF%87%E6%B5%8F%E8%A7%88%E5%99%A8%E5%92%8C%E6%A1%86%E6%9E%B6.md">&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
 class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;var&lt;/span&gt; eve &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt;() {&lt;/span&gt;
 &lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;setArray&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;makeArray&lt;/span&gt;(&lt;span class=&quot;kw&quot;&gt;arguments&lt;/span&gt;))&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
@@ -651,11 +651,11 @@ href=&quot;http://people.mozilla.org/~jorendorff/es6-draft.html&quot;&gt;http://
   
   <entry>
     <title type="html">Vim 如何成为神器</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器.md" rel="alternate" type="text/html" title="Vim 如何成为神器" />
+    <link href="https://plafer.info/#/goto/articles/2012-12-05-Vim_%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E7%A5%9E%E5%99%A8.md" rel="alternate" type="text/html" title="Vim 如何成为神器" />
     <published>2012-12-05T00:00:00+01:00</published>
     <updated>2026-01-04T22:14:09+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2012-12-05-Vim_如何成为神器.md">&lt;p&gt;上网偶然间发现 @玉伯 同学正在广发地图炮轰击众 Vim
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2012-12-05-Vim_%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E7%A5%9E%E5%99%A8.md">&lt;p&gt;上网偶然间发现 @玉伯 同学正在广发地图炮轰击众 Vim
 党，作为一个从来不忠实的 Vim/Emacs
 众，遂围观，顺藤摸瓜的发现一些不错的东西。&lt;/p&gt;
 &lt;ul&gt;
@@ -694,11 +694,11 @@ Ruby、Markdown 就知道这些蛋疼的编辑器有多消耗人生了。&lt;/p&
   
   <entry>
     <title type="html">无固有尺寸的 SVG 图片在各浏览器中的渲染尺寸问题</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题.md" rel="alternate" type="text/html" title="无固有尺寸的 SVG 图片在各浏览器中的渲染尺寸问题" />
+    <link href="https://plafer.info/#/goto/articles/2020-04-09-%E6%97%A0%E5%9B%BA%E6%9C%89%E5%B0%BA%E5%AF%B8%E7%9A%84_SVG_%E5%9B%BE%E7%89%87%E5%9C%A8%E5%90%84%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E7%9A%84%E6%B8%B2%E6%9F%93%E5%B0%BA%E5%AF%B8%E9%97%AE%E9%A2%98.md" rel="alternate" type="text/html" title="无固有尺寸的 SVG 图片在各浏览器中的渲染尺寸问题" />
     <published>2020-04-09T00:00:00+02:00</published>
     <updated>2026-01-04T22:14:09+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2020-04-09-无固有尺寸的_SVG_图片在各浏览器中的渲染尺寸问题.md">&lt;h2 id=&quot;故事&quot;&gt;故事&lt;/h2&gt;
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2020-04-09-%E6%97%A0%E5%9B%BA%E6%9C%89%E5%B0%BA%E5%AF%B8%E7%9A%84_SVG_%E5%9B%BE%E7%89%87%E5%9C%A8%E5%90%84%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E7%9A%84%E6%B8%B2%E6%9F%93%E5%B0%BA%E5%AF%B8%E9%97%AE%E9%A2%98.md">&lt;h2 id=&quot;故事&quot;&gt;故事&lt;/h2&gt;
 &lt;p&gt;公司同事在做图片预览功能时发现，很多 SVG 图片在 Firefox 下通过
 &lt;code&gt;img&lt;/code&gt;
 标签加载成功后，&lt;code&gt;naturalWidth&lt;/code&gt;/&lt;code&gt;naturalHeight&lt;/code&gt; 是
@@ -844,11 +844,11 @@ role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
   
   <entry>
     <title type="html">Socket.io 如何切换 Namespace 和 querystring</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md" rel="alternate" type="text/html" title="Socket.io 如何切换 Namespace 和 querystring" />
+    <link href="https://plafer.info/#/goto/articles/2014-07-01-Socket.io_%E5%A6%82%E4%BD%95%E5%88%87%E6%8D%A2_Namespace_%E5%92%8C_querystring.md" rel="alternate" type="text/html" title="Socket.io 如何切换 Namespace 和 querystring" />
     <published>2014-07-01T00:00:00+02:00</published>
     <updated>2026-01-04T22:14:09+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md">&lt;p&gt;目前的 Socket.io
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2014-07-01-Socket.io_%E5%A6%82%E4%BD%95%E5%88%87%E6%8D%A2_Namespace_%E5%92%8C_querystring.md">&lt;p&gt;目前的 Socket.io
 的情况似乎是，当我发起过一次连接后，接下来的所有新连接的 namespace 和
 query 等内容都会使用第一次的配置，蛋疼无比。&lt;/p&gt;
 &lt;p&gt;看了下代码，然后又尝试了一些时间，找出了办法：&lt;/p&gt;
@@ -879,11 +879,11 @@ class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javas
   
   <entry>
     <title type="html">Audio 标签的若干个坑</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑.md" rel="alternate" type="text/html" title="Audio 标签的若干个坑" />
+    <link href="https://plafer.info/#/goto/articles/2014-08-21-Audio_%E6%A0%87%E7%AD%BE%E7%9A%84%E8%8B%A5%E5%B9%B2%E4%B8%AA%E5%9D%91.md" rel="alternate" type="text/html" title="Audio 标签的若干个坑" />
     <published>2014-08-21T00:00:00+02:00</published>
     <updated>2026-01-04T22:14:09+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2014-08-21-Audio_标签的若干个坑.md">&lt;p&gt;这两天写了一点和 &lt;code&gt;Audio&lt;/code&gt;
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2014-08-21-Audio_%E6%A0%87%E7%AD%BE%E7%9A%84%E8%8B%A5%E5%B9%B2%E4%B8%AA%E5%9D%91.md">&lt;p&gt;这两天写了一点和 &lt;code&gt;Audio&lt;/code&gt;
 标签相关的代码，于是就被浏览器坑的昏天暗地，在这里做个笔记&lt;/p&gt;
 &lt;h2 id=&quot;状态码&quot;&gt;状态码&lt;/h2&gt;
 &lt;p&gt;Chrome, Safari, Firefox 实现的 &lt;code&gt;Audio&lt;/code&gt;
@@ -941,11 +941,11 @@ href=&quot;http://www.w3.org/TR/html5/embedded-content-0.html#playing-the-media-
   
   <entry>
     <title type="html">OS X 下推荐的一些命令行工具</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具.md" rel="alternate" type="text/html" title="OS X 下推荐的一些命令行工具" />
+    <link href="https://plafer.info/#/goto/articles/2015-04-21-OS_X_%E4%B8%8B%E4%B8%80%E6%8E%A8%E8%8D%90%E7%9A%84%E4%B8%80%E4%BA%9B%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7.md" rel="alternate" type="text/html" title="OS X 下推荐的一些命令行工具" />
     <published>2015-04-21T00:00:00+02:00</published>
     <updated>2026-01-04T22:14:09+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2015-04-21-OS_X_下一推荐的一些命令行工具.md">&lt;p&gt;太常见的我就不记录了：&lt;/p&gt;
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2015-04-21-OS_X_%E4%B8%8B%E4%B8%80%E6%8E%A8%E8%8D%90%E7%9A%84%E4%B8%80%E4%BA%9B%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7.md">&lt;p&gt;太常见的我就不记录了：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://brew.sh/&quot;&gt;homebrew&lt;/a&gt;
 这个不用多作介绍，之所以列出来主要是为了列一些扩展工具
@@ -1005,11 +1005,11 @@ href=&quot;https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard&quot;&gt;reatt
   
   <entry>
     <title type="html">Gentoo 安装问题集</title>
-    <link href="https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集.md" rel="alternate" type="text/html" title="Gentoo 安装问题集" />
+    <link href="https://plafer.info/#/goto/articles/2013-04-15-Gentoo_%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98%E9%9B%86.md" rel="alternate" type="text/html" title="Gentoo 安装问题集" />
     <published>2013-04-15T00:00:00+02:00</published>
     <updated>2026-01-04T22:14:09+01:00</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集</id>
-    <content type="html" xml:base="https://github.com/bolasblack/BlogPosts/blob/master/2013-04-15-Gentoo_安装问题集.md">&lt;p&gt;虽说我一直在用 Archlinux
+    <content type="html" xml:base="https://plafer.info/#/goto/articles/2013-04-15-Gentoo_%E5%AE%89%E8%A3%85%E9%97%AE%E9%A2%98%E9%9B%86.md">&lt;p&gt;虽说我一直在用 Archlinux
 ，但是对于一个没什么立场的人来说，“换个东西玩玩”的想法永远比“不折腾”要来的有诱惑力的多。&lt;/p&gt;
 &lt;p&gt;顺便吐个槽，Gentoo
 的官方中文文档虽说好像该有的都有，但是总是在关键的时候对比英文文档差了一些啊。&lt;/p&gt;
