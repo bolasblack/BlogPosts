@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <link href="https://blog.c4605.com/" rel="self" type="application/atom+xml" />
   <link href="https://blog.c4605.com/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2026-01-11T18:13:19Z</updated>
+  <updated>2026-01-11T18:30:55Z</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta/</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
@@ -18,7 +18,7 @@
     <title type="html">Bitcoin Wallet Connector: Probably the Best Bitcoin Wallet Adapter Currently</title>
     <link href="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.en.md" rel="alternate" type="text/html" title="Bitcoin Wallet Connector: Probably the Best Bitcoin Wallet Adapter Currently" />
     <published>2026-01-06T00:00:00Z</published>
-    <updated>2026-01-11T18:13:19Z</updated>
+    <updated>2026-01-11T18:30:55Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction</id>
     <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.en.md">&lt;p&gt;Clickbait intended 🤪&lt;/p&gt;
 &lt;p&gt;In the &lt;a
@@ -314,11 +314,11 @@ for detailed contribution guidelines.&lt;/p&gt;
 welcome!&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;GitHub: &lt;a
-href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;https://github.com/bolasblack/bitcoin-wallet-connector&lt;/a&gt;&lt;/li&gt;
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;&lt;span&gt;https://github.com/bolasblack/bitcoin-wallet-connector&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Demo: &lt;a
-href=&quot;https://bitcoin-wallet-connector.netlify.app/&quot;&gt;https://bitcoin-wallet-connector.netlify.app/&lt;/a&gt;&lt;/li&gt;
+href=&quot;https://bitcoin-wallet-connector.netlify.app/&quot;&gt;&lt;span&gt;https://bitcoin-wallet-connector.netlify.app/&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;npm: &lt;a
-href=&quot;https://www.npmjs.com/package/bitcoin-wallet-connector&quot;&gt;https://www.npmjs.com/package/bitcoin-wallet-connector&lt;/a&gt;&lt;/li&gt;
+href=&quot;https://www.npmjs.com/package/bitcoin-wallet-connector&quot;&gt;&lt;span&gt;https://www.npmjs.com/package/bitcoin-wallet-connector&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
 

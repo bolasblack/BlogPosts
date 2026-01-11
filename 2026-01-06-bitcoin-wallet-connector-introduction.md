@@ -261,6 +261,6 @@ pnpm add @leather.io/rpc   # Leather
 
 项目完全开源（MIT），欢迎 Star 和贡献！
 
-- GitHub: https://github.com/bolasblack/bitcoin-wallet-connector
-- Demo: https://bitcoin-wallet-connector.netlify.app/
-- npm: https://www.npmjs.com/package/bitcoin-wallet-connector
+- GitHub: [https://github.com/bolasblack/bitcoin-wallet-connector](https://github.com/bolasblack/bitcoin-wallet-connector)
+- Demo: [https://bitcoin-wallet-connector.netlify.app/](https://bitcoin-wallet-connector.netlify.app/)
+- npm: [https://www.npmjs.com/package/bitcoin-wallet-connector](https://www.npmjs.com/package/bitcoin-wallet-connector)

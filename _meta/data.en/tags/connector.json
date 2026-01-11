@@ -3,13 +3,13 @@
     "total-posts" : 4,
     "total-pages" : 1,
     "per-page" : 10,
-    "generated-at" : "2026-01-11T18:30:55.929429201Z"
+    "generated-at" : "2026-01-11T18:56:04.359308834Z"
   },
   "tag" : "Connector",
   "count" : 1,
   "posts" : [ {
     "path" : "2026-01-06-bitcoin-wallet-connector-introduction.en.md",
-    "updated-at" : "2026-01-11T18:13:19Z",
+    "updated-at" : "2026-01-11T18:30:55Z",
     "tags" : [ "Bitcoin", "Wallet", "Connector", "Adapter", "React", "TypeScript" ],
     "date" : "2026-01-06",
     "title" : "Bitcoin Wallet Connector: Probably the Best Bitcoin Wallet Adapter Currently",

@@ -263,6 +263,6 @@ See [CONTRIBUTING.md](https://github.com/bolasblack/bitcoin-wallet-connector/blo
 
 The project is fully open source (MIT). Stars and contributions are welcome!
 
-- GitHub: https://github.com/bolasblack/bitcoin-wallet-connector
-- Demo: https://bitcoin-wallet-connector.netlify.app/
-- npm: https://www.npmjs.com/package/bitcoin-wallet-connector
+- GitHub: [https://github.com/bolasblack/bitcoin-wallet-connector](https://github.com/bolasblack/bitcoin-wallet-connector)
+- Demo: [https://bitcoin-wallet-connector.netlify.app/](https://bitcoin-wallet-connector.netlify.app/)
+- npm: [https://www.npmjs.com/package/bitcoin-wallet-connector](https://www.npmjs.com/package/bitcoin-wallet-connector)
