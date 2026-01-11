@@ -1,13 +1,31 @@
 {
   "meta" : {
-    "total-posts" : 22,
+    "total-posts" : 23,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-05T20:51:54.573975838Z"
+    "generated-at" : "2026-01-11T18:13:19.537086744Z"
   },
   "tag" : "Bitcoin",
-  "count" : 1,
+  "count" : 2,
   "posts" : [ {
+    "path" : "2026-01-06-bitcoin-wallet-connector-introduction.md",
+    "updated-at" : "2026-01-06T00:00:00Z",
+    "tags" : [ "Bitcoin", "Wallet", "Connector", "Adapter", "React", "TypeScript" ],
+    "date" : "2026-01-06",
+    "title" : "Bitcoin Wallet Connector: 可能是目前最好用的比特币钱包适配器",
+    "lang" : null,
+    "id" : "2026-01-06-bitcoin-wallet-connector-introduction",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction.md",
+    "created-at" : "2026-01-06T00:00:00Z",
+    "translations" : [ {
+      "lang" : "en",
+      "title" : "Bitcoin Wallet Connector: Probably the Best Bitcoin Wallet Adapter Currently",
+      "path" : "2026-01-06-bitcoin-wallet-connector-introduction.en.md",
+      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction.en.md",
+      "tags" : [ "Bitcoin", "Wallet", "Connector", "Adapter", "React", "TypeScript" ],
+      "data-file" : "data.en/index.json"
+    } ]
+  }, {
     "path" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md",
     "updated-at" : "2026-01-05T10:05:48Z",
     "tags" : [ "Bitcoin", "钱包", "dApp", "Web3" ],

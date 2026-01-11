@@ -5,8 +5,8 @@
     "per-page" : 10,
     "generated-at" : "2026-01-11T18:13:19.545952449Z"
   },
-  "tag" : "Bitcoin",
-  "count" : 2,
+  "tag" : "TypeScript",
+  "count" : 1,
   "posts" : [ {
     "path" : "2026-01-06-bitcoin-wallet-connector-introduction.en.md",
     "updated-at" : "2026-01-06T00:00:00Z",
@@ -23,24 +23,6 @@
       "path" : "2026-01-06-bitcoin-wallet-connector-introduction.md",
       "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction.md",
       "tags" : [ "Bitcoin", "Wallet", "Connector", "Adapter", "React", "TypeScript" ],
-      "data-file" : "data/index.json"
-    } ]
-  }, {
-    "path" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md",
-    "updated-at" : "2026-01-05T10:05:48Z",
-    "tags" : [ "Bitcoin", "wallet", "dApp", "Web3" ],
-    "date" : "2026-01-03",
-    "title" : "The Bitcoin Wallet Extensions Ecosystem is a Mess: A Developer's Rant",
-    "lang" : "en",
-    "id" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md",
-    "created-at" : "2026-01-03T00:00:00Z",
-    "translations" : [ {
-      "lang" : null,
-      "title" : "比特币钱包生态有多土狗：从开始到放弃",
-      "path" : "2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md",
-      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md",
-      "tags" : [ "Bitcoin", "钱包", "dApp", "Web3" ],
       "data-file" : "data/index.json"
     } ]
   } ]

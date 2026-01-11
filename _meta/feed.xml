@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh">
   <link href="https://blog.c4605.com/" rel="self" type="application/atom+xml" />
   <link href="https://blog.c4605.com/" rel="alternate" type="text/html" hreflang="zh" />
-  <updated>2026-01-05T10:05:48Z</updated>
+  <updated>2026-01-06T00:00:00Z</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta/</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
@@ -13,6 +13,313 @@
     <uri>https://github.com/bolasblack</uri>
   </author>
 
+  
+  <entry>
+    <title type="html">Bitcoin Wallet Connector: 可能是目前最好用的比特币钱包适配器</title>
+    <link href="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.md" rel="alternate" type="text/html" title="Bitcoin Wallet Connector: 可能是目前最好用的比特币钱包适配器" />
+    <published>2026-01-06T00:00:00Z</published>
+    <updated>2026-01-06T00:00:00Z</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction</id>
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.md">&lt;p&gt;&lt;a
+href=&quot;https://blog.c4605.com/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md&quot;&gt;上一篇文章&lt;/a&gt;我吐槽了比特币钱包生态有多混乱：WBIPs
+标准没人实现、sats-connect 的兼容性、钱包各有各的 API...&lt;/p&gt;
+&lt;p&gt;这篇文章介绍下我写的库：&lt;a
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;bitcoin-wallet-connector&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;先来试试 &lt;strong&gt;&lt;a
+href=&quot;https://bitcoin-wallet-connector.netlify.app/iframe.html?id=components-bitcoinconnectionprovider--default&amp;amp;viewMode=story&quot;&gt;在线
+Demo&lt;/a&gt;&lt;/strong&gt; ，或者 &lt;strong&gt;&lt;a
+href=&quot;https://bitcoin-wallet-connector.netlify.app/&quot;&gt;Storybook&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&quot;我来讲讲这个库关注什么&quot;&gt;我来讲讲这个库关注什么&lt;/h2&gt;
+&lt;h3 id=&quot;把那些莫名其妙的差异抹平&quot;&gt;把那些莫名其妙的差异抹平&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;bitcoin-wallet-connector&lt;/code&gt; 提供了一套统一的
+API，让你用同样的代码接入所有支持的钱包：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;import&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  BitcoinWalletConnector&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  UnisatWalletAdapterFactory&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  XverseWalletAdapterFactory&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  LeatherWalletAdapterFactory&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;} &lt;span class=&quot;im&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;bitcoin-wallet-connector&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 注册你想支持的钱包&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; connector &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;BitcoinWalletConnector&lt;/span&gt;([&lt;/span&gt;
+&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;UnisatWalletAdapterFactory&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;XverseWalletAdapterFactory&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;LeatherWalletAdapterFactory&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;])&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-14&quot;&gt;&lt;a href=&quot;#cb1-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-15&quot;&gt;&lt;a href=&quot;#cb1-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 订阅可用钱包变化&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-16&quot;&gt;&lt;a href=&quot;#cb1-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 注意：钱包扩展注入 API 的时机是不确定的（有些在 DOMContentLoaded，&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-17&quot;&gt;&lt;a href=&quot;#cb1-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 有些在 load 事件后），所以推荐使用 subscribe 而不是 get&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-18&quot;&gt;&lt;a href=&quot;#cb1-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;connector&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;subscribeAvailableAdapters&lt;/span&gt;((availableAdapters) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-19&quot;&gt;&lt;a href=&quot;#cb1-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;/span&gt;
+&lt;span id=&quot;cb1-20&quot;&gt;&lt;a href=&quot;#cb1-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;st&quot;&gt;&amp;quot;可用钱包:&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-21&quot;&gt;&lt;a href=&quot;#cb1-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    availableAdapters&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;map&lt;/span&gt;(([id]) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; id)&lt;/span&gt;
+&lt;span id=&quot;cb1-22&quot;&gt;&lt;a href=&quot;#cb1-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  )&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-23&quot;&gt;&lt;a href=&quot;#cb1-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// =&amp;gt; [&amp;#39;unisat&amp;#39;, &amp;#39;xverse&amp;#39;, ...]&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-24&quot;&gt;&lt;a href=&quot;#cb1-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-25&quot;&gt;&lt;a href=&quot;#cb1-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-26&quot;&gt;&lt;a href=&quot;#cb1-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 连接钱包 - 所有钱包用同一套 API&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-27&quot;&gt;&lt;a href=&quot;#cb1-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; [adapterId&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; adapter] &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; availableAdapters[&lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-28&quot;&gt;&lt;a href=&quot;#cb1-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; connector&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;connect&lt;/span&gt;(adapterId&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; adapter)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-29&quot;&gt;&lt;a href=&quot;#cb1-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-30&quot;&gt;&lt;a href=&quot;#cb1-30&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 获取地址、签名、发送交易 - 统一接口&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-31&quot;&gt;&lt;a href=&quot;#cb1-31&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; addresses &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; adapter&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;getAddresses&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-32&quot;&gt;&lt;a href=&quot;#cb1-32&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; result &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; adapter&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;signMessage&lt;/span&gt;(&lt;/span&gt;
+&lt;span id=&quot;cb1-33&quot;&gt;&lt;a href=&quot;#cb1-33&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  addresses[&lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-34&quot;&gt;&lt;a href=&quot;#cb1-34&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;Hello Bitcoin!&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-35&quot;&gt;&lt;a href=&quot;#cb1-35&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;就这样，你只需要写一遍代码，就能支持所有钱包。&lt;/p&gt;
+&lt;p&gt;目前支持的钱包：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;钱包&lt;/th&gt;
+&lt;th&gt;Adapter&lt;/th&gt;
+&lt;th&gt;额外依赖&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://unisat.io/&quot;&gt;UniSat&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;UnisatWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://www.xverse.app/&quot;&gt;Xverse&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;XverseWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;sats-connect&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://www.okx.com/web3&quot;&gt;OKX&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;OkxWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://leather.io/&quot;&gt;Leather&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;LeatherWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;@leather.io/rpc&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://web3.bitget.com/&quot;&gt;Bitget&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;BitgetWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://wallet.magiceden.io/&quot;&gt;Magic Eden&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;MagicEdenWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;sats-connect&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;所有 adapter 都实现了相同的接口：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
+class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;interface&lt;/span&gt; WalletAdapter {&lt;/span&gt;
+&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// 连接/断开&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;connect&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;disconnect&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-6&quot;&gt;&lt;a href=&quot;#cb2-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// 获取地址&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-7&quot;&gt;&lt;a href=&quot;#cb2-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;getAddresses&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;WalletAdapterAddress[]&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-8&quot;&gt;&lt;a href=&quot;#cb2-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-9&quot;&gt;&lt;a href=&quot;#cb2-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// 消息签名&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-10&quot;&gt;&lt;a href=&quot;#cb2-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;signMessage&lt;/span&gt;(address&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; message&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;SignMessageResult&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-11&quot;&gt;&lt;a href=&quot;#cb2-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-12&quot;&gt;&lt;a href=&quot;#cb2-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// 发送 BTC&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-13&quot;&gt;&lt;a href=&quot;#cb2-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;sendBitcoin&lt;/span&gt;(&lt;/span&gt;
+&lt;span id=&quot;cb2-14&quot;&gt;&lt;a href=&quot;#cb2-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    fromAddress&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-15&quot;&gt;&lt;a href=&quot;#cb2-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    receiverAddress&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-16&quot;&gt;&lt;a href=&quot;#cb2-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    satoshiAmount&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;bigint&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-17&quot;&gt;&lt;a href=&quot;#cb2-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  )&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;{ txid&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt; }&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-18&quot;&gt;&lt;a href=&quot;#cb2-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-19&quot;&gt;&lt;a href=&quot;#cb2-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// PSBT 签名&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-20&quot;&gt;&lt;a href=&quot;#cb2-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;signAndFinalizePsbt&lt;/span&gt;(&lt;/span&gt;
+&lt;span id=&quot;cb2-21&quot;&gt;&lt;a href=&quot;#cb2-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    psbtHex&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-22&quot;&gt;&lt;a href=&quot;#cb2-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    signIndices&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [address&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; signIndex&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;number&lt;/span&gt;][]&lt;/span&gt;
+&lt;span id=&quot;cb2-23&quot;&gt;&lt;a href=&quot;#cb2-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  )&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;{ signedPsbtHex&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt; }&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-24&quot;&gt;&lt;a href=&quot;#cb2-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-25&quot;&gt;&lt;a href=&quot;#cb2-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// 监听地址变化&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-26&quot;&gt;&lt;a href=&quot;#cb2-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;onAddressesChanged&lt;/span&gt;(callback)&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; { unsubscribe&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;void&lt;/span&gt; }&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-27&quot;&gt;&lt;a href=&quot;#cb2-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;无论用户选择哪个钱包，你的业务代码都是一样的。&lt;/p&gt;
+&lt;h4 id=&quot;关于-sendrunessendinscriptionssendbrc20&quot;&gt;关于
+sendRunes/sendInscriptions/sendBRC20&lt;/h4&gt;
+&lt;p&gt;目前这个库只支持 &lt;code&gt;signMessage&lt;/code&gt;, &lt;code&gt;sendBitcoin&lt;/code&gt;,
+和 &lt;code&gt;signPsbt&lt;/code&gt;，暂时不支持 &lt;code&gt;sendRunes&lt;/code&gt;,
+&lt;code&gt;sendInscriptions&lt;/code&gt;, &lt;code&gt;sendBRC20&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;因为这些都涉及到更复杂的依赖（比如需要一个 Ordinals Indexer,
+还需要一个 BRC20 Indexer 等等）。这些会让一个 &lt;code&gt;Connector&lt;/code&gt;
+变的过于复杂。&lt;/p&gt;
+&lt;p&gt;在我看来，这应该是一个 &lt;code&gt;Transaction Builder&lt;/code&gt; 的职责，由
+&lt;code&gt;Transaction Builder&lt;/code&gt; 负责构建交易，然后将交易交给
+&lt;code&gt;Connector&lt;/code&gt; 来签名和发送。&lt;/p&gt;
+&lt;h3 id=&quot;安全性很重要&quot;&gt;安全性很重要&lt;/h3&gt;
+&lt;p&gt;在设计这个库的时候，我把&lt;strong&gt;依赖安全&lt;/strong&gt;放在了很高的优先级。原因很简单：钱包库直接接触用户的资产，任何安全漏洞都可能造成真金白银的损失。&lt;/p&gt;
+&lt;h4 id=&quot;peer-dependencies&quot;&gt;Peer Dependencies&lt;/h4&gt;
+&lt;p&gt;我把一些重要的依赖声明为 peer dependencies，而不是打包进库里：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre
+class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add bitcoin-wallet-connector @scure/base @scure/btc-signer&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这意味着：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;你可以直接控制这些依赖的版本&lt;/li&gt;
+&lt;li&gt;如果某个依赖爆出安全漏洞，你可以&lt;strong&gt;立即升级&lt;/strong&gt;，不用等这个库发新版本&lt;/li&gt;
+&lt;li&gt;也不会出现最终的 bundle 里被打包了两个版本的
+&lt;code&gt;@scure/btc-signer&lt;/code&gt; 的尴尬场景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;可选依赖按需安装&quot;&gt;可选依赖：按需安装&lt;/h4&gt;
+&lt;p&gt;钱包 SDK（如
+&lt;code&gt;sats-connect&lt;/code&gt;、&lt;code&gt;@leather.io/rpc&lt;/code&gt;）是&lt;strong&gt;可选&lt;/strong&gt;的
+peer dependencies：&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre
+class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 只支持 UniSat 和 OKX？不需要安装任何额外依赖&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 需要支持 Xverse？&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-4&quot;&gt;&lt;a href=&quot;#cb4-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add sats-connect&lt;/span&gt;
+&lt;span id=&quot;cb4-5&quot;&gt;&lt;a href=&quot;#cb4-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-6&quot;&gt;&lt;a href=&quot;#cb4-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 需要支持 Leather？&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-7&quot;&gt;&lt;a href=&quot;#cb4-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add @leather.io/rpc&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;你只安装你需要的，减少你被恶意包脚本攻击的风险。&lt;/p&gt;
+&lt;h4 id=&quot;动态导入延迟加载&quot;&gt;动态导入：延迟加载&lt;/h4&gt;
+&lt;p&gt;这是另外一个重要的安全设计：&lt;strong&gt;钱包 SDK 通过
+&lt;code&gt;dynamic import()&lt;/code&gt; 延迟加载&lt;/strong&gt;。&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre
+class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// 内部实现示意&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-2&quot;&gt;&lt;a href=&quot;#cb5-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; availability &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;createAvailability&lt;/span&gt;({&lt;/span&gt;
+&lt;span id=&quot;cb5-3&quot;&gt;&lt;a href=&quot;#cb5-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  getPrecondition&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;unisat&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;??&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-4&quot;&gt;&lt;a href=&quot;#cb5-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  initializer&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;async&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb5-5&quot;&gt;&lt;a href=&quot;#cb5-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;co&quot;&gt;// 只有用户真正要连接这个钱包时，才会加载对应的实现&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-6&quot;&gt;&lt;a href=&quot;#cb5-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; { UnisatWalletAdapterImpl } &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;import&lt;/span&gt;(&lt;/span&gt;
+&lt;span id=&quot;cb5-7&quot;&gt;&lt;a href=&quot;#cb5-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;st&quot;&gt;&amp;quot;./UnisatWalletAdapter.impl&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-8&quot;&gt;&lt;a href=&quot;#cb5-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    )&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-9&quot;&gt;&lt;a href=&quot;#cb5-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;UnisatWalletAdapterImpl&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-10&quot;&gt;&lt;a href=&quot;#cb5-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-11&quot;&gt;&lt;a href=&quot;#cb5-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;假设 &lt;code&gt;sats-connect&lt;/code&gt; 这个包被供应链攻击了（这在 npm
+生态并不罕见）。如果你的用户只使用 UniSat
+钱包，&lt;strong&gt;恶意代码不会被加载和执行&lt;/strong&gt;，因为
+&lt;code&gt;sats-connect&lt;/code&gt; 只有在用户点击&quot;连接 Xverse&quot;时才会被
+import。&lt;/p&gt;
+&lt;p&gt;这一条应该能降低用户被供应链攻击的风险。&lt;/p&gt;
+&lt;h2 id=&quot;框架集成&quot;&gt;框架集成&lt;/h2&gt;
+&lt;p&gt;目前提供了 React 集成，开箱即用的 Context Provider：&lt;/p&gt;
+&lt;pre class=&quot;tsx&quot;&gt;&lt;code&gt;import {
+  BitcoinConnectionProvider,
+  useBitcoinConnectionContext,
+} from &amp;quot;bitcoin-wallet-connector/react&amp;quot;;
+import {
+  UnisatWalletAdapterFactory,
+  XverseWalletAdapterFactory,
+} from &amp;quot;bitcoin-wallet-connector/adapters&amp;quot;;
+
+const adapterFactories = [
+  UnisatWalletAdapterFactory(),
+  XverseWalletAdapterFactory(),
+];
+
+function App() {
+  return (
+    &amp;lt;BitcoinConnectionProvider
+      adapterFactories={adapterFactories}
+      onWalletConnected={(session) =&amp;gt; console.log(&amp;quot;Connected:&amp;quot;, session)}
+      onWalletDisconnected={() =&amp;gt; console.log(&amp;quot;Disconnected&amp;quot;)}
+    &amp;gt;
+      &amp;lt;WalletUI /&amp;gt;
+    &amp;lt;/BitcoinConnectionProvider&amp;gt;
+  );
+}
+
+function WalletUI() {
+  const { walletSession, availableAdapters, connect, disconnect } =
+    useBitcoinConnectionContext();
+
+  if (walletSession) {
+    return (
+      &amp;lt;div&amp;gt;
+        &amp;lt;p&amp;gt;已连接: {walletSession.adapterId}&amp;lt;/p&amp;gt;
+        &amp;lt;button onClick={() =&amp;gt; disconnect()}&amp;gt;断开连接&amp;lt;/button&amp;gt;
+      &amp;lt;/div&amp;gt;
+    );
+  }
+
+  return (
+    &amp;lt;div&amp;gt;
+      {availableAdapters.map(([adapterId, adapter]) =&amp;gt; (
+        &amp;lt;button key={adapterId} onClick={() =&amp;gt; connect(adapterId, adapter)}&amp;gt;
+          连接 {adapterId}
+        &amp;lt;/button&amp;gt;
+      ))}
+    &amp;lt;/div&amp;gt;
+  );
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;核心的 &lt;code&gt;BitcoinWalletConnector&lt;/code&gt; 是框架无关的，如果你在用
+Vue、Svelte、Solid 或其他框架，封装成对应的 hooks/composables
+应该不难，当然也欢迎贡献！&lt;/p&gt;
+&lt;h2 id=&quot;欢迎使用和贡献&quot;&gt;欢迎使用和贡献&lt;/h2&gt;
+&lt;h3 id=&quot;快速开始&quot;&gt;快速开始&lt;/h3&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre
+class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add bitcoin-wallet-connector @scure/base @scure/btc-signer&lt;/span&gt;
+&lt;span id=&quot;cb7-2&quot;&gt;&lt;a href=&quot;#cb7-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-3&quot;&gt;&lt;a href=&quot;#cb7-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 按需安装钱包 SDK&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-4&quot;&gt;&lt;a href=&quot;#cb7-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add sats-connect      &lt;span class=&quot;co&quot;&gt;# Xverse / Magic Eden&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-5&quot;&gt;&lt;a href=&quot;#cb7-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add @leather.io/rpc   &lt;span class=&quot;co&quot;&gt;# Leather&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;或者 5 分钟跑通 Demo：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;Clone 仓库&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pnpm install&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pnpm storybook&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;打开 http://localhost:6006&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;你可以在 Storybook 里测试各种钱包的连接、签名等功能。&lt;/p&gt;
+&lt;h3 id=&quot;贡献&quot;&gt;贡献&lt;/h3&gt;
+&lt;p&gt;这是一个开源项目，非常欢迎社区贡献！&lt;/p&gt;
+&lt;p&gt;如果你想添加新钱包的支持，有一个小小的期望：&lt;strong&gt;尽量不要依赖钱包官方的
+SDK&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;为什么？因为很多钱包的 API 其实就是挂在 &lt;code&gt;window&lt;/code&gt;
+对象上的，直接调用就行，没必要引入一个额外的 SDK。比如
+UniSat、OKX、Bitget 的 adapter 都是零外部依赖的。&lt;/p&gt;
+&lt;p&gt;引入 SDK
+意味着多一个潜在的供应链攻击入口、用户需要多安装一个包、可能引入不必要的
+bundle size。当然，如果某个钱包确实只能通过 SDK 接入（比如 Xverse 的
+&lt;code&gt;sats-connect&lt;/code&gt;），那也没问题，我们可以把它作为可选的 peer
+dependency。&lt;/p&gt;
+&lt;p&gt;详细的贡献指南请看 &lt;a
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector/blob/master/CONTRIBUTING.md&quot;&gt;CONTRIBUTING.md&lt;/a&gt;。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;项目完全开源（MIT），欢迎 Star 和贡献！&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GitHub: &lt;a
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;https://github.com/bolasblack/bitcoin-wallet-connector&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Demo: &lt;a
+href=&quot;https://bitcoin-wallet-connector.netlify.app/&quot;&gt;https://bitcoin-wallet-connector.netlify.app/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;npm: &lt;a
+href=&quot;https://www.npmjs.com/package/bitcoin-wallet-connector&quot;&gt;https://www.npmjs.com/package/bitcoin-wallet-connector&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="Bitcoin" />
+    
+
+    
+    <category term="Bitcoin" />
+    
+    <category term="Wallet" />
+    
+    <category term="Connector" />
+    
+    <category term="Adapter" />
+    
+    <category term="React" />
+    
+    <category term="TypeScript" />
+    
+  </entry>
   
   <entry>
     <title type="html">我把我的配置共享仓库转移到了 LLM-oriented 模式</title>
@@ -902,189 +1209,6 @@ class=&quot;sourceCode coffeescript&quot;&gt;&lt;code class=&quot;sourceCode cof
 
     
     <category term="JavaScript" />
-    
-  </entry>
-  
-  <entry>
-    <title type="html">Gentoo 上部署 ocserv</title>
-    <link href="https://blog.c4605.com/#/goto/articles/2015-01-30-Gentoo_%E4%B8%8A%E9%83%A8%E7%BD%B2_ocserv.md" rel="alternate" type="text/html" title="Gentoo 上部署 ocserv" />
-    <published>2015-01-30T00:00:00Z</published>
-    <updated>2026-01-04T21:17:00Z</updated>
-    <id>https://github.com/bolasblack/BlogPosts/blob/master/2015-01-30-Gentoo_上部署_ocserv</id>
-    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2015-01-30-Gentoo_%E4%B8%8A%E9%83%A8%E7%BD%B2_ocserv.md">&lt;p&gt;终于忍受不了 iOS 上翻墙的蛋疼劲了，VPN
-一锁屏就断。和废掉完全没区别。所以，查查资料，我们来装 ocserv 吧。&lt;/p&gt;
-&lt;h2 id=&quot;安装-gnutls&quot;&gt;安装 GnuTLS&lt;/h2&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; emerge &lt;span class=&quot;at&quot;&gt;-av&lt;/span&gt; gnutls&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;安装-ocserv&quot;&gt;安装 ocserv&lt;/h2&gt;
-&lt;p&gt;这个教程一抓一大吧，而且问题似乎都不大。&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~&lt;/span&gt;
-&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;wget&lt;/span&gt; ftp://ftp.infradead.org/pub/ocserv/ocserv-0.10.2.tar.xz&lt;/span&gt;
-&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;tar&lt;/span&gt; xvf ocserv-0.10.2.tar.xz&lt;/span&gt;
-&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ocserv-0.10.2&lt;/span&gt;
-&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;./configure&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-6&quot;&gt;&lt;a href=&quot;#cb2-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;make&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-j2&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; make install&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;这样子就编译安装完成了。接下来配置 ocserv 。&lt;/p&gt;
-&lt;h2 id=&quot;配置-ocserv&quot;&gt;配置 ocserv&lt;/h2&gt;
-&lt;p&gt;先建证书：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; mkdir &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; /etc/ocserv/certificates&lt;/span&gt;
-&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; /etc/ocserv/certificates&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;创建 &lt;code&gt;ca.tmpl&lt;/code&gt; 模板，这里的 &lt;code&gt;cn&lt;/code&gt; 和
-&lt;code&gt;organization&lt;/code&gt; 可以随便写：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cn = &amp;quot;Your CA name&amp;quot;
-organization = &amp;quot;Your fancy name&amp;quot;
-serial = 1
-expiration_days = 3650
-ca
-signing_key
-cert_signing_key
-crl_signing_key&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;创建 &lt;code&gt;server.tmpl&lt;/code&gt; 模板，这里的 &lt;code&gt;cn&lt;/code&gt;
-必须对应最终提供服务的 hostname 或 IP ：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cn = &amp;quot;Your hostname or IP&amp;quot;
-organization = &amp;quot;Your fancy name&amp;quot;
-expiration_days = 3650
-signing_key
-encryption_key
-tls_www_server&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;然后来建证书：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb6&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb6-1&quot;&gt;&lt;a href=&quot;#cb6-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; certtool &lt;span class=&quot;at&quot;&gt;--generate-privkey&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--outfile&lt;/span&gt; ca-key.pem&lt;/span&gt;
-&lt;span id=&quot;cb6-2&quot;&gt;&lt;a href=&quot;#cb6-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; certtool &lt;span class=&quot;at&quot;&gt;--generate-privkey&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--outfile&lt;/span&gt; server-key.pem&lt;/span&gt;
-&lt;span id=&quot;cb6-3&quot;&gt;&lt;a href=&quot;#cb6-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; certtool &lt;span class=&quot;at&quot;&gt;--generate-self-signed&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--load-privkey&lt;/span&gt; ca-key.pem &lt;span class=&quot;at&quot;&gt;--template&lt;/span&gt; ca.tmpl &lt;span class=&quot;at&quot;&gt;--outfile&lt;/span&gt; ca-cert.pem&lt;/span&gt;
-&lt;span id=&quot;cb6-4&quot;&gt;&lt;a href=&quot;#cb6-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; certtool &lt;span class=&quot;at&quot;&gt;--generate-certificate&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--load-privkey&lt;/span&gt; server-key.pem &lt;span class=&quot;at&quot;&gt;--load-ca-certificate&lt;/span&gt; ca-cert.pem &lt;span class=&quot;at&quot;&gt;--load-ca-privkey&lt;/span&gt; ca-key.pem &lt;span class=&quot;at&quot;&gt;--template&lt;/span&gt; server.tmpl &lt;span class=&quot;at&quot;&gt;--outfile&lt;/span&gt; server-cert.pem&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;然后来改配置：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; cp ~/ocserv-0.10.2/doc/sample.config /etc/ocserv/ocserv.conf&lt;/span&gt;
-&lt;span id=&quot;cb7-2&quot;&gt;&lt;a href=&quot;#cb7-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; vim /etc/ocserv/ocserv.conf&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;文件内容：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb8&quot;&gt;&lt;pre
-class=&quot;sourceCode conf&quot;&gt;&lt;code class=&quot;sourceCode toml&quot;&gt;&lt;span id=&quot;cb8-1&quot;&gt;&lt;a href=&quot;#cb8-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 登陆方式，目前先用密码登录&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-2&quot;&gt;&lt;a href=&quot;#cb8-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;auth&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;plain[/etc/ocserv/ocpasswd]&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-3&quot;&gt;&lt;a href=&quot;#cb8-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 允许同时连接的客户端数量&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-4&quot;&gt;&lt;a href=&quot;#cb8-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;max-clients&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;4&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-5&quot;&gt;&lt;a href=&quot;#cb8-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 限制同一客户端的并行登陆数量&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-6&quot;&gt;&lt;a href=&quot;#cb8-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;max-same-clients&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-7&quot;&gt;&lt;a href=&quot;#cb8-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 服务监听的IP（服务器 IP ，可不设置）&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-8&quot;&gt;&lt;a href=&quot;#cb8-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;listen-host&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fl&quot;&gt;1.2&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;.3.4&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-9&quot;&gt;&lt;a href=&quot;#cb8-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 服务监听的 TCP/UDP 端口，这个自己看着办，客户端以 IP:PORT 的格式来连接&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-10&quot;&gt;&lt;a href=&quot;#cb8-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 如果改了的话两个端口最好不同，我在使用时发现如果端口相同的话，会导致请求被阻塞的情况&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-11&quot;&gt;&lt;a href=&quot;#cb8-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;tcp-port&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;9000&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-12&quot;&gt;&lt;a href=&quot;#cb8-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;udp-port&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;9001&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-13&quot;&gt;&lt;a href=&quot;#cb8-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-14&quot;&gt;&lt;a href=&quot;#cb8-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 自动优化 VPN 的网络性能&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-15&quot;&gt;&lt;a href=&quot;#cb8-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;try-mtu-discovery&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cn&quot;&gt;true&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-16&quot;&gt;&lt;a href=&quot;#cb8-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 服务器证书与密钥&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-17&quot;&gt;&lt;a href=&quot;#cb8-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;server-cert&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;ocserv&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;certificates&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;server-cert.pem&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-18&quot;&gt;&lt;a href=&quot;#cb8-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;server-key&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;etc&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;ocserv&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;certificates&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;server-key.pem&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-19&quot;&gt;&lt;a href=&quot;#cb8-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 客户端连上 VPN 后使用的 DNS&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-20&quot;&gt;&lt;a href=&quot;#cb8-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;dns&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fl&quot;&gt;8.8&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;.8.8&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-21&quot;&gt;&lt;a href=&quot;#cb8-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 注释掉所有的 route ，让服务器成为 gateway&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-22&quot;&gt;&lt;a href=&quot;#cb8-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#route = 192.168.1.0/255.255.255.0&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-23&quot;&gt;&lt;a href=&quot;#cb8-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 启用 cisco 客户端兼容性支持&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-24&quot;&gt;&lt;a href=&quot;#cb8-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;cisco-client-compat&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cn&quot;&gt;true&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-25&quot;&gt;&lt;a href=&quot;#cb8-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 开着这个会报错：error: &amp;#39;isolate-workers&amp;#39; is set to true, but not compiled with seccomp or Linux namespaces support&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-26&quot;&gt;&lt;a href=&quot;#cb8-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# 好像是内核不支持，反正自己看着办&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-27&quot;&gt;&lt;a href=&quot;#cb8-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;isolate-workers&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cn&quot;&gt;false&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;最后生成帐号密码文件：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo ocpasswd -c /etc/ocserv/ocpasswd username&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;其他配置&quot;&gt;其他配置&lt;/h2&gt;
-&lt;p&gt;以 &lt;a
-href=&quot;https://www.linode.com/docs/security/securing-your-server#creating-a-firewall&quot;&gt;Linode
-的配置&lt;/a&gt; 为例，新建或修改 &lt;code&gt;/etc/iptables.firewall.rules&lt;/code&gt;
-文件：&lt;/p&gt;
-&lt;pre class=&quot;iptables&quot;&gt;&lt;code&gt;# 如果是新建文件才需要这行
-*filter
-
-# 这里的端口填 ocserv 配置里的 tcp-port 和 udp-port
--A INPUT -p tcp -m state --state NEW --dport 9000 -j ACCEPT
--A INPUT -p udp -m state --state NEW --dport 9001 -j ACCEPT
-
-# 注释这行，允许转发
-# -A FORWARD -j DROP
-
-# 如果是新建文件才需要这行
-COMMIT
-
-
-
-#启用NAT
-*nat
--A POSTROUTING -j MASQUERADE
-COMMIT&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;完成之后导入新配置并检查配置正确：&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; iptables-restore &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt; /etc/iptables.firewall.rules&lt;/span&gt;
-&lt;span id=&quot;cb11-2&quot;&gt;&lt;a href=&quot;#cb11-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; iptables &lt;span class=&quot;at&quot;&gt;-L&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-3&quot;&gt;&lt;a href=&quot;#cb11-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; iptables &lt;span class=&quot;at&quot;&gt;-t&lt;/span&gt; nat &lt;span class=&quot;at&quot;&gt;-L&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;接着打开 IPv4 的流量转发：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo vim /etc/sysctl.conf&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;启用此项：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;net.ipv4.ip_forward=1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;刷新配置：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo sysctl -p /etc/sysctl.conf&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;测试一下&quot;&gt;测试一下&lt;/h2&gt;
-&lt;pre&gt;&lt;code&gt;sudo ocserv -f -d 1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;如果运行成功，就下载一个 AnyConnect 客户端来测试一下。&lt;/p&gt;
-&lt;p&gt;如果证书是自己签发的，那么 iOS 客户端在连接前先到
-&lt;code&gt;Settings&lt;/code&gt; 标签页关闭 &lt;code&gt;Block Untrusted Servers&lt;/code&gt;
-。&lt;/p&gt;
-&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
-&lt;h3
-id=&quot;ocserv-error-while-loading-shared-libraries-libgnutlsso28-cannot-open-shared-object-file-no-such-file-or-directory&quot;&gt;ocserv:
-error while loading shared libraries: libgnutls.so.28: cannot open
-shared object file: No such file or directory&lt;/h3&gt;
-&lt;p&gt;启动 ocserv 的命令改一下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sudo LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib ocserv -f -d 1&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;无法访问国内网站&quot;&gt;无法访问国内网站&lt;/h3&gt;
-&lt;p&gt;错误信息：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;ocserv[15995]: main: 客户端IP:1035: unexpected DTLS content type: 23; possibly a firewall disassociated a UDP session&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;给 &lt;code&gt;/etc/ocserv/ocserv.conf&lt;/code&gt; 加两个路由：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;route = 0.0.0.0/128.0.0.0
-route = 128.0.0.0/128.0.0.0&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;无法访问外网&quot;&gt;无法访问外网&lt;/h3&gt;
-&lt;p&gt;去设置一下 iptables ，我被这个坑两次了。&lt;/p&gt;
-&lt;h2 id=&quot;余话&quot;&gt;余话&lt;/h2&gt;
-&lt;p&gt;关于开机自动启动 ocserv ，开机自动载入 iptables
-配置，客户端证书自动连接，这些东西我就不在这里写了，可以看下面的参考文章。&lt;/p&gt;
-&lt;p&gt;我建了一个 Gist ：Gentoo 的 ocserv 启动脚本：&lt;a
-href=&quot;https://gist.github.com/bolasblack/9f53b048e46f538cf08d&quot;&gt;https://gist.github.com/bolasblack/9f53b048e46f538cf08d&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;记得把 &lt;code&gt;PIDFILE&lt;/code&gt; 的路径改成
-&lt;code&gt;/etc/ocserv/ocserv.conf&lt;/code&gt; 里配置的 &lt;code&gt;pid-file&lt;/code&gt;
-路径。&lt;/p&gt;
-&lt;p&gt;最后，祝 GFW 早日被终结。&lt;/p&gt;
-&lt;p&gt;参考文章：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://bitinn.net/11084/&quot;&gt;折腾笔记：架设 OpenConnect Server
-给 iPhone 提供更顺畅的网络生活&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://blog.ihipop.info/2014/07/4782.html&quot;&gt;Gentoo 编译安装
-Ocserv 上 Cisco AnyConnect VPN&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a
-href=&quot;http://www.bauer-power.net/2014/06/how-to-install-gnutls-3123-from-source.html&quot;&gt;HOW
-TO INSTALL GNUTLS 3.1.23 FROM SOURCE IN UBUNTU 14.04&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-
-    <author>
-      <name>c4605</name>
-      <email>bolasblack@gmail.com</email>
-      <uri>https://github.com/bolasblack</uri>
-    </author>
-
-    
-    <category term="科学上网" />
-    
-
-    
-    <category term="科学上网" />
-    
-    <category term="gentoo" />
-    
-    <category term="ocserv" />
-    
-    <category term="iOS" />
     
   </entry>
   

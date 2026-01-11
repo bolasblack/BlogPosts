@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <link href="https://blog.c4605.com/" rel="self" type="application/atom+xml" />
   <link href="https://blog.c4605.com/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2026-01-05T10:05:48Z</updated>
+  <updated>2026-01-06T00:00:00Z</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta/</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
@@ -13,6 +13,338 @@
     <uri>https://github.com/bolasblack</uri>
   </author>
 
+  
+  <entry xml:lang="en">
+    <title type="html">Bitcoin Wallet Connector: Probably the Best Bitcoin Wallet Adapter Currently</title>
+    <link href="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.en.md" rel="alternate" type="text/html" title="Bitcoin Wallet Connector: Probably the Best Bitcoin Wallet Adapter Currently" />
+    <published>2026-01-06T00:00:00Z</published>
+    <updated>2026-01-06T00:00:00Z</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction</id>
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.en.md">&lt;p&gt;In the &lt;a
+href=&quot;https://blog.c4605.com/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md&quot;&gt;previous
+article&lt;/a&gt;, I ranted about how chaotic the Bitcoin wallet ecosystem is:
+WBIPs standards that nobody implements, sats-connect compatibility
+issues, wallets each doing their own thing with APIs...&lt;/p&gt;
+&lt;p&gt;This article introduces the library I built: &lt;a
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;bitcoin-wallet-connector&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Try the &lt;strong&gt;&lt;a
+href=&quot;https://bitcoin-wallet-connector.netlify.app/iframe.html?id=components-bitcoinconnectionprovider--default&amp;amp;viewMode=story&quot;&gt;Live
+Demo&lt;/a&gt;&lt;/strong&gt; first, or check out the &lt;strong&gt;&lt;a
+href=&quot;https://bitcoin-wallet-connector.netlify.app/&quot;&gt;Storybook&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;what-this-library-focuses-on&quot;&gt;What This Library Focuses On&lt;/h2&gt;
+&lt;h3 id=&quot;smoothing-out-the-ridiculous-differences&quot;&gt;Smoothing Out the
+Ridiculous Differences&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;bitcoin-wallet-connector&lt;/code&gt; provides a unified API that
+lets you connect to all supported wallets with the same code:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
+class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;import&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  BitcoinWalletConnector&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  UnisatWalletAdapterFactory&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  XverseWalletAdapterFactory&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  LeatherWalletAdapterFactory&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;} &lt;span class=&quot;im&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;bitcoin-wallet-connector&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Register the wallets you want to support&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; connector &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;BitcoinWalletConnector&lt;/span&gt;([&lt;/span&gt;
+&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;UnisatWalletAdapterFactory&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;XverseWalletAdapterFactory&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;LeatherWalletAdapterFactory&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;])&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-14&quot;&gt;&lt;a href=&quot;#cb1-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-15&quot;&gt;&lt;a href=&quot;#cb1-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Subscribe to available wallet changes&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-16&quot;&gt;&lt;a href=&quot;#cb1-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Note: The timing of wallet extension API injection is unpredictable&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-17&quot;&gt;&lt;a href=&quot;#cb1-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// (some inject at DOMContentLoaded, others after the load event),&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-18&quot;&gt;&lt;a href=&quot;#cb1-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// so subscribing is recommended over getting&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-19&quot;&gt;&lt;a href=&quot;#cb1-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;connector&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;subscribeAvailableAdapters&lt;/span&gt;((availableAdapters) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb1-20&quot;&gt;&lt;a href=&quot;#cb1-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;/span&gt;
+&lt;span id=&quot;cb1-21&quot;&gt;&lt;a href=&quot;#cb1-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;st&quot;&gt;&amp;quot;Available wallets:&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-22&quot;&gt;&lt;a href=&quot;#cb1-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    availableAdapters&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;map&lt;/span&gt;(([id]) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; id)&lt;/span&gt;
+&lt;span id=&quot;cb1-23&quot;&gt;&lt;a href=&quot;#cb1-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  )&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-24&quot;&gt;&lt;a href=&quot;#cb1-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// =&amp;gt; [&amp;#39;unisat&amp;#39;, &amp;#39;xverse&amp;#39;, ...]&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-25&quot;&gt;&lt;a href=&quot;#cb1-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-26&quot;&gt;&lt;a href=&quot;#cb1-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-27&quot;&gt;&lt;a href=&quot;#cb1-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Connect wallet - same API for all wallets&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-28&quot;&gt;&lt;a href=&quot;#cb1-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; [adapterId&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; adapter] &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; availableAdapters[&lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-29&quot;&gt;&lt;a href=&quot;#cb1-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; connector&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;connect&lt;/span&gt;(adapterId&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; adapter)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-30&quot;&gt;&lt;a href=&quot;#cb1-30&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-31&quot;&gt;&lt;a href=&quot;#cb1-31&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Get addresses, sign, send transactions - unified interface&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-32&quot;&gt;&lt;a href=&quot;#cb1-32&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; addresses &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; adapter&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;getAddresses&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-33&quot;&gt;&lt;a href=&quot;#cb1-33&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; result &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; adapter&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;signMessage&lt;/span&gt;(&lt;/span&gt;
+&lt;span id=&quot;cb1-34&quot;&gt;&lt;a href=&quot;#cb1-34&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  addresses[&lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-35&quot;&gt;&lt;a href=&quot;#cb1-35&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;Hello Bitcoin!&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-36&quot;&gt;&lt;a href=&quot;#cb1-36&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That&#39;s it. Write the code once, support all wallets.&lt;/p&gt;
+&lt;p&gt;Currently supported wallets:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Wallet&lt;/th&gt;
+&lt;th&gt;Adapter&lt;/th&gt;
+&lt;th&gt;Extra Dependencies&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://unisat.io/&quot;&gt;UniSat&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;UnisatWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://www.xverse.app/&quot;&gt;Xverse&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;XverseWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;sats-connect&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://www.okx.com/web3&quot;&gt;OKX&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;OkxWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://leather.io/&quot;&gt;Leather&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;LeatherWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;@leather.io/rpc&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://web3.bitget.com/&quot;&gt;Bitget&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;BitgetWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;https://wallet.magiceden.io/&quot;&gt;Magic Eden&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;MagicEdenWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;sats-connect&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;All adapters implement the same interface:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
+class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;interface&lt;/span&gt; WalletAdapter {&lt;/span&gt;
+&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Connect/Disconnect&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;connect&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;disconnect&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-6&quot;&gt;&lt;a href=&quot;#cb2-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Get addresses&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-7&quot;&gt;&lt;a href=&quot;#cb2-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;getAddresses&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;WalletAdapterAddress[]&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-8&quot;&gt;&lt;a href=&quot;#cb2-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-9&quot;&gt;&lt;a href=&quot;#cb2-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Message signing&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-10&quot;&gt;&lt;a href=&quot;#cb2-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;signMessage&lt;/span&gt;(address&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; message&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;SignMessageResult&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-11&quot;&gt;&lt;a href=&quot;#cb2-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-12&quot;&gt;&lt;a href=&quot;#cb2-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Send BTC&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-13&quot;&gt;&lt;a href=&quot;#cb2-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;sendBitcoin&lt;/span&gt;(&lt;/span&gt;
+&lt;span id=&quot;cb2-14&quot;&gt;&lt;a href=&quot;#cb2-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    fromAddress&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-15&quot;&gt;&lt;a href=&quot;#cb2-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    receiverAddress&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-16&quot;&gt;&lt;a href=&quot;#cb2-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    satoshiAmount&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;bigint&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-17&quot;&gt;&lt;a href=&quot;#cb2-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  )&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;{ txid&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt; }&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-18&quot;&gt;&lt;a href=&quot;#cb2-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-19&quot;&gt;&lt;a href=&quot;#cb2-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// PSBT signing&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-20&quot;&gt;&lt;a href=&quot;#cb2-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;signAndFinalizePsbt&lt;/span&gt;(&lt;/span&gt;
+&lt;span id=&quot;cb2-21&quot;&gt;&lt;a href=&quot;#cb2-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    psbtHex&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-22&quot;&gt;&lt;a href=&quot;#cb2-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    signIndices&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [address&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; signIndex&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;number&lt;/span&gt;][]&lt;/span&gt;
+&lt;span id=&quot;cb2-23&quot;&gt;&lt;a href=&quot;#cb2-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  )&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;{ signedPsbtHex&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt; }&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-24&quot;&gt;&lt;a href=&quot;#cb2-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-25&quot;&gt;&lt;a href=&quot;#cb2-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Listen for address changes&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-26&quot;&gt;&lt;a href=&quot;#cb2-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;onAddressesChanged&lt;/span&gt;(callback)&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; { unsubscribe&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;void&lt;/span&gt; }&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-27&quot;&gt;&lt;a href=&quot;#cb2-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;No matter which wallet users choose, your business logic stays the
+same.&lt;/p&gt;
+&lt;h4 id=&quot;about-sendrunessendinscriptionssendbrc20&quot;&gt;About
+sendRunes/sendInscriptions/sendBRC20&lt;/h4&gt;
+&lt;p&gt;Currently, this library only supports &lt;code&gt;signMessage&lt;/code&gt;,
+&lt;code&gt;sendBitcoin&lt;/code&gt;, and &lt;code&gt;signPsbt&lt;/code&gt;. It doesn&#39;t support
+&lt;code&gt;sendRunes&lt;/code&gt;, &lt;code&gt;sendInscriptions&lt;/code&gt;, or
+&lt;code&gt;sendBRC20&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Because these involve more complex dependencies (like needing an
+Ordinals Indexer, a BRC20 Indexer, etc.). These would make a
+&lt;code&gt;Connector&lt;/code&gt; overly complicated.&lt;/p&gt;
+&lt;p&gt;In my view, this should be the responsibility of a
+&lt;code&gt;Transaction Builder&lt;/code&gt;. The &lt;code&gt;Transaction Builder&lt;/code&gt;
+handles transaction construction, then passes it to the
+&lt;code&gt;Connector&lt;/code&gt; for signing and broadcasting.&lt;/p&gt;
+&lt;h3 id=&quot;security-matters&quot;&gt;Security Matters&lt;/h3&gt;
+&lt;p&gt;When designing this library, I prioritized &lt;strong&gt;dependency
+security&lt;/strong&gt;. The reason is simple: wallet libraries directly
+handle user assets, and any security vulnerability could result in real
+financial losses.&lt;/p&gt;
+&lt;h4 id=&quot;peer-dependencies&quot;&gt;Peer Dependencies&lt;/h4&gt;
+&lt;p&gt;I declared important dependencies as peer dependencies rather than
+bundling them:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre
+class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add bitcoin-wallet-connector @scure/base @scure/btc-signer&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This means:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You directly control the versions of these dependencies&lt;/li&gt;
+&lt;li&gt;If a dependency has a security vulnerability, you can
+&lt;strong&gt;upgrade immediately&lt;/strong&gt; without waiting for this library to
+release a new version&lt;/li&gt;
+&lt;li&gt;You won&#39;t end up with two versions of &lt;code&gt;@scure/btc-signer&lt;/code&gt;
+bundled in your final build&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;optional-dependencies-install-only-what-you-need&quot;&gt;Optional
+Dependencies: Install Only What You Need&lt;/h4&gt;
+&lt;p&gt;Wallet SDKs (like &lt;code&gt;sats-connect&lt;/code&gt;,
+&lt;code&gt;@leather.io/rpc&lt;/code&gt;) are &lt;strong&gt;optional&lt;/strong&gt; peer
+dependencies:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre
+class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# Only supporting UniSat and OKX? No extra dependencies needed&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# Need Xverse support?&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-4&quot;&gt;&lt;a href=&quot;#cb4-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add sats-connect&lt;/span&gt;
+&lt;span id=&quot;cb4-5&quot;&gt;&lt;a href=&quot;#cb4-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-6&quot;&gt;&lt;a href=&quot;#cb4-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# Need Leather support?&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-7&quot;&gt;&lt;a href=&quot;#cb4-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add @leather.io/rpc&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You only install what you need, &lt;strong&gt;reducing your exposure to
+malicious package scripts&lt;/strong&gt;.&lt;/p&gt;
+&lt;h4 id=&quot;dynamic-imports-lazy-loading&quot;&gt;Dynamic Imports: Lazy Loading&lt;/h4&gt;
+&lt;p&gt;This is another important security design: &lt;strong&gt;Wallet SDKs are
+lazy-loaded via &lt;code&gt;dynamic import()&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre
+class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Internal implementation sketch&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-2&quot;&gt;&lt;a href=&quot;#cb5-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; availability &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;createAvailability&lt;/span&gt;({&lt;/span&gt;
+&lt;span id=&quot;cb5-3&quot;&gt;&lt;a href=&quot;#cb5-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  getPrecondition&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;unisat&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;??&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-4&quot;&gt;&lt;a href=&quot;#cb5-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  initializer&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;async&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
+&lt;span id=&quot;cb5-5&quot;&gt;&lt;a href=&quot;#cb5-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;co&quot;&gt;// Only when user actually wants to connect this wallet&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-6&quot;&gt;&lt;a href=&quot;#cb5-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;co&quot;&gt;// will the corresponding implementation be loaded&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-7&quot;&gt;&lt;a href=&quot;#cb5-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; { UnisatWalletAdapterImpl } &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;import&lt;/span&gt;(&lt;/span&gt;
+&lt;span id=&quot;cb5-8&quot;&gt;&lt;a href=&quot;#cb5-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;st&quot;&gt;&amp;quot;./UnisatWalletAdapter.impl&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-9&quot;&gt;&lt;a href=&quot;#cb5-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    )&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-10&quot;&gt;&lt;a href=&quot;#cb5-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;UnisatWalletAdapterImpl&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-11&quot;&gt;&lt;a href=&quot;#cb5-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-12&quot;&gt;&lt;a href=&quot;#cb5-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Suppose &lt;code&gt;sats-connect&lt;/code&gt; gets compromised in a supply chain
+attack (not uncommon in the npm ecosystem). If your users only use
+UniSat wallet, &lt;strong&gt;the malicious code won&#39;t be loaded or
+executed&lt;/strong&gt;, because &lt;code&gt;sats-connect&lt;/code&gt; is only imported
+when users click &quot;Connect Xverse&quot;.&lt;/p&gt;
+&lt;p&gt;This should &lt;strong&gt;reduce users&#39; exposure to supply chain
+attacks&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;framework-integration&quot;&gt;Framework Integration&lt;/h2&gt;
+&lt;p&gt;Currently React integration is provided with an out-of-the-box
+Context Provider:&lt;/p&gt;
+&lt;pre class=&quot;tsx&quot;&gt;&lt;code&gt;import {
+  BitcoinConnectionProvider,
+  useBitcoinConnectionContext,
+} from &amp;quot;bitcoin-wallet-connector/react&amp;quot;;
+import {
+  UnisatWalletAdapterFactory,
+  XverseWalletAdapterFactory,
+} from &amp;quot;bitcoin-wallet-connector/adapters&amp;quot;;
+
+const adapterFactories = [
+  UnisatWalletAdapterFactory(),
+  XverseWalletAdapterFactory(),
+];
+
+function App() {
+  return (
+    &amp;lt;BitcoinConnectionProvider
+      adapterFactories={adapterFactories}
+      onWalletConnected={(session) =&amp;gt; console.log(&amp;quot;Connected:&amp;quot;, session)}
+      onWalletDisconnected={() =&amp;gt; console.log(&amp;quot;Disconnected&amp;quot;)}
+    &amp;gt;
+      &amp;lt;WalletUI /&amp;gt;
+    &amp;lt;/BitcoinConnectionProvider&amp;gt;
+  );
+}
+
+function WalletUI() {
+  const { walletSession, availableAdapters, connect, disconnect } =
+    useBitcoinConnectionContext();
+
+  if (walletSession) {
+    return (
+      &amp;lt;div&amp;gt;
+        &amp;lt;p&amp;gt;Connected: {walletSession.adapterId}&amp;lt;/p&amp;gt;
+        &amp;lt;button onClick={() =&amp;gt; disconnect()}&amp;gt;Disconnect&amp;lt;/button&amp;gt;
+      &amp;lt;/div&amp;gt;
+    );
+  }
+
+  return (
+    &amp;lt;div&amp;gt;
+      {availableAdapters.map(([adapterId, adapter]) =&amp;gt; (
+        &amp;lt;button key={adapterId} onClick={() =&amp;gt; connect(adapterId, adapter)}&amp;gt;
+          Connect {adapterId}
+        &amp;lt;/button&amp;gt;
+      ))}
+    &amp;lt;/div&amp;gt;
+  );
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The core &lt;code&gt;BitcoinWalletConnector&lt;/code&gt; is framework-agnostic.
+If you&#39;re using Vue, Svelte, Solid, or other frameworks, wrapping it
+into corresponding hooks/composables should be straightforward.
+Contributions are welcome!&lt;/p&gt;
+&lt;h2 id=&quot;get-started-and-contribute&quot;&gt;Get Started and Contribute&lt;/h2&gt;
+&lt;h3 id=&quot;quick-start&quot;&gt;Quick Start&lt;/h3&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre
+class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add bitcoin-wallet-connector @scure/base @scure/btc-signer&lt;/span&gt;
+&lt;span id=&quot;cb7-2&quot;&gt;&lt;a href=&quot;#cb7-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-3&quot;&gt;&lt;a href=&quot;#cb7-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# Install wallet SDKs as needed&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-4&quot;&gt;&lt;a href=&quot;#cb7-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add sats-connect      &lt;span class=&quot;co&quot;&gt;# Xverse / Magic Eden&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-5&quot;&gt;&lt;a href=&quot;#cb7-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add @leather.io/rpc   &lt;span class=&quot;co&quot;&gt;# Leather&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Or get the demo running in 5 minutes:&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;Clone the repo&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pnpm install&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pnpm storybook&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Open http://localhost:6006&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;You can test wallet connections, signing, and other features in
+Storybook.&lt;/p&gt;
+&lt;h3 id=&quot;contributing&quot;&gt;Contributing&lt;/h3&gt;
+&lt;p&gt;This is an open source project, and community contributions are very
+welcome!&lt;/p&gt;
+&lt;p&gt;If you want to add support for a new wallet, there&#39;s one small
+preference: &lt;strong&gt;try to avoid depending on the wallet&#39;s official
+SDK&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Why? Because many wallet APIs are just mounted on the
+&lt;code&gt;window&lt;/code&gt; object and can be called directly without
+introducing an additional SDK. For example, the UniSat, OKX, and Bitget
+adapters have zero external dependencies.&lt;/p&gt;
+&lt;p&gt;Introducing an SDK means one more potential supply chain attack
+vector, one more package users need to install, and potentially
+unnecessary bundle size. Of course, if a wallet can only be accessed
+through its SDK (like Xverse&#39;s &lt;code&gt;sats-connect&lt;/code&gt;), that&#39;s fine —
+we can make it an optional peer dependency.&lt;/p&gt;
+&lt;p&gt;See &lt;a
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector/blob/master/CONTRIBUTING.md&quot;&gt;CONTRIBUTING.md&lt;/a&gt;
+for detailed contribution guidelines.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;The project is fully open source (MIT). Stars and contributions are
+welcome!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GitHub: &lt;a
+href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;https://github.com/bolasblack/bitcoin-wallet-connector&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Demo: &lt;a
+href=&quot;https://bitcoin-wallet-connector.netlify.app/&quot;&gt;https://bitcoin-wallet-connector.netlify.app/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;npm: &lt;a
+href=&quot;https://www.npmjs.com/package/bitcoin-wallet-connector&quot;&gt;https://www.npmjs.com/package/bitcoin-wallet-connector&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="Bitcoin" />
+    
+
+    
+    <category term="Bitcoin" />
+    
+    <category term="Wallet" />
+    
+    <category term="Connector" />
+    
+    <category term="Adapter" />
+    
+    <category term="React" />
+    
+    <category term="TypeScript" />
+    
+  </entry>
   
   <entry xml:lang="en">
     <title type="html">The Bitcoin Wallet Extensions Ecosystem is a Mess: A Developer&#39;s Rant</title>

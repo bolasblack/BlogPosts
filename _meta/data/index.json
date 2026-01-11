@@ -1,9 +1,9 @@
 {
   "meta" : {
-    "total-posts" : 22,
+    "total-posts" : 23,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-05T20:51:54.573975838Z"
+    "generated-at" : "2026-01-11T18:13:19.537086744Z"
   },
   "pagination" : {
     "current-page" : 1,
@@ -13,6 +13,24 @@
     "next-file" : "page-2.json"
   },
   "posts" : [ {
+    "path" : "2026-01-06-bitcoin-wallet-connector-introduction.md",
+    "updated-at" : "2026-01-06T00:00:00Z",
+    "tags" : [ "Bitcoin", "Wallet", "Connector", "Adapter", "React", "TypeScript" ],
+    "date" : "2026-01-06",
+    "title" : "Bitcoin Wallet Connector: 可能是目前最好用的比特币钱包适配器",
+    "lang" : null,
+    "id" : "2026-01-06-bitcoin-wallet-connector-introduction",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction.md",
+    "created-at" : "2026-01-06T00:00:00Z",
+    "translations" : [ {
+      "lang" : "en",
+      "title" : "Bitcoin Wallet Connector: Probably the Best Bitcoin Wallet Adapter Currently",
+      "path" : "2026-01-06-bitcoin-wallet-connector-introduction.en.md",
+      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction.en.md",
+      "tags" : [ "Bitcoin", "Wallet", "Connector", "Adapter", "React", "TypeScript" ],
+      "data-file" : "data.en/index.json"
+    } ]
+  }, {
     "path" : "2026-01-02-moved-to-llm-oriented.md",
     "updated-at" : "2026-01-05T10:05:48Z",
     "tags" : [ "LLM", "工具配置", "ESLint", "npm" ],
@@ -126,15 +144,5 @@
     "id" : "2014-03-27-AngularJS_使用笔记",
     "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2014-03-27-AngularJS_使用笔记.md",
     "created-at" : "2014-03-27T00:00:00Z"
-  }, {
-    "path" : "2015-01-30-Gentoo_上部署_ocserv.md",
-    "updated-at" : "2026-01-04T21:17:00Z",
-    "tags" : [ "科学上网", "gentoo", "ocserv", "iOS" ],
-    "date" : "2015-01-30",
-    "title" : "Gentoo 上部署 ocserv",
-    "lang" : null,
-    "id" : "2015-01-30-Gentoo_上部署_ocserv",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2015-01-30-Gentoo_上部署_ocserv.md",
-    "created-at" : "2015-01-30T00:00:00Z"
   } ]
 }
