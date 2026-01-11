@@ -3,6 +3,8 @@ title: "Bitcoin Wallet Connector: Probably the Best Bitcoin Wallet Adapter Curre
 tags: [Bitcoin, Wallet, Connector, Adapter, React, TypeScript]
 ---
 
+Clickbait intended 🤪
+
 In the [previous article](./2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md), I ranted about how chaotic the Bitcoin wallet ecosystem is: WBIPs standards that nobody implements, sats-connect compatibility issues, wallets each doing their own thing with APIs...
 
 This article introduces the library I built: [bitcoin-wallet-connector](https://github.com/bolasblack/bitcoin-wallet-connector).

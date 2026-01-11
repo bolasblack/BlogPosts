@@ -3,16 +3,16 @@
     "total-posts" : 23,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-11T18:13:19.537086744Z"
+    "generated-at" : "2026-01-11T18:30:55.921980802Z"
   },
   "tag" : "Connector",
   "count" : 1,
   "posts" : [ {
     "path" : "2026-01-06-bitcoin-wallet-connector-introduction.md",
-    "updated-at" : "2026-01-06T00:00:00Z",
+    "updated-at" : "2026-01-11T18:13:19Z",
     "tags" : [ "Bitcoin", "Wallet", "Connector", "Adapter", "React", "TypeScript" ],
     "date" : "2026-01-06",
-    "title" : "Bitcoin Wallet Connector: 可能是目前最好用的比特币钱包适配器",
+    "title" : "bitcoin-wallet-connector: 可能是目前最好用的比特币钱包适配器",
     "lang" : null,
     "id" : "2026-01-06-bitcoin-wallet-connector-introduction",
     "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction.md",

@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh">
   <link href="https://blog.c4605.com/" rel="self" type="application/atom+xml" />
   <link href="https://blog.c4605.com/" rel="alternate" type="text/html" hreflang="zh" />
-  <updated>2026-01-06T00:00:00Z</updated>
+  <updated>2026-01-11T18:13:19Z</updated>
   <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta/</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
@@ -15,12 +15,13 @@
 
   
   <entry>
-    <title type="html">Bitcoin Wallet Connector: 可能是目前最好用的比特币钱包适配器</title>
-    <link href="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.md" rel="alternate" type="text/html" title="Bitcoin Wallet Connector: 可能是目前最好用的比特币钱包适配器" />
+    <title type="html">bitcoin-wallet-connector: 可能是目前最好用的比特币钱包适配器</title>
+    <link href="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.md" rel="alternate" type="text/html" title="bitcoin-wallet-connector: 可能是目前最好用的比特币钱包适配器" />
     <published>2026-01-06T00:00:00Z</published>
-    <updated>2026-01-06T00:00:00Z</updated>
+    <updated>2026-01-11T18:13:19Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction</id>
-    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.md">&lt;p&gt;&lt;a
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.md">&lt;p&gt;标题党一下 🤪&lt;/p&gt;
+&lt;p&gt;&lt;a
 href=&quot;https://blog.c4605.com/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md&quot;&gt;上一篇文章&lt;/a&gt;我吐槽了比特币钱包生态有多混乱：WBIPs
 标准没人实现、sats-connect 的兼容性、钱包各有各的 API...&lt;/p&gt;
 &lt;p&gt;这篇文章介绍下我写的库：&lt;a

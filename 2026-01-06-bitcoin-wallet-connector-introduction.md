@@ -1,7 +1,9 @@
 ---
-title: "Bitcoin Wallet Connector: 可能是目前最好用的比特币钱包适配器"
+title: "bitcoin-wallet-connector: 可能是目前最好用的比特币钱包适配器"
 tags: [Bitcoin, Wallet, Connector, Adapter, React, TypeScript]
 ---
+
+标题党一下 🤪
 
 [上一篇文章](./2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.md)我吐槽了比特币钱包生态有多混乱：WBIPs 标准没人实现、sats-connect 的兼容性、钱包各有各的 API...
 
