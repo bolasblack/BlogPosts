@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xml" href="https://github.com/bolasblack/BlogPosts/blob/master/_meta/feed.xslt.xml"?>
+<?xml-stylesheet type="text/xml" href="https://raw.githubusercontent.com/bolasblack/BlogPosts/refs/heads/master/_meta/feed.xslt.xml"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <link href="https://blog.c4605.com/" rel="self" type="application/atom+xml" />
   <link href="https://blog.c4605.com/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2026-01-11T18:30:55Z</updated>
-  <id>https://github.com/bolasblack/BlogPosts/blob/master/_meta/</id>
+  <updated>2026-01-22T00:00:00Z</updated>
+  <id>https://github.com/bolasblack/BlogPosts/</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
   <author>
@@ -15,213 +15,138 @@
 
   
   <entry xml:lang="en">
+    <title type="html">shadow-cljs-vite-plugin v0.0.6: Fixing HMR and ES Module Compatibility</title>
+    <link href="https://blog.c4605.com/#/goto/articles/2026-01-22-shadow-cljs-vite-plugin-v0.0.6.en.md" rel="alternate" type="text/html" title="shadow-cljs-vite-plugin v0.0.6: Fixing HMR and ES Module Compatibility" />
+    <published>2026-01-22T00:00:00Z</published>
+    <updated>2026-01-22T00:00:00Z</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-22-shadow-cljs-vite-plugin-v0.0.6</id>
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-22-shadow-cljs-vite-plugin-v0.0.6.en.md">&lt;p&gt;Two weeks after the initial release of &lt;a href=&quot;https://github.com/bolasblack/shadow-cljs-vite-plugin&quot;&gt;shadow-cljs-vite-plugin&lt;/a&gt;, v0.0.6 brings some important fixes that make the development experience much smoother.&lt;/p&gt;&lt;h2 id=&quot;problem-1:-es-module-imports&quot;&gt;Problem 1: ES Module Imports&lt;/h2&gt;&lt;p&gt;When I first released the plugin, there were edge cases where ClojureScript code wouldn&amp;apos;t import correctly in Vite&amp;apos;s ESM environment. This was particularly problematic for users deploying to Cloudflare Workers.&lt;/p&gt;&lt;p&gt;The fix required coordinating with shadow-cljs upstream. We submitted a &lt;a href=&quot;https://github.com/thheller/shadow-cljs/pull/1249&quot;&gt;PR #1249&lt;/a&gt; to address the root cause, which was merged in v3.3.5. Thanks to &lt;a href=&quot;https://github.com/thheller&quot;&gt;@thheller&lt;/a&gt; for working through it with me!&lt;/p&gt;&lt;h2 id=&quot;problem-2:-hmr-&amp;quot;namespace-already-declared&amp;quot;-error&quot;&gt;Problem 2: HMR &amp;quot;Namespace already declared&amp;quot; Error&lt;/h2&gt;&lt;p&gt;This was a frustrating one. During hot module replacement, Vite re-executes module code, but global state (like &lt;code&gt;goog.loadedModules_&lt;/code&gt;) persists across HMR updates. Google Closure Library assumes modules are loaded exactly once and throws errors on duplicate registration.&lt;/p&gt;&lt;p&gt;The solution was to patch &lt;code&gt;goog.provide&lt;/code&gt; and &lt;code&gt;goog.module&lt;/code&gt; to be idempotent:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;goog.provide = function(name) {
+  return goog.isProvided_(name) ? undefined : goog.constructNamespace_.call(this, name);
+};
+
+goog.module = Object.assign(function(name) {
+  if (name in goog.loadedModules_) {
+    goog.moduleLoaderState_.moduleName = name;
+    return;
+  }
+  return origModule.call(this, name);
+}, origModule);
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;better-hmr-batching&quot;&gt;Better HMR Batching&lt;/h2&gt;&lt;p&gt;Previously, if you saved multiple files quickly (or your editor formatted on save), each change triggered a separate HMR update. Now the plugin batches multiple file changes into a single update using a debounce mechanism.&lt;/p&gt;&lt;p&gt;Additionally, changes to &lt;code&gt;shadow-cljs.edn&lt;/code&gt; now automatically restart Vite, so you don&amp;apos;t have to manually restart when modifying your build configuration.&lt;/p&gt;&lt;h2 id=&quot;tailwind-css-support&quot;&gt;Tailwind CSS Support&lt;/h2&gt;&lt;p&gt;The plugin works great with Tailwind CSS. I&amp;apos;ve been using this combination on &lt;a href=&quot;https://blog.c4605.com/en/&quot;&gt;my blog&lt;/a&gt; frontend with no issues.&lt;/p&gt;&lt;h2 id=&quot;try-it-out&quot;&gt;Try It Out&lt;/h2&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install shadow-cljs-vite-plugin
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The plugin is stable and I&amp;apos;m using it in production. Feedback and contributions are always welcome on &lt;a href=&quot;https://github.com/bolasblack/shadow-cljs-vite-plugin&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="ClojureScript" />
+    
+
+    
+    <category term="ClojureScript" />
+    
+    <category term="shadow-cljs" />
+    
+    <category term="Vite" />
+    
+    <category term="HMR" />
+    
+    <category term="Cloudflare Workers" />
+    
+  </entry>
+  
+  <entry xml:lang="en">
     <title type="html">Bitcoin Wallet Connector: Probably the Best Bitcoin Wallet Adapter Currently</title>
     <link href="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.en.md" rel="alternate" type="text/html" title="Bitcoin Wallet Connector: Probably the Best Bitcoin Wallet Adapter Currently" />
     <published>2026-01-06T00:00:00Z</published>
-    <updated>2026-01-11T18:30:55Z</updated>
+    <updated>2026-01-11T18:56:04Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-06-bitcoin-wallet-connector-introduction</id>
-    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.en.md">&lt;p&gt;Clickbait intended 🤪&lt;/p&gt;
-&lt;p&gt;In the &lt;a
-href=&quot;https://blog.c4605.com/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md&quot;&gt;previous
-article&lt;/a&gt;, I ranted about how chaotic the Bitcoin wallet ecosystem is:
-WBIPs standards that nobody implements, sats-connect compatibility
-issues, wallets each doing their own thing with APIs...&lt;/p&gt;
-&lt;p&gt;This article introduces the library I built: &lt;a
-href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;bitcoin-wallet-connector&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Try the &lt;strong&gt;&lt;a
-href=&quot;https://bitcoin-wallet-connector.netlify.app/iframe.html?id=components-bitcoinconnectionprovider--default&amp;amp;viewMode=story&quot;&gt;Live
-Demo&lt;/a&gt;&lt;/strong&gt; first, or check out the &lt;strong&gt;&lt;a
-href=&quot;https://bitcoin-wallet-connector.netlify.app/&quot;&gt;Storybook&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;what-this-library-focuses-on&quot;&gt;What This Library Focuses On&lt;/h2&gt;
-&lt;h3 id=&quot;smoothing-out-the-ridiculous-differences&quot;&gt;Smoothing Out the
-Ridiculous Differences&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;bitcoin-wallet-connector&lt;/code&gt; provides a unified API that
-lets you connect to all supported wallets with the same code:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
-class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;import&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  BitcoinWalletConnector&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  UnisatWalletAdapterFactory&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  XverseWalletAdapterFactory&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  LeatherWalletAdapterFactory&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;} &lt;span class=&quot;im&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;bitcoin-wallet-connector&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Register the wallets you want to support&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; connector &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;BitcoinWalletConnector&lt;/span&gt;([&lt;/span&gt;
-&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;UnisatWalletAdapterFactory&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;XverseWalletAdapterFactory&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;LeatherWalletAdapterFactory&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;])&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-14&quot;&gt;&lt;a href=&quot;#cb1-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-15&quot;&gt;&lt;a href=&quot;#cb1-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Subscribe to available wallet changes&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-16&quot;&gt;&lt;a href=&quot;#cb1-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Note: The timing of wallet extension API injection is unpredictable&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-17&quot;&gt;&lt;a href=&quot;#cb1-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// (some inject at DOMContentLoaded, others after the load event),&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-18&quot;&gt;&lt;a href=&quot;#cb1-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// so subscribing is recommended over getting&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-19&quot;&gt;&lt;a href=&quot;#cb1-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;connector&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;subscribeAvailableAdapters&lt;/span&gt;((availableAdapters) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb1-20&quot;&gt;&lt;a href=&quot;#cb1-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;/span&gt;
-&lt;span id=&quot;cb1-21&quot;&gt;&lt;a href=&quot;#cb1-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;st&quot;&gt;&amp;quot;Available wallets:&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-22&quot;&gt;&lt;a href=&quot;#cb1-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    availableAdapters&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;map&lt;/span&gt;(([id]) &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; id)&lt;/span&gt;
-&lt;span id=&quot;cb1-23&quot;&gt;&lt;a href=&quot;#cb1-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  )&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-24&quot;&gt;&lt;a href=&quot;#cb1-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// =&amp;gt; [&amp;#39;unisat&amp;#39;, &amp;#39;xverse&amp;#39;, ...]&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-25&quot;&gt;&lt;a href=&quot;#cb1-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-26&quot;&gt;&lt;a href=&quot;#cb1-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-27&quot;&gt;&lt;a href=&quot;#cb1-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Connect wallet - same API for all wallets&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-28&quot;&gt;&lt;a href=&quot;#cb1-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; [adapterId&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; adapter] &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; availableAdapters[&lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-29&quot;&gt;&lt;a href=&quot;#cb1-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; connector&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;connect&lt;/span&gt;(adapterId&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; adapter)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-30&quot;&gt;&lt;a href=&quot;#cb1-30&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-31&quot;&gt;&lt;a href=&quot;#cb1-31&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Get addresses, sign, send transactions - unified interface&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-32&quot;&gt;&lt;a href=&quot;#cb1-32&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; addresses &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; adapter&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;getAddresses&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-33&quot;&gt;&lt;a href=&quot;#cb1-33&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; result &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; adapter&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;signMessage&lt;/span&gt;(&lt;/span&gt;
-&lt;span id=&quot;cb1-34&quot;&gt;&lt;a href=&quot;#cb1-34&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  addresses[&lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;address&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-35&quot;&gt;&lt;a href=&quot;#cb1-35&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;Hello Bitcoin!&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-36&quot;&gt;&lt;a href=&quot;#cb1-36&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;That&#39;s it. Write the code once, support all wallets.&lt;/p&gt;
-&lt;p&gt;Currently supported wallets:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Wallet&lt;/th&gt;
-&lt;th&gt;Adapter&lt;/th&gt;
-&lt;th&gt;Extra Dependencies&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://unisat.io/&quot;&gt;UniSat&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;UnisatWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.xverse.app/&quot;&gt;Xverse&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;XverseWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;sats-connect&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.okx.com/web3&quot;&gt;OKX&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;OkxWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://leather.io/&quot;&gt;Leather&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;LeatherWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;@leather.io/rpc&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://web3.bitget.com/&quot;&gt;Bitget&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;BitgetWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;https://wallet.magiceden.io/&quot;&gt;Magic Eden&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;MagicEdenWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;sats-connect&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;All adapters implement the same interface:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
-class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;interface&lt;/span&gt; WalletAdapter {&lt;/span&gt;
-&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Connect/Disconnect&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;connect&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;disconnect&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-6&quot;&gt;&lt;a href=&quot;#cb2-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Get addresses&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-7&quot;&gt;&lt;a href=&quot;#cb2-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;getAddresses&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;WalletAdapterAddress[]&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-8&quot;&gt;&lt;a href=&quot;#cb2-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-9&quot;&gt;&lt;a href=&quot;#cb2-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Message signing&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-10&quot;&gt;&lt;a href=&quot;#cb2-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;signMessage&lt;/span&gt;(address&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; message&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;SignMessageResult&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-11&quot;&gt;&lt;a href=&quot;#cb2-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-12&quot;&gt;&lt;a href=&quot;#cb2-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Send BTC&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-13&quot;&gt;&lt;a href=&quot;#cb2-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;sendBitcoin&lt;/span&gt;(&lt;/span&gt;
-&lt;span id=&quot;cb2-14&quot;&gt;&lt;a href=&quot;#cb2-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    fromAddress&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-15&quot;&gt;&lt;a href=&quot;#cb2-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    receiverAddress&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-16&quot;&gt;&lt;a href=&quot;#cb2-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    satoshiAmount&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;bigint&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-17&quot;&gt;&lt;a href=&quot;#cb2-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  )&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;{ txid&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt; }&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-18&quot;&gt;&lt;a href=&quot;#cb2-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-19&quot;&gt;&lt;a href=&quot;#cb2-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// PSBT signing&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-20&quot;&gt;&lt;a href=&quot;#cb2-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;signAndFinalizePsbt&lt;/span&gt;(&lt;/span&gt;
-&lt;span id=&quot;cb2-21&quot;&gt;&lt;a href=&quot;#cb2-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    psbtHex&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-22&quot;&gt;&lt;a href=&quot;#cb2-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    signIndices&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [address&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; signIndex&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;number&lt;/span&gt;][]&lt;/span&gt;
-&lt;span id=&quot;cb2-23&quot;&gt;&lt;a href=&quot;#cb2-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  )&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;{ signedPsbtHex&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt; }&lt;span class=&quot;op&quot;&gt;&amp;gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-24&quot;&gt;&lt;a href=&quot;#cb2-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-25&quot;&gt;&lt;a href=&quot;#cb2-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Listen for address changes&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-26&quot;&gt;&lt;a href=&quot;#cb2-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;onAddressesChanged&lt;/span&gt;(callback)&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; { unsubscribe&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;void&lt;/span&gt; }&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-27&quot;&gt;&lt;a href=&quot;#cb2-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;No matter which wallet users choose, your business logic stays the
-same.&lt;/p&gt;
-&lt;h4 id=&quot;about-sendrunessendinscriptionssendbrc20&quot;&gt;About
-sendRunes/sendInscriptions/sendBRC20&lt;/h4&gt;
-&lt;p&gt;Currently, this library only supports &lt;code&gt;signMessage&lt;/code&gt;,
-&lt;code&gt;sendBitcoin&lt;/code&gt;, and &lt;code&gt;signPsbt&lt;/code&gt;. It doesn&#39;t support
-&lt;code&gt;sendRunes&lt;/code&gt;, &lt;code&gt;sendInscriptions&lt;/code&gt;, or
-&lt;code&gt;sendBRC20&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Because these involve more complex dependencies (like needing an
-Ordinals Indexer, a BRC20 Indexer, etc.). These would make a
-&lt;code&gt;Connector&lt;/code&gt; overly complicated.&lt;/p&gt;
-&lt;p&gt;In my view, this should be the responsibility of a
-&lt;code&gt;Transaction Builder&lt;/code&gt;. The &lt;code&gt;Transaction Builder&lt;/code&gt;
-handles transaction construction, then passes it to the
-&lt;code&gt;Connector&lt;/code&gt; for signing and broadcasting.&lt;/p&gt;
-&lt;h3 id=&quot;security-matters&quot;&gt;Security Matters&lt;/h3&gt;
-&lt;p&gt;When designing this library, I prioritized &lt;strong&gt;dependency
-security&lt;/strong&gt;. The reason is simple: wallet libraries directly
-handle user assets, and any security vulnerability could result in real
-financial losses.&lt;/p&gt;
-&lt;h4 id=&quot;peer-dependencies&quot;&gt;Peer Dependencies&lt;/h4&gt;
-&lt;p&gt;I declared important dependencies as peer dependencies rather than
-bundling them:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add bitcoin-wallet-connector @scure/base @scure/btc-signer&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This means:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;You directly control the versions of these dependencies&lt;/li&gt;
-&lt;li&gt;If a dependency has a security vulnerability, you can
-&lt;strong&gt;upgrade immediately&lt;/strong&gt; without waiting for this library to
-release a new version&lt;/li&gt;
-&lt;li&gt;You won&#39;t end up with two versions of &lt;code&gt;@scure/btc-signer&lt;/code&gt;
-bundled in your final build&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&quot;optional-dependencies-install-only-what-you-need&quot;&gt;Optional
-Dependencies: Install Only What You Need&lt;/h4&gt;
-&lt;p&gt;Wallet SDKs (like &lt;code&gt;sats-connect&lt;/code&gt;,
-&lt;code&gt;@leather.io/rpc&lt;/code&gt;) are &lt;strong&gt;optional&lt;/strong&gt; peer
-dependencies:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# Only supporting UniSat and OKX? No extra dependencies needed&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# Need Xverse support?&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-4&quot;&gt;&lt;a href=&quot;#cb4-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add sats-connect&lt;/span&gt;
-&lt;span id=&quot;cb4-5&quot;&gt;&lt;a href=&quot;#cb4-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-6&quot;&gt;&lt;a href=&quot;#cb4-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# Need Leather support?&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-7&quot;&gt;&lt;a href=&quot;#cb4-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add @leather.io/rpc&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You only install what you need, &lt;strong&gt;reducing your exposure to
-malicious package scripts&lt;/strong&gt;.&lt;/p&gt;
-&lt;h4 id=&quot;dynamic-imports-lazy-loading&quot;&gt;Dynamic Imports: Lazy Loading&lt;/h4&gt;
-&lt;p&gt;This is another important security design: &lt;strong&gt;Wallet SDKs are
-lazy-loaded via &lt;code&gt;dynamic import()&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre
-class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Internal implementation sketch&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-2&quot;&gt;&lt;a href=&quot;#cb5-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; availability &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;createAvailability&lt;/span&gt;({&lt;/span&gt;
-&lt;span id=&quot;cb5-3&quot;&gt;&lt;a href=&quot;#cb5-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  getPrecondition&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;unisat&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;??&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-4&quot;&gt;&lt;a href=&quot;#cb5-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  initializer&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;async&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb5-5&quot;&gt;&lt;a href=&quot;#cb5-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;co&quot;&gt;// Only when user actually wants to connect this wallet&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-6&quot;&gt;&lt;a href=&quot;#cb5-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;co&quot;&gt;// will the corresponding implementation be loaded&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-7&quot;&gt;&lt;a href=&quot;#cb5-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; { UnisatWalletAdapterImpl } &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;import&lt;/span&gt;(&lt;/span&gt;
-&lt;span id=&quot;cb5-8&quot;&gt;&lt;a href=&quot;#cb5-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;st&quot;&gt;&amp;quot;./UnisatWalletAdapter.impl&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-9&quot;&gt;&lt;a href=&quot;#cb5-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    )&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-10&quot;&gt;&lt;a href=&quot;#cb5-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;UnisatWalletAdapterImpl&lt;/span&gt;()&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-11&quot;&gt;&lt;a href=&quot;#cb5-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-12&quot;&gt;&lt;a href=&quot;#cb5-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Suppose &lt;code&gt;sats-connect&lt;/code&gt; gets compromised in a supply chain
-attack (not uncommon in the npm ecosystem). If your users only use
-UniSat wallet, &lt;strong&gt;the malicious code won&#39;t be loaded or
-executed&lt;/strong&gt;, because &lt;code&gt;sats-connect&lt;/code&gt; is only imported
-when users click &quot;Connect Xverse&quot;.&lt;/p&gt;
-&lt;p&gt;This should &lt;strong&gt;reduce users&#39; exposure to supply chain
-attacks&lt;/strong&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;framework-integration&quot;&gt;Framework Integration&lt;/h2&gt;
-&lt;p&gt;Currently React integration is provided with an out-of-the-box
-Context Provider:&lt;/p&gt;
-&lt;pre class=&quot;tsx&quot;&gt;&lt;code&gt;import {
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-06-bitcoin-wallet-connector-introduction.en.md">&lt;p&gt;Clickbait intended 🤪&lt;/p&gt;&lt;p&gt;In the &lt;a href=&quot;https://blog.c4605.com/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md&quot;&gt;previous article&lt;/a&gt;, I ranted about how chaotic the Bitcoin wallet ecosystem is: WBIPs standards that nobody implements, sats-connect compatibility issues, wallets each doing their own thing with APIs...&lt;/p&gt;&lt;p&gt;This article introduces the library I built: &lt;a href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;bitcoin-wallet-connector&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Try the &lt;strong&gt;&lt;a href=&quot;https://bitcoin-wallet-connector.netlify.app/iframe.html?id=components-bitcoinconnectionprovider--default&amp;amp;viewMode=story&quot;&gt;Live Demo&lt;/a&gt;&lt;/strong&gt; first, or check out the &lt;strong&gt;&lt;a href=&quot;https://bitcoin-wallet-connector.netlify.app/&quot;&gt;Storybook&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;&lt;h2 id=&quot;what-this-library-focuses-on&quot;&gt;What This Library Focuses On&lt;/h2&gt;&lt;h3 id=&quot;smoothing-out-the-ridiculous-differences&quot;&gt;Smoothing Out the Ridiculous Differences&lt;/h3&gt;&lt;p&gt;&lt;code&gt;bitcoin-wallet-connector&lt;/code&gt; provides a unified API that lets you connect to all supported wallets with the same code:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;import {
+  BitcoinWalletConnector,
+  UnisatWalletAdapterFactory,
+  XverseWalletAdapterFactory,
+  LeatherWalletAdapterFactory,
+} from &amp;quot;bitcoin-wallet-connector&amp;quot;;
+
+// Register the wallets you want to support
+const connector = new BitcoinWalletConnector([
+  UnisatWalletAdapterFactory(),
+  XverseWalletAdapterFactory(),
+  LeatherWalletAdapterFactory(),
+]);
+
+// Subscribe to available wallet changes
+// Note: The timing of wallet extension API injection is unpredictable
+// (some inject at DOMContentLoaded, others after the load event),
+// so subscribing is recommended over getting
+connector.subscribeAvailableAdapters((availableAdapters) =&amp;gt; {
+  console.log(
+    &amp;quot;Available wallets:&amp;quot;,
+    availableAdapters.map(([id]) =&amp;gt; id)
+  );
+  // =&amp;gt; [&amp;apos;unisat&amp;apos;, &amp;apos;xverse&amp;apos;, ...]
+});
+
+// Connect wallet - same API for all wallets
+const [adapterId, adapter] = availableAdapters[0];
+await connector.connect(adapterId, adapter);
+
+// Get addresses, sign, send transactions - unified interface
+const addresses = await adapter.getAddresses();
+const result = await adapter.signMessage(
+  addresses[0].address,
+  &amp;quot;Hello Bitcoin!&amp;quot;
+);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That&amp;apos;s it. Write the code once, support all wallets.&lt;/p&gt;&lt;p&gt;Currently supported wallets:&lt;/p&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Wallet&lt;/th&gt;&lt;th&gt;Adapter&lt;/th&gt;&lt;th&gt;Extra Dependencies&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://unisat.io/&quot;&gt;UniSat&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;UnisatWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://www.xverse.app/&quot;&gt;Xverse&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;XverseWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;sats-connect&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://www.okx.com/web3&quot;&gt;OKX&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;OkxWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://leather.io/&quot;&gt;Leather&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;LeatherWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;@leather.io/rpc&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://web3.bitget.com/&quot;&gt;Bitget&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;BitgetWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;a href=&quot;https://wallet.magiceden.io/&quot;&gt;Magic Eden&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;MagicEdenWalletAdapterFactory&lt;/code&gt;&lt;/td&gt;&lt;td&gt;&lt;code&gt;sats-connect&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;All adapters implement the same interface:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;interface WalletAdapter {
+  // Connect/Disconnect
+  connect(): Promise&amp;lt;void&amp;gt;;
+  disconnect(): Promise&amp;lt;void&amp;gt;;
+
+  // Get addresses
+  getAddresses(): Promise&amp;lt;WalletAdapterAddress[]&amp;gt;;
+
+  // Message signing
+  signMessage(address: string, message: string): Promise&amp;lt;SignMessageResult&amp;gt;;
+
+  // Send BTC
+  sendBitcoin(
+    fromAddress: string,
+    receiverAddress: string,
+    satoshiAmount: bigint
+  ): Promise&amp;lt;{ txid: string }&amp;gt;;
+
+  // PSBT signing
+  signAndFinalizePsbt(
+    psbtHex: string,
+    signIndices: [address: string, signIndex: number][]
+  ): Promise&amp;lt;{ signedPsbtHex: string }&amp;gt;;
+
+  // Listen for address changes
+  onAddressesChanged(callback): { unsubscribe: () =&amp;gt; void };
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;No matter which wallet users choose, your business logic stays the same.&lt;/p&gt;&lt;h4 id=&quot;about-sendrunes/sendinscriptions/sendbrc20&quot;&gt;About sendRunes/sendInscriptions/sendBRC20&lt;/h4&gt;&lt;p&gt;Currently, this library only supports &lt;code&gt;signMessage&lt;/code&gt;, &lt;code&gt;sendBitcoin&lt;/code&gt;, and &lt;code&gt;signPsbt&lt;/code&gt;. It doesn&amp;apos;t support &lt;code&gt;sendRunes&lt;/code&gt;, &lt;code&gt;sendInscriptions&lt;/code&gt;, or &lt;code&gt;sendBRC20&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;Because these involve more complex dependencies (like needing an Ordinals Indexer, a BRC20 Indexer, etc.). These would make a &lt;code&gt;Connector&lt;/code&gt; overly complicated.&lt;/p&gt;&lt;p&gt;In my view, this should be the responsibility of a &lt;code&gt;Transaction Builder&lt;/code&gt;. The &lt;code&gt;Transaction Builder&lt;/code&gt; handles transaction construction, then passes it to the &lt;code&gt;Connector&lt;/code&gt; for signing and broadcasting.&lt;/p&gt;&lt;h3 id=&quot;security-matters&quot;&gt;Security Matters&lt;/h3&gt;&lt;p&gt;When designing this library, I prioritized &lt;strong&gt;dependency security&lt;/strong&gt;. The reason is simple: wallet libraries directly handle user assets, and any security vulnerability could result in real financial losses.&lt;/p&gt;&lt;h4 id=&quot;peer-dependencies&quot;&gt;Peer Dependencies&lt;/h4&gt;&lt;p&gt;I declared important dependencies as peer dependencies rather than bundling them:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;pnpm add bitcoin-wallet-connector @scure/base @scure/btc-signer
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This means:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;You directly control the versions of these dependencies&lt;/li&gt;&lt;li&gt;If a dependency has a security vulnerability, you can &lt;strong&gt;upgrade immediately&lt;/strong&gt; without waiting for this library to release a new version&lt;/li&gt;&lt;li&gt;You won&amp;apos;t end up with two versions of &lt;code&gt;@scure/btc-signer&lt;/code&gt; bundled in your final build&lt;/li&gt;&lt;/ul&gt;&lt;h4 id=&quot;optional-dependencies:-install-only-what-you-need&quot;&gt;Optional Dependencies: Install Only What You Need&lt;/h4&gt;&lt;p&gt;Wallet SDKs (like &lt;code&gt;sats-connect&lt;/code&gt;, &lt;code&gt;@leather.io/rpc&lt;/code&gt;) are &lt;strong&gt;optional&lt;/strong&gt; peer dependencies:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;# Only supporting UniSat and OKX? No extra dependencies needed
+
+# Need Xverse support?
+pnpm add sats-connect
+
+# Need Leather support?
+pnpm add @leather.io/rpc
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;You only install what you need, &lt;strong&gt;reducing your exposure to malicious package scripts&lt;/strong&gt;.&lt;/p&gt;&lt;h4 id=&quot;dynamic-imports:-lazy-loading&quot;&gt;Dynamic Imports: Lazy Loading&lt;/h4&gt;&lt;p&gt;This is another important security design: &lt;strong&gt;Wallet SDKs are lazy-loaded via &lt;code&gt;dynamic import()&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;// Internal implementation sketch
+const availability = createAvailability({
+  getPrecondition: () =&amp;gt; window.unisat ?? null,
+  initializer: async () =&amp;gt; {
+    // Only when user actually wants to connect this wallet
+    // will the corresponding implementation be loaded
+    const { UnisatWalletAdapterImpl } = await import(
+      &amp;quot;./UnisatWalletAdapter.impl&amp;quot;
+    );
+    return new UnisatWalletAdapterImpl();
+  },
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Suppose &lt;code&gt;sats-connect&lt;/code&gt; gets compromised in a supply chain attack (not uncommon in the npm ecosystem). If your users only use UniSat wallet, &lt;strong&gt;the malicious code won&amp;apos;t be loaded or executed&lt;/strong&gt;, because &lt;code&gt;sats-connect&lt;/code&gt; is only imported when users click &amp;quot;Connect Xverse&amp;quot;.&lt;/p&gt;&lt;p&gt;This should &lt;strong&gt;reduce users&amp;apos; exposure to supply chain attacks&lt;/strong&gt;.&lt;/p&gt;&lt;h2 id=&quot;framework-integration&quot;&gt;Framework Integration&lt;/h2&gt;&lt;p&gt;Currently React integration is provided with an out-of-the-box Context Provider:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-tsx&quot;&gt;import {
   BitcoinConnectionProvider,
   useBitcoinConnectionContext,
 } from &amp;quot;bitcoin-wallet-connector/react&amp;quot;;
@@ -269,58 +194,13 @@ function WalletUI() {
       ))}
     &amp;lt;/div&amp;gt;
   );
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The core &lt;code&gt;BitcoinWalletConnector&lt;/code&gt; is framework-agnostic.
-If you&#39;re using Vue, Svelte, Solid, or other frameworks, wrapping it
-into corresponding hooks/composables should be straightforward.
-Contributions are welcome!&lt;/p&gt;
-&lt;h2 id=&quot;get-started-and-contribute&quot;&gt;Get Started and Contribute&lt;/h2&gt;
-&lt;h3 id=&quot;quick-start&quot;&gt;Quick Start&lt;/h3&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre
-class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add bitcoin-wallet-connector @scure/base @scure/btc-signer&lt;/span&gt;
-&lt;span id=&quot;cb7-2&quot;&gt;&lt;a href=&quot;#cb7-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-3&quot;&gt;&lt;a href=&quot;#cb7-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;# Install wallet SDKs as needed&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-4&quot;&gt;&lt;a href=&quot;#cb7-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add sats-connect      &lt;span class=&quot;co&quot;&gt;# Xverse / Magic Eden&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-5&quot;&gt;&lt;a href=&quot;#cb7-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;pnpm&lt;/span&gt; add @leather.io/rpc   &lt;span class=&quot;co&quot;&gt;# Leather&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Or get the demo running in 5 minutes:&lt;/p&gt;
-&lt;ol type=&quot;1&quot;&gt;
-&lt;li&gt;Clone the repo&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;pnpm install&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;pnpm storybook&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Open http://localhost:6006&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;You can test wallet connections, signing, and other features in
-Storybook.&lt;/p&gt;
-&lt;h3 id=&quot;contributing&quot;&gt;Contributing&lt;/h3&gt;
-&lt;p&gt;This is an open source project, and community contributions are very
-welcome!&lt;/p&gt;
-&lt;p&gt;If you want to add support for a new wallet, there&#39;s one small
-preference: &lt;strong&gt;try to avoid depending on the wallet&#39;s official
-SDK&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Why? Because many wallet APIs are just mounted on the
-&lt;code&gt;window&lt;/code&gt; object and can be called directly without
-introducing an additional SDK. For example, the UniSat, OKX, and Bitget
-adapters have zero external dependencies.&lt;/p&gt;
-&lt;p&gt;Introducing an SDK means one more potential supply chain attack
-vector, one more package users need to install, and potentially
-unnecessary bundle size. Of course, if a wallet can only be accessed
-through its SDK (like Xverse&#39;s &lt;code&gt;sats-connect&lt;/code&gt;), that&#39;s fine —
-we can make it an optional peer dependency.&lt;/p&gt;
-&lt;p&gt;See &lt;a
-href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector/blob/master/CONTRIBUTING.md&quot;&gt;CONTRIBUTING.md&lt;/a&gt;
-for detailed contribution guidelines.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;The project is fully open source (MIT). Stars and contributions are
-welcome!&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;GitHub: &lt;a
-href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;&lt;span&gt;https://github.com/bolasblack/bitcoin-wallet-connector&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Demo: &lt;a
-href=&quot;https://bitcoin-wallet-connector.netlify.app/&quot;&gt;&lt;span&gt;https://bitcoin-wallet-connector.netlify.app/&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;npm: &lt;a
-href=&quot;https://www.npmjs.com/package/bitcoin-wallet-connector&quot;&gt;&lt;span&gt;https://www.npmjs.com/package/bitcoin-wallet-connector&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content>
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The core &lt;code&gt;BitcoinWalletConnector&lt;/code&gt; is framework-agnostic. If you&amp;apos;re using Vue, Svelte, Solid, or other frameworks, wrapping it into corresponding hooks/composables should be straightforward. Contributions are welcome!&lt;/p&gt;&lt;h2 id=&quot;get-started-and-contribute&quot;&gt;Get Started and Contribute&lt;/h2&gt;&lt;h3 id=&quot;quick-start&quot;&gt;Quick Start&lt;/h3&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;pnpm add bitcoin-wallet-connector @scure/base @scure/btc-signer
+
+# Install wallet SDKs as needed
+pnpm add sats-connect      # Xverse / Magic Eden
+pnpm add @leather.io/rpc   # Leather
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Or get the demo running in 5 minutes:&lt;/p&gt;&lt;ol start=&quot;1&quot;&gt;&lt;li&gt;Clone the repo&lt;/li&gt;&lt;li&gt;&lt;code&gt;pnpm install&lt;/code&gt;&lt;/li&gt;&lt;li&gt;&lt;code&gt;pnpm storybook&lt;/code&gt;&lt;/li&gt;&lt;li&gt;Open &lt;a href=&quot;http://localhost:6006&quot;&gt;http://localhost:6006&lt;/a&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;You can test wallet connections, signing, and other features in Storybook.&lt;/p&gt;&lt;h3 id=&quot;contributing&quot;&gt;Contributing&lt;/h3&gt;&lt;p&gt;This is an open source project, and community contributions are very welcome!&lt;/p&gt;&lt;p&gt;If you want to add support for a new wallet, there&amp;apos;s one small preference: &lt;strong&gt;try to avoid depending on the wallet&amp;apos;s official SDK&lt;/strong&gt;.&lt;/p&gt;&lt;p&gt;Why? Because many wallet APIs are just mounted on the &lt;code&gt;window&lt;/code&gt; object and can be called directly without introducing an additional SDK. For example, the UniSat, OKX, and Bitget adapters have zero external dependencies.&lt;/p&gt;&lt;p&gt;Introducing an SDK means one more potential supply chain attack vector, one more package users need to install, and potentially unnecessary bundle size. Of course, if a wallet can only be accessed through its SDK (like Xverse&amp;apos;s &lt;code&gt;sats-connect&lt;/code&gt;), that&amp;apos;s fine — we can make it an optional peer dependency.&lt;/p&gt;&lt;p&gt;See &lt;a href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector/blob/master/CONTRIBUTING.md&quot;&gt;CONTRIBUTING.md&lt;/a&gt; for detailed contribution guidelines.&lt;/p&gt;&lt;hr /&gt;&lt;p&gt;The project is fully open source (MIT). Stars and contributions are welcome!&lt;/p&gt;&lt;ul&gt;&lt;li&gt;GitHub: &lt;a href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;https://github.com/bolasblack/bitcoin-wallet-connector&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Demo: &lt;a href=&quot;https://bitcoin-wallet-connector.netlify.app/&quot;&gt;https://bitcoin-wallet-connector.netlify.app/&lt;/a&gt;&lt;/li&gt;&lt;li&gt;npm: &lt;a href=&quot;https://www.npmjs.com/package/bitcoin-wallet-connector&quot;&gt;https://www.npmjs.com/package/bitcoin-wallet-connector&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content>
 
     <author>
       <name>c4605</name>
@@ -353,142 +233,36 @@ href=&quot;https://www.npmjs.com/package/bitcoin-wallet-connector&quot;&gt;&lt;s
     <published>2026-01-03T00:00:00Z</published>
     <updated>2026-01-05T10:05:48Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess</id>
-    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md">&lt;p&gt;If you&#39;re building a Bitcoin dApp, you&#39;ve probably already discovered
-that the Bitcoin community&#39;s ecosystem is an absolute dumpster fire.&lt;/p&gt;
-&lt;p&gt;The simplest example is Bitcoin wallets. Everyone seems eager to
-create standards for others, but nobody seems eager to actually
-implement them.&lt;/p&gt;
-&lt;h2 id=&quot;standards-what-standards&quot;&gt;&quot;Standards&quot;? What Standards?&lt;/h2&gt;
-&lt;p&gt;Let me be more specific:&lt;/p&gt;
-&lt;h3
-id=&quot;wbips-even-the-standard-makers-dont-follow-their-own-standards&quot;&gt;WBIPs:
-Even the Standard Makers Don&#39;t Follow Their Own Standards&lt;/h3&gt;
-&lt;p&gt;Leather and Xverse created &lt;a
-href=&quot;https://wbips.netlify.app/&quot;&gt;WBIPs&lt;/a&gt;, supposedly to establish a
-unified Bitcoin wallet API standard, but:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;The signPsbt finalize parameter&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;The &lt;a
-href=&quot;https://github.com/wbips/wbips-docs/blob/a7862572785686da8c0097125366086fea3c70d6/pages/request_api/signPsbt.md&quot;&gt;&lt;code&gt;signPsbt&lt;/code&gt;&lt;/a&gt;
-standard defines a &lt;code&gt;finalize&lt;/code&gt; parameter, but neither of the
-initiators implemented it:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Leather&#39;s &lt;a
-href=&quot;https://github.com/leather-io/mono/blob/2570b8e89e1a7d67ff2ec469c42b321f5d956e92/packages/rpc/src/methods/bitcoin/sign-psbt.ts#L25-L35&quot;&gt;code&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Xverse&#39;s &lt;a
-href=&quot;https://github.com/secretkeylabs/sats-connect-core/blob/cfbbdfde28a646f1b5114dad39ec76da85c3ffe9/src/request/types/btcMethods.ts#L178-L192&quot;&gt;code&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;The wallet auto-discovery mechanism is completely
-wrong&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a
-href=&quot;https://github.com/wbips/wbips-docs/blob/a7862572785686da8c0097125366086fea3c70d6/pages/wbips/WBIP004.md&quot;&gt;WBIP004&lt;/a&gt;
-defines a wallet plugin auto-discovery mechanism, where the first step
-is to inject the wallet provider into &lt;code&gt;wbip_providers&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;But in reality, both Xverse and Leather inject into
-&lt;code&gt;window.btc_providers&lt;/code&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Leather&#39;s &lt;a
-href=&quot;https://github.com/leather-io/mono/blob/2570b8e89e1a7d67ff2ec469c42b321f5d956e92/packages/provider/src/add-leather-to-providers.ts#L21-L52&quot;&gt;code&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Xverse&#39;s &lt;a
-href=&quot;https://github.com/secretkeylabs/xverse-web-extension/blob/bdbd6a008fd3d8f04ea18eca0374fae67d90114c/src/inpage/index.ts#L53&quot;&gt;code&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Two other major wallets don&#39;t care at all&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Not to mention that &lt;strong&gt;UniSat&lt;/strong&gt; and &lt;strong&gt;OKX
-Wallet&lt;/strong&gt;, which actually have massive traffic, seem to have zero
-interest in supporting WBIPs.&lt;/p&gt;
-&lt;h3 id=&quot;sats-connect-a-standard-on-top-of-standards&quot;&gt;sats-connect: A
-Standard on Top of Standards&lt;/h3&gt;
-&lt;p&gt;Then, beyond WBIPs, Xverse also created &lt;a
-href=&quot;https://github.com/xverseapp/sats-connect&quot;&gt;sats-connect&lt;/a&gt;,
-apparently wanting to extend some of their own APIs beyond WBIPs,
-implementing a standard on top of a standard.&lt;/p&gt;
-&lt;p&gt;This isn&#39;t bad, especially since it also provides compatibility with
-the UniSat API. Magic Eden even claims to be &quot;sats-connect
-compatible.&quot;&lt;/p&gt;
-&lt;p&gt;&quot;This sounds absolutely amazing! sats-connect is the meta! The savior
-of the world!&quot; Right? That&#39;s what you&#39;re thinking.&lt;/p&gt;
-&lt;p&gt;But there are still &quot;two small clouds&quot; hovering over this perfect
-world:&lt;/p&gt;
-&lt;ol type=&quot;1&quot;&gt;
-&lt;li&gt;&lt;strong&gt;sats-connect doesn&#39;t support OKX Wallet&lt;/strong&gt; (even
-though OKX Wallet&#39;s API has now migrated to be UniSat-compatible,
-sats-connect can&#39;t auto-discover it)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Magic Eden&#39;s auto-discovery follows a different
-standard&lt;/strong&gt;: &lt;a
-href=&quot;https://github.com/ExodusMovement/bitcoin-wallet-standard&quot;&gt;&lt;code&gt;ExodusMovement/bitcoin-wallet-standard&lt;/code&gt;&lt;/a&gt;,
-not the WBIPs standard. So you can&#39;t rely on sats-connect to
-auto-discover it.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&quot;wait-what-another-standard&quot;&gt;Wait What, Another Standard?&lt;/h3&gt;
-&lt;p&gt;&quot;Wait, what the hell is this
-&lt;code&gt;ExodusMovement/bitcoin-wallet-standard&lt;/code&gt;? I&#39;ve never heard of
-it!&quot;&lt;/p&gt;
-&lt;p&gt;Right, before I tried to integrate Magic Eden, I hadn&#39;t heard of it
-either. Now I&#39;ve heard of it, and so have you.&lt;/p&gt;
-&lt;h3 id=&quot;more-fun-facts&quot;&gt;More Fun Facts&lt;/h3&gt;
-&lt;p&gt;Oh, here&#39;s a &quot;fun fact&quot;: if your users have both Xverse and Magic
-Eden installed, and you don&#39;t handle it properly, when they click
-&quot;Connect Wallet,&quot; they might &lt;strong&gt;randomly receive a confirmation
-request from one of the two wallets&lt;/strong&gt;. Life is full of
-surprises.&lt;/p&gt;
-&lt;p&gt;Oh, and another &quot;fun fact&quot;: although Magic Eden claims to be
-&quot;sats-connect compatible,&quot; it&#39;s actually compatible with &lt;strong&gt;an
-older version of the API&lt;/strong&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;show-some-code&quot;&gt;Show Some Code&lt;/h2&gt;
-&lt;p&gt;You might think, &quot;Fine, I&#39;ll just integrate them all myself.&quot; So
-let&#39;s look at the code differences for implementing a simple &quot;connect
-wallet&quot; feature:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
-class=&quot;sourceCode typescript&quot;&gt;&lt;code class=&quot;sourceCode typescript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// UniSat - Direct window object call&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; unisatResponse &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;unisat&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;requestAccounts&lt;/span&gt;()&lt;/span&gt;
-&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Leather - Yet another API&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; leatherResponse &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;LeatherProvider&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;request&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;getAddresses&amp;quot;&lt;/span&gt;)&lt;/span&gt;
-&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Xverse - From official docs&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;import&lt;/span&gt; { request } &lt;span class=&quot;im&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;sats-connect&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;const&lt;/span&gt; xverseResponse &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;request&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;getAddresses&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt;)&lt;/span&gt;
-&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// Magic Eden - From official docs&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;import&lt;/span&gt; { getAddress&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; AddressPurpose&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; BitcoinNetworkType } &lt;span class=&quot;im&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;sats-connect&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;cf&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;getAddress&lt;/span&gt;({&lt;/span&gt;
-&lt;span id=&quot;cb1-14&quot;&gt;&lt;a href=&quot;#cb1-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  getProvider&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; getBtcProvider&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-15&quot;&gt;&lt;a href=&quot;#cb1-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  payload&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb1-16&quot;&gt;&lt;a href=&quot;#cb1-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    purposes&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [AddressPurpose&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;Ordinals&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; AddressPurpose&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;Payment&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-17&quot;&gt;&lt;a href=&quot;#cb1-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    message&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Address for receiving Ordinals and payments&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-18&quot;&gt;&lt;a href=&quot;#cb1-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    network&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb1-19&quot;&gt;&lt;a href=&quot;#cb1-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      type&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; BitcoinNetworkType&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;Mainnet&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-20&quot;&gt;&lt;a href=&quot;#cb1-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-21&quot;&gt;&lt;a href=&quot;#cb1-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-22&quot;&gt;&lt;a href=&quot;#cb1-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  onFinish&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; response &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb1-23&quot;&gt;&lt;a href=&quot;#cb1-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;onFinish response, &amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; response&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;addresses&lt;/span&gt;)&lt;/span&gt;
-&lt;span id=&quot;cb1-24&quot;&gt;&lt;a href=&quot;#cb1-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    connectionStatus&lt;span class=&quot;op&quot;&gt;?.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;setAccounts&lt;/span&gt;(response&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;addresses&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;unknown&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;as&lt;/span&gt; Account[])&lt;/span&gt;
-&lt;span id=&quot;cb1-25&quot;&gt;&lt;a href=&quot;#cb1-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-26&quot;&gt;&lt;a href=&quot;#cb1-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  onCancel&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; () &lt;span class=&quot;kw&quot;&gt;=&amp;gt;&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb1-27&quot;&gt;&lt;a href=&quot;#cb1-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;alert&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;quot;Request canceled&amp;quot;&lt;/span&gt;)&lt;/span&gt;
-&lt;span id=&quot;cb1-28&quot;&gt;&lt;a href=&quot;#cb1-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-29&quot;&gt;&lt;a href=&quot;#cb1-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Four wallets, four different implementations.&lt;/p&gt;
-&lt;p&gt;What if you need to integrate 6 wallets in your project?
-Congratulations, you&#39;ll need to go through all the issues I mentioned
-above, and enjoy wasting a huge chunk of your life along with me.&lt;/p&gt;
-&lt;h2 id=&quot;to-sum-it-up&quot;&gt;To Sum It Up&lt;/h2&gt;
-&lt;p&gt;&quot;F**k the stupid ecosystem, what a dumpster fire!&quot; — you/I
-thought.&lt;/p&gt;
-&lt;h2 id=&quot;so-i-built-a-library&quot;&gt;So I Built a Library&lt;/h2&gt;
-&lt;p&gt;So I built &lt;a
-href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;bitcoin-wallet-connector&lt;/a&gt;
-to help others waste less time on this crap.&lt;/p&gt;
-&lt;p&gt;In the &lt;strong&gt;next article&lt;/strong&gt;, I&#39;ll detail the usage and
-design philosophy of this library. If you can&#39;t wait, check out:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://bitcoin-wallet-connector.netlify.app/iframe.html?id=components-bitcoinconnectionprovider--default&amp;amp;viewMode=story&quot;&gt;Live
-Demo&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;GitHub
-Repository&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content>
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-03-bitcoin-wallet-ecosystem-is-a-mess.en.md">&lt;p&gt;If you&amp;apos;re building a Bitcoin dApp, you&amp;apos;ve probably already discovered that the Bitcoin community&amp;apos;s ecosystem is an absolute dumpster fire.&lt;/p&gt;&lt;p&gt;The simplest example is Bitcoin wallets. Everyone seems eager to create standards for others, but nobody seems eager to actually implement them.&lt;/p&gt;&lt;h2 id=&quot;&amp;quot;standards&amp;quot;?-what-standards?&quot;&gt;&amp;quot;Standards&amp;quot;? What Standards?&lt;/h2&gt;&lt;p&gt;Let me be more specific:&lt;/p&gt;&lt;h3 id=&quot;wbips:-even-the-standard-makers-don&amp;apos;t-follow-their-own-standards&quot;&gt;WBIPs: Even the Standard Makers Don&amp;apos;t Follow Their Own Standards&lt;/h3&gt;&lt;p&gt;Leather and Xverse created &lt;a href=&quot;https://wbips.netlify.app/&quot;&gt;WBIPs&lt;/a&gt;, supposedly to establish a unified Bitcoin wallet API standard, but:&lt;/p&gt;&lt;p&gt;&lt;strong&gt;The signPsbt finalize parameter&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;The &lt;a href=&quot;https://github.com/wbips/wbips-docs/blob/a7862572785686da8c0097125366086fea3c70d6/pages/request_api/signPsbt.md&quot;&gt;&lt;code&gt;signPsbt&lt;/code&gt;&lt;/a&gt; standard defines a &lt;code&gt;finalize&lt;/code&gt; parameter, but neither of the initiators implemented it:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Leather&amp;apos;s &lt;a href=&quot;https://github.com/leather-io/mono/blob/2570b8e89e1a7d67ff2ec469c42b321f5d956e92/packages/rpc/src/methods/bitcoin/sign-psbt.ts#L25-L35&quot;&gt;code&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Xverse&amp;apos;s &lt;a href=&quot;https://github.com/secretkeylabs/sats-connect-core/blob/cfbbdfde28a646f1b5114dad39ec76da85c3ffe9/src/request/types/btcMethods.ts#L178-L192&quot;&gt;code&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;strong&gt;The wallet auto-discovery mechanism is completely wrong&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/wbips/wbips-docs/blob/a7862572785686da8c0097125366086fea3c70d6/pages/wbips/WBIP004.md&quot;&gt;WBIP004&lt;/a&gt; defines a wallet plugin auto-discovery mechanism, where the first step is to inject the wallet provider into &lt;code&gt;wbip_providers&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;But in reality, both Xverse and Leather inject into &lt;code&gt;window.btc_providers&lt;/code&gt;:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Leather&amp;apos;s &lt;a href=&quot;https://github.com/leather-io/mono/blob/2570b8e89e1a7d67ff2ec469c42b321f5d956e92/packages/provider/src/add-leather-to-providers.ts#L21-L52&quot;&gt;code&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Xverse&amp;apos;s &lt;a href=&quot;https://github.com/secretkeylabs/xverse-web-extension/blob/bdbd6a008fd3d8f04ea18eca0374fae67d90114c/src/inpage/index.ts#L53&quot;&gt;code&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;strong&gt;Two other major wallets don&amp;apos;t care at all&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Not to mention that &lt;strong&gt;UniSat&lt;/strong&gt; and &lt;strong&gt;OKX Wallet&lt;/strong&gt;, which actually have massive traffic, seem to have zero interest in supporting WBIPs.&lt;/p&gt;&lt;h3 id=&quot;sats-connect:-a-standard-on-top-of-standards&quot;&gt;sats-connect: A Standard on Top of Standards&lt;/h3&gt;&lt;p&gt;Then, beyond WBIPs, Xverse also created &lt;a href=&quot;https://github.com/xverseapp/sats-connect&quot;&gt;sats-connect&lt;/a&gt;, apparently wanting to extend some of their own APIs beyond WBIPs, implementing a standard on top of a standard.&lt;/p&gt;&lt;p&gt;This isn&amp;apos;t bad, especially since it also provides compatibility with the UniSat API. Magic Eden even claims to be &amp;quot;sats-connect compatible.&amp;quot;&lt;/p&gt;&lt;p&gt;&amp;quot;This sounds absolutely amazing! sats-connect is the meta! The savior of the world!&amp;quot; Right? That&amp;apos;s what you&amp;apos;re thinking.&lt;/p&gt;&lt;p&gt;But there are still &amp;quot;two small clouds&amp;quot; hovering over this perfect world:&lt;/p&gt;&lt;ol start=&quot;1&quot;&gt;&lt;li&gt;&lt;strong&gt;sats-connect doesn&amp;apos;t support OKX Wallet&lt;/strong&gt; (even though OKX Wallet&amp;apos;s API has now migrated to be UniSat-compatible, sats-connect can&amp;apos;t auto-discover it)&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Magic Eden&amp;apos;s auto-discovery follows a different standard&lt;/strong&gt;: &lt;a href=&quot;https://github.com/ExodusMovement/bitcoin-wallet-standard&quot;&gt;&lt;code&gt;ExodusMovement/bitcoin-wallet-standard&lt;/code&gt;&lt;/a&gt;, not the WBIPs standard. So you can&amp;apos;t rely on sats-connect to auto-discover it.&lt;/li&gt;&lt;/ol&gt;&lt;h3 id=&quot;wait-what,-another-standard?&quot;&gt;Wait What, Another Standard?&lt;/h3&gt;&lt;p&gt;&amp;quot;Wait, what the hell is this &lt;code&gt;ExodusMovement/bitcoin-wallet-standard&lt;/code&gt;? I&amp;apos;ve never heard of it!&amp;quot;&lt;/p&gt;&lt;p&gt;Right, before I tried to integrate Magic Eden, I hadn&amp;apos;t heard of it either. Now I&amp;apos;ve heard of it, and so have you.&lt;/p&gt;&lt;h3 id=&quot;more-fun-facts&quot;&gt;More Fun Facts&lt;/h3&gt;&lt;p&gt;Oh, here&amp;apos;s a &amp;quot;fun fact&amp;quot;: if your users have both Xverse and Magic Eden installed, and you don&amp;apos;t handle it properly, when they click &amp;quot;Connect Wallet,&amp;quot; they might &lt;strong&gt;randomly receive a confirmation request from one of the two wallets&lt;/strong&gt;. Life is full of surprises.&lt;/p&gt;&lt;p&gt;Oh, and another &amp;quot;fun fact&amp;quot;: although Magic Eden claims to be &amp;quot;sats-connect compatible,&amp;quot; it&amp;apos;s actually compatible with &lt;strong&gt;an older version of the API&lt;/strong&gt;.&lt;/p&gt;&lt;h2 id=&quot;show-some-code&quot;&gt;Show Some Code&lt;/h2&gt;&lt;p&gt;You might think, &amp;quot;Fine, I&amp;apos;ll just integrate them all myself.&amp;quot; So let&amp;apos;s look at the code differences for implementing a simple &amp;quot;connect wallet&amp;quot; feature:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;// UniSat - Direct window object call
+const unisatResponse = await window.unisat.requestAccounts()
+
+// Leather - Yet another API
+const leatherResponse = await window.LeatherProvider.request(&amp;quot;getAddresses&amp;quot;)
+
+// Xverse - From official docs
+import { request } from &amp;quot;sats-connect&amp;quot;
+const xverseResponse = await request(&amp;quot;getAddresses&amp;quot;, null)
+
+// Magic Eden - From official docs
+import { getAddress, AddressPurpose, BitcoinNetworkType } from &amp;quot;sats-connect&amp;quot;
+await getAddress({
+  getProvider: getBtcProvider,
+  payload: {
+    purposes: [AddressPurpose.Ordinals, AddressPurpose.Payment],
+    message: &amp;quot;Address for receiving Ordinals and payments&amp;quot;,
+    network: {
+      type: BitcoinNetworkType.Mainnet,
+    },
+  },
+  onFinish: response =&amp;gt; {
+    console.log(&amp;quot;onFinish response, &amp;quot;, response.addresses)
+    connectionStatus?.setAccounts(response.addresses as unknown as Account[])
+  },
+  onCancel: () =&amp;gt; {
+    alert(&amp;quot;Request canceled&amp;quot;)
+  },
+})
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Four wallets, four different implementations.&lt;/p&gt;&lt;p&gt;What if you need to integrate 6 wallets in your project? Congratulations, you&amp;apos;ll need to go through all the issues I mentioned above, and enjoy wasting a huge chunk of your life along with me.&lt;/p&gt;&lt;h2 id=&quot;to-sum-it-up&quot;&gt;To Sum It Up&lt;/h2&gt;&lt;p&gt;&amp;quot;F**k the stupid ecosystem, what a dumpster fire!&amp;quot; — you/I thought.&lt;/p&gt;&lt;h2 id=&quot;so-i-built-a-library&quot;&gt;So I Built a Library&lt;/h2&gt;&lt;p&gt;So I built &lt;a href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;bitcoin-wallet-connector&lt;/a&gt; to help others waste less time on this crap.&lt;/p&gt;&lt;p&gt;In the &lt;strong&gt;next article&lt;/strong&gt;, I&amp;apos;ll detail the usage and design philosophy of this library. If you can&amp;apos;t wait, check out:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://bitcoin-wallet-connector.netlify.app/iframe.html?id=components-bitcoinconnectionprovider--default&amp;amp;viewMode=story&quot;&gt;Live Demo&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/bolasblack/bitcoin-wallet-connector&quot;&gt;GitHub Repository&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;&lt;/ul&gt;</content>
 
     <author>
       <name>c4605</name>
@@ -517,172 +291,24 @@ Repository&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
     <published>2026-01-02T00:00:00Z</published>
     <updated>2026-01-05T10:05:48Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-02-moved-to-llm-oriented</id>
-    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-02-moved-to-llm-oriented.en.md">&lt;h2 id=&quot;what-is-llm-oriented-config-sharing&quot;&gt;What is &quot;LLM-oriented
-Config Sharing&quot;?&lt;/h2&gt;
-&lt;p&gt;Simply put, config sharing projects provide &lt;a
-href=&quot;https://llmstxt.org/&quot;&gt;llms.txt&lt;/a&gt;, and consumers use it to let
-LLMs download/update project config files to keep them up to
-date—instead of distributing configs through npm registry.&lt;/p&gt;
-&lt;h2 id=&quot;so-why-not-use-npm-anymore&quot;&gt;So Why Not Use npm Anymore?&lt;/h2&gt;
-&lt;p&gt;Traditional ways of sharing tool configurations—whether through
-&lt;code&gt;extends&lt;/code&gt; or presets—all face a fundamental contradiction:
-&lt;strong&gt;the trade-off between convenience and flexibility&lt;/strong&gt;.&lt;/p&gt;
-&lt;h3 id=&quot;the-pros-of-inheritance-mode&quot;&gt;The Pros of Inheritance Mode&lt;/h3&gt;
-&lt;p&gt;When you use something like
-&lt;code&gt;extends: &quot;@company/eslint-config&quot;&lt;/code&gt;, the benefits are
-obvious:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Easy upgrades&lt;/strong&gt;: Just &lt;code&gt;npm update&lt;/code&gt;, and
-all projects using this config get the updates&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Consistency guaranteed&lt;/strong&gt;: All projects in the team
-use the same rules&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Centralized maintenance&lt;/strong&gt;: Improvements and bug fixes
-only need to happen in one place&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;but-reality-is-harsh&quot;&gt;But Reality is Harsh&lt;/h3&gt;
-&lt;p&gt;Problems arise when you need to do anything &quot;non-standard&quot;:&lt;/p&gt;
-&lt;ol type=&quot;1&quot;&gt;
-&lt;li&gt;&lt;strong&gt;Custom requirements&lt;/strong&gt;: Your project has special needs
-and requires overriding certain rules&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Dependency version conflicts&lt;/strong&gt;: You need to upgrade
-ESLint, but the upstream config package hasn&#39;t caught up yet (e.g.,
-ESLint moved to flat config mode, and you need the latest version, but
-I&#39;m lazy and haven&#39;t updated yet 🤪)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Rule disagreements&lt;/strong&gt;: Upstream updated a rule, but it
-doesn&#39;t fit your project (the problem is you might not know at first,
-and only realize &quot;damn, I got burned&quot; when things break)&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;At this point, you have two choices:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Option A: Patch on top of inheritance&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
-class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;// eslint.config.js&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;im&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;im&quot;&gt;default&lt;/span&gt; [&lt;/span&gt;
-&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;baseConfig&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  {&lt;/span&gt;
-&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;rules&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;co&quot;&gt;// Override one rule&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;st&quot;&gt;&amp;quot;some-rule&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;off&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;co&quot;&gt;// Override another&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;st&quot;&gt;&amp;quot;another-rule&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [&lt;span class=&quot;st&quot;&gt;&amp;quot;error&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; { &lt;span class=&quot;dt&quot;&gt;different&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;options&amp;quot;&lt;/span&gt; }]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;co&quot;&gt;// Still need to handle plugin version conflicts...&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;]&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;As patches pile up, your &quot;inheritance&quot; becomes layer upon layer of
-overrides, ending up harder to maintain than writing from scratch.&lt;/p&gt;
-&lt;p&gt;ESLint is actually not too bad. Tools like Prettier and lint-staged
-that don&#39;t have extends/merge mechanisms are even more troublesome. I
-previously wrote a super complicated lint-staged config (see &lt;a
-href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt;
-and &lt;a
-href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.helpers.js&quot;&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt;&lt;/a&gt;).
-It looks decent (well, at least I think so), but it&#39;s actually super
-hard to use and makes a very simple thing extremely complex.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Option B: Eject&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Many scaffold tools provide an &lt;code&gt;eject&lt;/code&gt; command that copies
-all config files into your project, giving you full control.&lt;/p&gt;
-&lt;p&gt;But after ejecting:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;You lose the ability to auto-upgrade; you have to update yourself
-and can&#39;t benefit from upstream&#39;s tested plugin compatibility&lt;/li&gt;
-&lt;li&gt;When upstream has important updates, you need to manually diff and
-merge&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;This is the dilemma&lt;/strong&gt;: In inheritance mode you&#39;re
-constrained by upstream; after ejecting you bear the maintenance
-cost.&lt;/p&gt;
-&lt;h2 id=&quot;llm-is-a-game-changer&quot;&gt;LLM is a Game Changer&lt;/h2&gt;
-&lt;p&gt;Now we have LLMs. Times have changed.&lt;/p&gt;
-&lt;h3 id=&quot;the-new-workflow&quot;&gt;The New Workflow&lt;/h3&gt;
-&lt;ol type=&quot;1&quot;&gt;
-&lt;li&gt;&lt;strong&gt;Get latest configs&lt;/strong&gt;: LLM fetches the latest
-recommended configs directly from llms.md/llms.txt&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Smart merging&lt;/strong&gt;: LLM understands your project context
-and merges new configs into existing ones&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Preserve customizations&lt;/strong&gt;: Your custom modifications
-are recognized and preserved&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Update on demand&lt;/strong&gt;: When you need to upgrade, let LLM
-handle the merge conflicts&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&quot;why-is-this-better-than-traditional-approaches&quot;&gt;Why is This
-Better Than Traditional Approaches?&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;All configs live in your codebase&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;No hidden config files deep in &lt;code&gt;node_modules&lt;/code&gt;, no
-confusion about &quot;where did this rule come from&quot;. Every line of config is
-clearly visible in your project.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Upgrades become controllable&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Upgrading is no longer an &quot;all or nothing&quot; decision. LLM can help
-you:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;See what changed upstream&lt;/li&gt;
-&lt;li&gt;Understand the impact of each change&lt;/li&gt;
-&lt;li&gt;Selectively apply updates&lt;/li&gt;
-&lt;li&gt;Automatically handle merge conflicts&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Customization is a first-class citizen&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Your customizations are no longer &quot;patches&quot;—they&#39;re part of the
-config. LLM understands and respects these customizations when
-updating.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Dependency version freedom&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;You can upgrade any dependency anytime without waiting for upstream
-config packages to update. Run into issues? LLM can help adjust the
-config (and configs are easier for them to read now too).&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Upstream config files become simpler&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Let&#39;s look at my lint-staged config files again.&lt;/p&gt;
-&lt;p&gt;Previous version:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a
-href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Helper functions I had to write so downstream could reuse and
-customize the lint-staged config: &lt;a
-href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.helpers.js&quot;&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Current version:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a
-href=&quot;https://github.com/bolasblack/js-metarepo/blob/25d4495adcba67bda9daf65b04a204acc01cb795/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt;
-Actually, this is so simple now, let me just inline it:
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre
-class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;module&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;at&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; {&lt;/span&gt;
-&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;*.{ts,tsx,js,jsx}&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [&lt;span class=&quot;st&quot;&gt;&amp;quot;prettier --write&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;eslint&amp;quot;&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;*.{css,scss,sass,less,md,mdx}&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; [&lt;span class=&quot;st&quot;&gt;&amp;quot;prettier --write&amp;quot;&lt;/span&gt;]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt; no longer exists—because it&#39;s no
-longer needed&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2
-id=&quot;youve-said-a-lot-but-doesnt-this-still-look-like-a-step-backward&quot;&gt;You&#39;ve
-Said a Lot, But Doesn&#39;t This Still Look Like a Step Backward?&lt;/h2&gt;
-&lt;p&gt;Yes and no.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Yes&lt;/strong&gt;: Config files do exist independently in each
-project, just like the old days&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;No&lt;/strong&gt;: Because the maintenance cost has fundamentally
-changed:
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Before&lt;/strong&gt;: Manually read CHANGELOG or diff against
-upstream config -&amp;gt; Figure out what changed -&amp;gt; Manually modify
--&amp;gt; Test and verify&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Now&lt;/strong&gt;: Tell LLM &quot;upgrade to the latest recommended
-config&quot; -&amp;gt; Review LLM&#39;s changes -&amp;gt; Done&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The cognitive burden of maintenance shifts from &quot;I need to understand
-all these configs&quot; to &quot;I need to review LLM&#39;s suggestions&quot;. This is
-what&#39;s different from the early days.&lt;/p&gt;
-&lt;h2 id=&quot;summary-ai-version-couldnt-write-this-myself&quot;&gt;Summary (AI
-version, couldn&#39;t write this myself)&lt;/h2&gt;
-&lt;p&gt;Traditional config sharing forces a choice between &quot;one-size-fits-all
-convenience&quot; and &quot;full autonomy with complexity&quot;. The LLM-oriented
-approach lets us have both:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Maintain full ownership and transparency of configs&lt;/li&gt;
-&lt;li&gt;While enjoying intelligent assistance for upgrades and
-maintenance&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This isn&#39;t a step backward in technology—it&#39;s redefining best
-practices with new tools.&lt;/p&gt;
-</content>
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-02-moved-to-llm-oriented.en.md">&lt;h2 id=&quot;what-is-&amp;quot;llm-oriented-config-sharing&amp;quot;?&quot;&gt;What is &amp;quot;LLM-oriented Config Sharing&amp;quot;?&lt;/h2&gt;&lt;p&gt;Simply put, config sharing projects provide &lt;a href=&quot;https://llmstxt.org/&quot;&gt;llms.txt&lt;/a&gt;, and consumers use it to let LLMs download/update project config files to keep them up to date—instead of distributing configs through npm registry.&lt;/p&gt;&lt;h2 id=&quot;so-why-not-use-npm-anymore?&quot;&gt;So Why Not Use npm Anymore?&lt;/h2&gt;&lt;p&gt;Traditional ways of sharing tool configurations—whether through &lt;code&gt;extends&lt;/code&gt; or presets—all face a fundamental contradiction: &lt;strong&gt;the trade-off between convenience and flexibility&lt;/strong&gt;.&lt;/p&gt;&lt;h3 id=&quot;the-pros-of-inheritance-mode&quot;&gt;The Pros of Inheritance Mode&lt;/h3&gt;&lt;p&gt;When you use something like &lt;code&gt;extends: &amp;quot;@company/eslint-config&amp;quot;&lt;/code&gt;, the benefits are obvious:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;Easy upgrades&lt;/strong&gt;: Just &lt;code&gt;npm update&lt;/code&gt;, and all projects using this config get the updates&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Consistency guaranteed&lt;/strong&gt;: All projects in the team use the same rules&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Centralized maintenance&lt;/strong&gt;: Improvements and bug fixes only need to happen in one place&lt;/li&gt;&lt;/ul&gt;&lt;h3 id=&quot;but-reality-is-harsh&quot;&gt;But Reality is Harsh&lt;/h3&gt;&lt;p&gt;Problems arise when you need to do anything &amp;quot;non-standard&amp;quot;:&lt;/p&gt;&lt;ol start=&quot;1&quot;&gt;&lt;li&gt;&lt;strong&gt;Custom requirements&lt;/strong&gt;: Your project has special needs and requires overriding certain rules&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Dependency version conflicts&lt;/strong&gt;: You need to upgrade ESLint, but the upstream config package hasn&amp;apos;t caught up yet (e.g., ESLint moved to flat config mode, and you need the latest version, but I&amp;apos;m lazy and haven&amp;apos;t updated yet 🤪)&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Rule disagreements&lt;/strong&gt;: Upstream updated a rule, but it doesn&amp;apos;t fit your project (the problem is you might not know at first, and only realize &amp;quot;damn, I got burned&amp;quot; when things break)&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;At this point, you have two choices:&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Option A: Patch on top of inheritance&lt;/strong&gt;&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;// eslint.config.js
+export default [
+  ...baseConfig,
+  {
+    rules: {
+      // Override one rule
+      &amp;quot;some-rule&amp;quot;: &amp;quot;off&amp;quot;,
+      // Override another
+      &amp;quot;another-rule&amp;quot;: [&amp;quot;error&amp;quot;, { different: &amp;quot;options&amp;quot; }],
+    },
+  },
+  // Still need to handle plugin version conflicts...
+];
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;As patches pile up, your &amp;quot;inheritance&amp;quot; becomes layer upon layer of overrides, ending up harder to maintain than writing from scratch.&lt;/p&gt;&lt;p&gt;ESLint is actually not too bad. Tools like Prettier and lint-staged that don&amp;apos;t have extends/merge mechanisms are even more troublesome. I previously wrote a super complicated lint-staged config (see &lt;a href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt; and &lt;a href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.helpers.js&quot;&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt;&lt;/a&gt;). It looks decent (well, at least I think so), but it&amp;apos;s actually super hard to use and makes a very simple thing extremely complex.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Option B: Eject&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Many scaffold tools provide an &lt;code&gt;eject&lt;/code&gt; command that copies all config files into your project, giving you full control.&lt;/p&gt;&lt;p&gt;But after ejecting:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;You lose the ability to auto-upgrade; you have to update yourself and can&amp;apos;t benefit from upstream&amp;apos;s tested plugin compatibility&lt;/li&gt;&lt;li&gt;When upstream has important updates, you need to manually diff and merge&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;strong&gt;This is the dilemma&lt;/strong&gt;: In inheritance mode you&amp;apos;re constrained by upstream; after ejecting you bear the maintenance cost.&lt;/p&gt;&lt;h2 id=&quot;llm-is-a-game-changer&quot;&gt;LLM is a Game Changer&lt;/h2&gt;&lt;p&gt;Now we have LLMs. Times have changed.&lt;/p&gt;&lt;h3 id=&quot;the-new-workflow&quot;&gt;The New Workflow&lt;/h3&gt;&lt;ol start=&quot;1&quot;&gt;&lt;li&gt;&lt;strong&gt;Get latest configs&lt;/strong&gt;: LLM fetches the latest recommended configs directly from llms.md/llms.txt&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Smart merging&lt;/strong&gt;: LLM understands your project context and merges new configs into existing ones&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Preserve customizations&lt;/strong&gt;: Your custom modifications are recognized and preserved&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Update on demand&lt;/strong&gt;: When you need to upgrade, let LLM handle the merge conflicts&lt;/li&gt;&lt;/ol&gt;&lt;h3 id=&quot;why-is-this-better-than-traditional-approaches?&quot;&gt;Why is This Better Than Traditional Approaches?&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;All configs live in your codebase&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;No hidden config files deep in &lt;code&gt;node_modules&lt;/code&gt;, no confusion about &amp;quot;where did this rule come from&amp;quot;. Every line of config is clearly visible in your project.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Upgrades become controllable&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Upgrading is no longer an &amp;quot;all or nothing&amp;quot; decision. LLM can help you:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;See what changed upstream&lt;/li&gt;&lt;li&gt;Understand the impact of each change&lt;/li&gt;&lt;li&gt;Selectively apply updates&lt;/li&gt;&lt;li&gt;Automatically handle merge conflicts&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;strong&gt;Customization is a first-class citizen&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Your customizations are no longer &amp;quot;patches&amp;quot;—they&amp;apos;re part of the config. LLM understands and respects these customizations when updating.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Dependency version freedom&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;You can upgrade any dependency anytime without waiting for upstream config packages to update. Run into issues? LLM can help adjust the config (and configs are easier for them to read now too).&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Upstream config files become simpler&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Let&amp;apos;s look at my lint-staged config files again.&lt;/p&gt;&lt;p&gt;Previous version:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Helper functions I had to write so downstream could reuse and customize the lint-staged config: &lt;a href=&quot;https://github.com/bolasblack/js-metarepo/blob/0270b291651bcbc75a3ecd81d391f4ad836a814e/packages/toolconfs/lint-staged.helpers.js&quot;&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Current version:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;https://github.com/bolasblack/js-metarepo/blob/25d4495adcba67bda9daf65b04a204acc01cb795/packages/toolconfs/lint-staged.config.js&quot;&gt;&lt;code&gt;lint-staged.config.js&lt;/code&gt;&lt;/a&gt; Actually, this is so simple now, let me just inline it:&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;module.exports = {
+  &amp;quot;*.{ts,tsx,js,jsx}&amp;quot;: [&amp;quot;prettier --write&amp;quot;, &amp;quot;eslint&amp;quot;],
+  &amp;quot;*.{css,scss,sass,less,md,mdx}&amp;quot;: [&amp;quot;prettier --write&amp;quot;],
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;&lt;li&gt;&lt;code&gt;lint-staged.helpers.js&lt;/code&gt; no longer exists—because it&amp;apos;s no longer needed&lt;/li&gt;&lt;/ul&gt;&lt;h2 id=&quot;you&amp;apos;ve-said-a-lot,-but-doesn&amp;apos;t-this-still-look-like-a-step-backward?&quot;&gt;You&amp;apos;ve Said a Lot, But Doesn&amp;apos;t This Still Look Like a Step Backward?&lt;/h2&gt;&lt;p&gt;Yes and no.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;Yes&lt;/strong&gt;: Config files do exist independently in each project, just like the old days&lt;/li&gt;&lt;li&gt;&lt;strong&gt;No&lt;/strong&gt;: Because the maintenance cost has fundamentally changed:&lt;ul&gt;&lt;li&gt;&lt;strong&gt;Before&lt;/strong&gt;: Manually read CHANGELOG or diff against upstream config -&amp;gt; Figure out what changed -&amp;gt; Manually modify -&amp;gt; Test and verify&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Now&lt;/strong&gt;: Tell LLM &amp;quot;upgrade to the latest recommended config&amp;quot; -&amp;gt; Review LLM&amp;apos;s changes -&amp;gt; Done&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;The cognitive burden of maintenance shifts from &amp;quot;I need to understand all these configs&amp;quot; to &amp;quot;I need to review LLM&amp;apos;s suggestions&amp;quot;. This is what&amp;apos;s different from the early days.&lt;/p&gt;&lt;h2 id=&quot;summary-(ai-version,-couldn&amp;apos;t-write-this-myself)&quot;&gt;Summary (AI version, couldn&amp;apos;t write this myself)&lt;/h2&gt;&lt;p&gt;Traditional config sharing forces a choice between &amp;quot;one-size-fits-all convenience&amp;quot; and &amp;quot;full autonomy with complexity&amp;quot;. The LLM-oriented approach lets us have both:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Maintain full ownership and transparency of configs&lt;/li&gt;&lt;li&gt;While enjoying intelligent assistance for upgrades and maintenance&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;This isn&amp;apos;t a step backward in technology—it&amp;apos;s redefining best practices with new tools.&lt;/p&gt;</content>
 
     <author>
       <name>c4605</name>
@@ -711,108 +337,8 @@ practices with new tools.&lt;/p&gt;
     <published>2025-11-12T00:00:00Z</published>
     <updated>2026-01-05T10:05:48Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2025-11-12-elm-style-useeffectreducer-hook-for-react</id>
-    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2025-11-12-elm-style-useeffectreducer-hook-for-react.en.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a
-href=&quot;https://github.com/bolasblack/react-components/tree/develop/packages/useEffectReducer&quot;&gt;bolasblack/react-components/tree/develop/packages/useEffectReducer&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;what-is-elm-style&quot;&gt;What is &quot;Elm-style&quot;?&lt;/h2&gt;
-&lt;p&gt;Elm popularized the &lt;strong&gt;Model-View-Update&lt;/strong&gt; pattern, where
-each update returns both the next model and the commands to run:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre
-class=&quot;sourceCode elm&quot;&gt;&lt;code class=&quot;sourceCode elm&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;update&lt;/span&gt; : &lt;span class=&quot;dt&quot;&gt;Msg&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Model&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;-&amp;gt;&lt;/span&gt; ( &lt;span class=&quot;dt&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Cmd&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;Msg&lt;/span&gt; )&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This design keeps all logic about &lt;em&gt;&quot;what happens when event X
-occurs&quot;&lt;/em&gt; in &lt;strong&gt;one place&lt;/strong&gt; — the update function —
-instead of scattering side effects across random
-&lt;code&gt;useEffect&lt;/code&gt;s.&lt;/p&gt;
-&lt;p&gt;It also keeps reducers pure while making &lt;strong&gt;when and what side
-effects happen&lt;/strong&gt; explicit and interpretable by a runtime.&lt;/p&gt;
-&lt;p&gt;React&#39;s docs echo this philosophy: effects should be an &lt;em&gt;escape
-hatch&lt;/em&gt;, not the default — see &lt;a
-href=&quot;https://react.dev/learn/you-might-not-need-an-effect&quot;&gt;You Might
-Not Need an Effect&lt;/a&gt;.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;If you want to see how this kind of modeling makes UI logic elegant
-and maintainable, check out David Khourshid&#39;s classic post &lt;a
-href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;&lt;strong&gt;&quot;No,
-disabling a button is not app logic.&quot;&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;so-why-another-elm-style-reducer&quot;&gt;So why &lt;em&gt;another&lt;/em&gt;
-Elm-style reducer?&lt;/h2&gt;
-&lt;p&gt;The author wanted a variant with different trade-offs:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Some are archived.&lt;/strong&gt; For example, &lt;a
-href=&quot;https://github.com/davidkpiano/useEffectReducer&quot;&gt;&lt;code&gt;useEffectReducer&lt;/code&gt;&lt;/a&gt;
-and &lt;a
-href=&quot;https://github.com/soywod/react-use-bireducer&quot;&gt;&lt;code&gt;react-use-bireducer&lt;/code&gt;&lt;/a&gt;
-are now read-only.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Keep it tiny.&lt;/strong&gt; Fits in one file with almost no
-dependencies — copy, tweak, or delete it whenever you want.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Effects as plain objects + separate interpreter.&lt;/strong&gt;
-Returns serializable effect descriptors and implements the actual effect
-logic in one dedicated place. It&#39;s easier to test reducers (assert on
-descriptors) without invoking real side effects.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Lower the barrier.&lt;/strong&gt; The goal is to make the
-Elm-style approach approachable without requiring deep knowledge of
-Elm&#39;s &lt;code&gt;Cmd Msg&lt;/code&gt; system or learning a full-blown state machine
-library like &lt;a href=&quot;https://xstate.js.org/&quot;&gt;XState&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;example-usage&quot;&gt;Example usage&lt;/h2&gt;
-&lt;p&gt;The article reimplements the example from David Khourshid&#39;s article
-&lt;a
-href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;&lt;strong&gt;&quot;No,
-disabling a button is not app logic.&quot;&lt;/strong&gt;&lt;/a&gt; using
-&lt;code&gt;useEffectReducer&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Both implementations are available on GitHub:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;useEffectReducer version:&lt;/strong&gt; &lt;a
-href=&quot;https://github.com/bolasblack/react-components/blob/eb47a2416e8cc95bb4fa7e6fbf776ac2432a2468/packages/useEffectReducer/src/useEffectReducer.stories.tsx#L121-L203&quot;&gt;useEffectReducer.stories.tsx
-→ L121–203&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;useReducer version:&lt;/strong&gt; &lt;a
-href=&quot;https://github.com/bolasblack/react-components/blob/eb47a2416e8cc95bb4fa7e6fbf776ac2432a2468/packages/useEffectReducer/src/useEffectReducer.stories.tsx#L24-L119&quot;&gt;useEffectReducer.stories.tsx
-→ L24–119&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;related-work&quot;&gt;Related work&lt;/h2&gt;
-&lt;p&gt;Excellent existing takes on bringing &lt;strong&gt;Elm-style &quot;state +
-effects&quot; reducers&lt;/strong&gt; into React:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/davidkpiano/useEffectReducer&quot;&gt;&lt;code&gt;davidkpiano/useEffectReducer&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— by &lt;em&gt;David Khourshid&lt;/em&gt;; archived&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/soywod/react-use-bireducer&quot;&gt;&lt;code&gt;soywod/react-use-bireducer&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— returns &lt;code&gt;[state, effects]&lt;/code&gt; and processes effects through a
-separate effect reducer; archived&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/ncthbrt/react-use-elmish&quot;&gt;&lt;code&gt;ncthbrt/react-use-elmish&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— Elmish-style hook combining reducer logic with async helpers&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/redux-loop/redux-loop&quot;&gt;&lt;code&gt;redux-loop&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— Redux enhancer adding Elm-like effect tuples&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://github.com/dai-shi/use-reducer-async&quot;&gt;&lt;code&gt;dai-shi/use-reducer-async&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— extends &lt;code&gt;dispatch&lt;/code&gt; for async actions&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a
-href=&quot;https://gist.github.com/sophiebits/145c47544430c82abd617c9cdebefee8&quot;&gt;&lt;code&gt;useReducerWithEmitEffect&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt;
-— Sophie Alpert&#39;s gist that inspired much of this work&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;good-articles&quot;&gt;Good Articles&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Christian Ekrem - &quot;&lt;a
-href=&quot;https://cekrem.github.io/posts/chapter-2-take-2/&quot;&gt;Chapter 2, Take
-2: Why I Changed Course&lt;/a&gt;&quot;&lt;/li&gt;
-&lt;li&gt;David Khourshid – &quot;&lt;a
-href=&quot;https://dev.to/davidkpiano/redux-is-half-of-a-pattern-1-2-1hd7&quot;&gt;Redux
-is half of a pattern (1/2)&lt;/a&gt;&quot;&lt;/li&gt;
-&lt;li&gt;David Khourshid – &quot;&lt;a
-href=&quot;https://medium.com/@DavidKPiano/there-are-so-many-fundamental-misunderstandings-about-xstate-and-state-machines-in-general-in-13aec57d2f85&quot;&gt;There
-are so many fundamental misunderstandings about XState (and state
-machines in general)&lt;/a&gt;&quot;&lt;/li&gt;
-&lt;li&gt;David Khourshid – &quot;&lt;a
-href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;No,
-disabling a button is not app logic.&lt;/a&gt;&quot;&lt;/li&gt;
-&lt;li&gt;React docs – &quot;&lt;a
-href=&quot;https://react.dev/learn/you-might-not-need-an-effect&quot;&gt;You Might
-Not Need an Effect&lt;/a&gt;&quot;&lt;/li&gt;
-&lt;/ul&gt;
-</content>
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2025-11-12-elm-style-useeffectreducer-hook-for-react.en.md">&lt;p&gt;&lt;strong&gt;GitHub:&lt;/strong&gt; &lt;a href=&quot;https://github.com/bolasblack/react-components/tree/develop/packages/useEffectReducer&quot;&gt;bolasblack/react-components/tree/develop/packages/useEffectReducer&lt;/a&gt;&lt;/p&gt;&lt;h2 id=&quot;what-is-&amp;quot;elm-style&amp;quot;?&quot;&gt;What is &amp;quot;Elm-style&amp;quot;?&lt;/h2&gt;&lt;p&gt;Elm popularized the &lt;strong&gt;Model-View-Update&lt;/strong&gt; pattern, where each update returns both the next model and the commands to run:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;update : Msg -&amp;gt; Model -&amp;gt; ( Model, Cmd Msg )
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This design keeps all logic about &lt;em&gt;&amp;quot;what happens when event X occurs&amp;quot;&lt;/em&gt; in &lt;strong&gt;one place&lt;/strong&gt; — the update function — instead of scattering side effects across random &lt;code&gt;useEffect&lt;/code&gt;s.&lt;/p&gt;&lt;p&gt;It also keeps reducers pure while making &lt;strong&gt;when and what side effects happen&lt;/strong&gt; explicit and interpretable by a runtime.&lt;/p&gt;&lt;p&gt;React&amp;apos;s docs echo this philosophy: effects should be an &lt;em&gt;escape hatch&lt;/em&gt;, not the default — see &lt;a href=&quot;https://react.dev/learn/you-might-not-need-an-effect&quot;&gt;You Might Not Need an Effect&lt;/a&gt;.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;If you want to see how this kind of modeling makes UI logic elegant and maintainable, check out David Khourshid&amp;apos;s classic post &lt;a href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;&lt;strong&gt;&amp;quot;No, disabling a button is not app logic.&amp;quot;&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;&lt;h2 id=&quot;so-why-another-elm-style-reducer?&quot;&gt;So why &lt;em&gt;another&lt;/em&gt; Elm-style reducer?&lt;/h2&gt;&lt;p&gt;The author wanted a variant with different trade-offs:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;strong&gt;Some are archived.&lt;/strong&gt; For example, &lt;a href=&quot;https://github.com/davidkpiano/useEffectReducer&quot;&gt;&lt;code&gt;useEffectReducer&lt;/code&gt;&lt;/a&gt; and &lt;a href=&quot;https://github.com/soywod/react-use-bireducer&quot;&gt;&lt;code&gt;react-use-bireducer&lt;/code&gt;&lt;/a&gt; are now read-only.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;strong&gt;Keep it tiny.&lt;/strong&gt; Fits in one file with almost no dependencies — copy, tweak, or delete it whenever you want.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;strong&gt;Effects as plain objects + separate interpreter.&lt;/strong&gt; Returns serializable effect descriptors and implements the actual effect logic in one dedicated place. It&amp;apos;s easier to test reducers (assert on descriptors) without invoking real side effects.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;strong&gt;Lower the barrier.&lt;/strong&gt; The goal is to make the Elm-style approach approachable without requiring deep knowledge of Elm&amp;apos;s &lt;code&gt;Cmd Msg&lt;/code&gt; system or learning a full-blown state machine library like &lt;a href=&quot;https://xstate.js.org/&quot;&gt;XState&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h2 id=&quot;example-usage&quot;&gt;Example usage&lt;/h2&gt;&lt;p&gt;The article reimplements the example from David Khourshid&amp;apos;s article &lt;a href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;&lt;strong&gt;&amp;quot;No, disabling a button is not app logic.&amp;quot;&lt;/strong&gt;&lt;/a&gt; using &lt;code&gt;useEffectReducer&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;Both implementations are available on GitHub:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;useEffectReducer version:&lt;/strong&gt; &lt;a href=&quot;https://github.com/bolasblack/react-components/blob/eb47a2416e8cc95bb4fa7e6fbf776ac2432a2468/packages/useEffectReducer/src/useEffectReducer.stories.tsx#L121-L203&quot;&gt;useEffectReducer.stories.tsx → L121–203&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;strong&gt;useReducer version:&lt;/strong&gt; &lt;a href=&quot;https://github.com/bolasblack/react-components/blob/eb47a2416e8cc95bb4fa7e6fbf776ac2432a2468/packages/useEffectReducer/src/useEffectReducer.stories.tsx#L24-L119&quot;&gt;useEffectReducer.stories.tsx → L24–119&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h2 id=&quot;related-work&quot;&gt;Related work&lt;/h2&gt;&lt;p&gt;Excellent existing takes on bringing &lt;strong&gt;Elm-style &amp;quot;state + effects&amp;quot; reducers&lt;/strong&gt; into React:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/davidkpiano/useEffectReducer&quot;&gt;&lt;code&gt;davidkpiano/useEffectReducer&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt; — by &lt;em&gt;David Khourshid&lt;/em&gt;; archived&lt;/li&gt;&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/soywod/react-use-bireducer&quot;&gt;&lt;code&gt;soywod/react-use-bireducer&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt; — returns &lt;code&gt;[state, effects]&lt;/code&gt; and processes effects through a separate effect reducer; archived&lt;/li&gt;&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/ncthbrt/react-use-elmish&quot;&gt;&lt;code&gt;ncthbrt/react-use-elmish&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt; — Elmish-style hook combining reducer logic with async helpers&lt;/li&gt;&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/redux-loop/redux-loop&quot;&gt;&lt;code&gt;redux-loop&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt; — Redux enhancer adding Elm-like effect tuples&lt;/li&gt;&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/dai-shi/use-reducer-async&quot;&gt;&lt;code&gt;dai-shi/use-reducer-async&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt; — extends &lt;code&gt;dispatch&lt;/code&gt; for async actions&lt;/li&gt;&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://gist.github.com/sophiebits/145c47544430c82abd617c9cdebefee8&quot;&gt;&lt;code&gt;useReducerWithEmitEffect&lt;/code&gt;&lt;/a&gt;&lt;/strong&gt; — Sophie Alpert&amp;apos;s gist that inspired much of this work&lt;/li&gt;&lt;/ul&gt;&lt;h2 id=&quot;good-articles&quot;&gt;Good Articles&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;Christian Ekrem - &amp;quot;&lt;a href=&quot;https://cekrem.github.io/posts/chapter-2-take-2/&quot;&gt;Chapter 2, Take 2: Why I Changed Course&lt;/a&gt;&amp;quot;&lt;/li&gt;&lt;li&gt;David Khourshid – &amp;quot;&lt;a href=&quot;https://dev.to/davidkpiano/redux-is-half-of-a-pattern-1-2-1hd7&quot;&gt;Redux is half of a pattern (1/2)&lt;/a&gt;&amp;quot;&lt;/li&gt;&lt;li&gt;David Khourshid – &amp;quot;&lt;a href=&quot;https://medium.com/@DavidKPiano/there-are-so-many-fundamental-misunderstandings-about-xstate-and-state-machines-in-general-in-13aec57d2f85&quot;&gt;There are so many fundamental misunderstandings about XState (and state machines in general)&lt;/a&gt;&amp;quot;&lt;/li&gt;&lt;li&gt;David Khourshid – &amp;quot;&lt;a href=&quot;https://dev.to/davidkpiano/no-disabling-a-button-is-not-app-logic-598i&quot;&gt;No, disabling a button is not app logic.&lt;/a&gt;&amp;quot;&lt;/li&gt;&lt;li&gt;React docs – &amp;quot;&lt;a href=&quot;https://react.dev/learn/you-might-not-need-an-effect&quot;&gt;You Might Not Need an Effect&lt;/a&gt;&amp;quot;&lt;/li&gt;&lt;/ul&gt;</content>
 
     <author>
       <name>c4605</name>

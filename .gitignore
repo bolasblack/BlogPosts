@@ -9,3 +9,10 @@ Thumbs.db
 .rvmrc
 \#*
 *~
+.lsp
+.clj-kondo/.cache
+
+.claude/settings.local.json
+zhistory
+__pycache__
+

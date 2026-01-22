@@ -49,6 +49,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          sed -i '/^# remove before committing to master$/,$d' .gitignore
           git add .
           git commit -m "Update feed.xml and posts JSON from posts branch"
           git push origin master

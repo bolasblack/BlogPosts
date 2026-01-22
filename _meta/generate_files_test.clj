@@ -1,7 +1,7 @@
 #!/usr/bin/env bb
 
 (ns generate-files-test
-  (:require [clojure.test :refer [deftest testing is are run-tests]]
+  (:require [clojure.test :refer [deftest testing is run-tests]]
             [clojure.string :as str]
             [babashka.fs :as fs]))
 
@@ -137,12 +137,17 @@
 ;; Tests for Pure URL Functions
 ;; ============================================================================
 
-(deftest test-build-github-url
-  (testing "builds correct GitHub URL"
+(deftest test-github-repo-url
+  (testing "builds GitHub repository URL"
+    (is (= "https://github.com/user/repo/"
+           (generate-files/github-repo-url "user/repo")))))
+
+(deftest test-github-blob-url
+  (testing "builds GitHub blob URL"
     (is (= "https://github.com/user/repo/blob/master/path/file.md"
-           (generate-files/build-github-url "user/repo" "path/" "file.md")))
+           (generate-files/github-blob-url "user/repo" "path/file.md")))
     (is (= "https://github.com/user/repo/blob/master/file.md"
-           (generate-files/build-github-url "user/repo" "" "file.md")))))
+           (generate-files/github-blob-url "user/repo" "file.md")))))
 
 (deftest test-meta-url
   (testing "builds meta URL"
@@ -486,7 +491,7 @@
                                                            :updated-at "2024-01-20T10:00:00+08:00"})
                     slurp (fn [path] (reset! slurped-path (str path))
                             "---\ntitle: Test Post\ntags:\n  - clojure\n---\n\n**Bold** text")
-                    generate-files/run-pandoc (fn [md] (str "<p>" md "</p>"))]
+                    generate-files/markdown->html (fn [md] (str "<p>" md "</p>"))]
         (let [result (generate-files/get-post-with-content "/fake/2024-01-15-test.md")]
           (is (= "/fake/2024-01-15-test.md" @slurped-path))
           (is (= "Test Post" (:title result)))
@@ -501,7 +506,7 @@
                     generate-files/git-file-dates (fn [_] {})
                     slurp (fn [path] (reset! slurped-path (str path))
                             "---\ntitle: Post with Link\n---\n\nSee [other](./2024-01-10-other.md)")
-                    generate-files/run-pandoc identity]
+                    generate-files/markdown->html identity]
         (let [result (generate-files/get-post-with-content "/fake/2024-01-15-test.md")]
           (is (= "/fake/2024-01-15-test.md" @slurped-path))
           (is (= "See [other](https://blog.example.com/#/goto/2024-01-10-other.md)" (:content result))))))))
@@ -653,7 +658,7 @@
                             "<feed xml:lang=\"en\">"
                             "<title>Test Blog</title>"
                             "<updated>2024-01-15T00:00:00+08:00</updated>"
-                            "<id>https://github.com/user/repo/blob/master/_meta/</id>"
+                            "<id>https://github.com/user/repo/</id>"
                             "<entry><title>EN Post</title></entry>"
                             "</feed>")]
           (is (= "feed.en.xml" result))
