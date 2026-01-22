@@ -7,7 +7,9 @@
             [selmer.parser :as selmer]
             [clj-yaml.core :as yaml]
             [cheshire.core :as json]
-            [com.grzm.uri-template :as uri-template])
+            [com.grzm.uri-template :as uri-template]
+            [nextjournal.markdown :as md]
+            [hiccup2.core :as h])
   (:import [java.time ZonedDateTime LocalDate ZoneId]
            [java.time.format DateTimeFormatter]))
 
@@ -111,20 +113,35 @@
 ;; Pure Functions - URL Generation (take settings as parameter)
 ;; ============================================================================
 
-(defn build-github-url
-  "Build a GitHub URL for a file path"
-  [github-repo path-prefix path]
-  (str "https://github.com/" github-repo "/blob/master/" path-prefix path))
+(defn github-repo-url
+  "Build base GitHub repository URL"
+  [github-repo]
+  (str "https://github.com/" github-repo "/"))
+
+(defn github-blob-url
+  "Build GitHub blob URL for a file"
+  [github-repo path]
+  (str (github-repo-url github-repo) "blob/master/" path))
+
+(defn github-raw-url
+  "Build raw GitHub URL for direct file content access"
+  [github-repo path]
+  (str "https://raw.githubusercontent.com/" github-repo "/refs/heads/master/" path))
 
 (defn meta-url
-  "Build meta URL for a file in _meta directory"
+  "Build GitHub blob URL for a file in _meta directory"
   [github-repo path]
-  (build-github-url github-repo "_meta/" path))
+  (github-blob-url github-repo (str "_meta/" path)))
+
+(defn meta-raw-url
+  "Build raw GitHub URL for a file in _meta directory"
+  [github-repo path]
+  (github-raw-url github-repo (str "_meta/" path)))
 
 (defn post-url
-  "Build GitHub URL for a post file"
+  "Build GitHub blob URL for a post file"
   [github-repo path]
-  (build-github-url github-repo "" path))
+  (github-blob-url github-repo path))
 
 (defn article-url
   "Generate article URL using article_url template.
@@ -365,13 +382,15 @@
     {:created-at (last dates)
      :updated-at (first dates)}))
 
-(defn run-pandoc
-  "Convert markdown to HTML using pandoc (I/O)"
+(defn markdown->html
+  "Convert markdown to HTML using built-in nextjournal.markdown"
   [md-content]
-  (let [result (sh {:in md-content} "pandoc" "-f" "gfm" "-t" "html")]
-    (if (zero? (:exit result))
-      (:out result)
-      md-content)))
+  (let [hiccup (md/->hiccup (md/parse md-content))
+        ;; Unwrap outer :div wrapper from nextjournal.markdown
+        children (if (and (vector? hiccup) (= :div (first hiccup)))
+                   (rest hiccup)
+                   [hiccup])]
+    (apply str (map #(str (h/html %)) children))))
 
 (defn get-post-files
   "Get all post file paths matching the date pattern (I/O)"
@@ -406,7 +425,7 @@
         processed-md (replace-local-article-links (:article-url settings) (:url settings)
                                                    (:github-repo settings) (:extname settings)
                                                    (:raw-content metadata))
-        html-content (run-pandoc processed-md)]
+        html-content (markdown->html processed-md)]
     (enrich-post-with-content settings metadata html-content)))
 
 (defn get-all-posts
@@ -417,11 +436,11 @@
        (sort-by :updated-at #(compare %2 %1))))
 
 (defn get-posts-for-feed
-  "Get all posts with content for feed generation"
+  "Get all posts with content for feed generation, sorted by created-at (newest first)"
   []
   (->> (get-post-files)
        (map get-post-with-content)
-       (sort-by :updated-at #(compare %2 %1))))
+       (sort-by :created-at #(compare %2 %1))))
 
 ;; ============================================================================
 ;; File Generation Functions (I/O)
@@ -495,8 +514,8 @@
       (let [updated-at (or (:updated-at (first posts)) (now-iso))
             template (slurp (fs/file script-dir "feed.xml.selmer"))
             feed-data (build-feed-data settings posts feed-lang updated-at
-                                       (meta-url github-repo "feed.xslt.xml")
-                                       (meta-url github-repo ""))
+                                       (meta-raw-url github-repo "feed.xslt.xml")
+                                       (github-repo-url github-repo))
             feed-content (selmer/render template feed-data)]
         (spit (fs/file script-dir (feed-filename lang)) feed-content)
         (feed-filename lang)))))

@@ -1,0 +1,3 @@
+{:linters
+ {:unresolved-namespace
+  {:exclude [generate-files]}}}

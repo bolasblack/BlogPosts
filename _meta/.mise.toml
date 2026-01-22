@@ -1,3 +1,2 @@
 [tools]
 babashka = "latest"
-pandoc = "latest"

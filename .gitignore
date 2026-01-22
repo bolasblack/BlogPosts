@@ -9,3 +9,14 @@ Thumbs.db
 .rvmrc
 \#*
 *~
+.lsp
+.clj-kondo/.cache
+
+.claude/settings.local.json
+zhistory
+__pycache__
+
+# remove before committing to master
+_meta/data
+_meta/data.en
+_meta/feed*.xml
