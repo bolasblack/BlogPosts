@@ -3,7 +3,7 @@
     "total-posts" : 6,
     "total-pages" : 1,
     "per-page" : 10,
-    "generated-at" : "2026-01-23T08:11:08.084132987Z"
+    "generated-at" : "2026-01-23T09:06:34.129772958Z"
   },
   "pagination" : {
     "current-page" : 1,
@@ -14,7 +14,7 @@
   },
   "posts" : [ {
     "path" : "2026-01-23-mcp-skill-generator.en.md",
-    "updated-at" : "2026-01-23T00:00:00Z",
+    "updated-at" : "2026-01-23T08:11:08Z",
     "tags" : [ "Claude Code", "Open Code", "Codex", "MCP", "AI" ],
     "date" : "2026-01-23",
     "title" : "I Made a Skill That Converts MCP to Skill",

@@ -271,7 +271,7 @@
 
 (deftest test-enrich-post-with-content
   (testing "adds content and URLs to post"
-    (let [settings {:article-url "#/goto/{mdUrl}" :url "https://blog.example.com" :github-repo "user/repo"}
+    (let [settings {:article-url "#/goto/{mdUrl}" :url "https://blog.example.com/" :github-repo "user/repo"}
           post {:id "my-post" :path "my-post.md" :lang nil :tags ["test"] :raw-content "raw"}
           result (generate-files/enrich-post-with-content settings post "<p>HTML</p>")]
       (is (= "<p>HTML</p>" (:content result)))
