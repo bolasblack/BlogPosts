@@ -1,0 +1,29 @@
+{
+  "meta" : {
+    "total-posts" : 25,
+    "total-pages" : 3,
+    "per-page" : 10,
+    "generated-at" : "2026-01-23T08:11:08.087100382Z"
+  },
+  "tag" : "Open Code",
+  "count" : 1,
+  "posts" : [ {
+    "path" : "2026-01-23-mcp-skill-generator.md",
+    "updated-at" : "2026-01-23T00:00:00Z",
+    "tags" : [ "Claude Code", "Open Code", "Codex", "MCP", "AI" ],
+    "date" : "2026-01-23",
+    "title" : "我写了一个 MCP 转 Skill 的 Skill",
+    "lang" : null,
+    "id" : "2026-01-23-mcp-skill-generator",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-23-mcp-skill-generator.md",
+    "created-at" : "2026-01-23T00:00:00Z",
+    "translations" : [ {
+      "lang" : "en",
+      "title" : "I Made a Skill That Converts MCP to Skill",
+      "path" : "2026-01-23-mcp-skill-generator.en.md",
+      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-23-mcp-skill-generator.en.md",
+      "tags" : [ "Claude Code", "Open Code", "Codex", "MCP", "AI" ],
+      "data-file" : "data.en/index.json"
+    } ]
+  } ]
+}

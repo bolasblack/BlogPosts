@@ -1,9 +1,9 @@
 {
   "meta" : {
-    "total-posts" : 24,
+    "total-posts" : 25,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-22T13:45:44.164152049Z"
+    "generated-at" : "2026-01-23T08:11:08.087100382Z"
   },
   "pagination" : {
     "current-page" : 1,
@@ -13,8 +13,26 @@
     "next-file" : "page-2.json"
   },
   "posts" : [ {
+    "path" : "2026-01-23-mcp-skill-generator.md",
+    "updated-at" : "2026-01-23T00:00:00Z",
+    "tags" : [ "Claude Code", "Open Code", "Codex", "MCP", "AI" ],
+    "date" : "2026-01-23",
+    "title" : "我写了一个 MCP 转 Skill 的 Skill",
+    "lang" : null,
+    "id" : "2026-01-23-mcp-skill-generator",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-23-mcp-skill-generator.md",
+    "created-at" : "2026-01-23T00:00:00Z",
+    "translations" : [ {
+      "lang" : "en",
+      "title" : "I Made a Skill That Converts MCP to Skill",
+      "path" : "2026-01-23-mcp-skill-generator.en.md",
+      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-23-mcp-skill-generator.en.md",
+      "tags" : [ "Claude Code", "Open Code", "Codex", "MCP", "AI" ],
+      "data-file" : "data.en/index.json"
+    } ]
+  }, {
     "path" : "2026-01-22-shadow-cljs-vite-plugin-v0.0.6.md",
-    "updated-at" : "2026-01-22T00:00:00Z",
+    "updated-at" : "2026-01-22T13:45:44Z",
     "tags" : [ "ClojureScript", "shadow-cljs", "Vite", "HMR", "Cloudflare Workers" ],
     "date" : "2026-01-22",
     "title" : "shadow-cljs-vite-plugin v0.0.6: 修复 HMR 和 ES Module 兼容性问题",
@@ -142,15 +160,5 @@
     "id" : "2014-07-01-Socket.io_如何切换_Namespace_和_querystring",
     "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2014-07-01-Socket.io_如何切换_Namespace_和_querystring.md",
     "created-at" : "2014-07-01T00:00:00Z"
-  }, {
-    "path" : "2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md",
-    "updated-at" : "2026-01-04T21:17:00Z",
-    "tags" : [ "TypeScript", "枚举" ],
-    "date" : "2020-05-01",
-    "title" : "尝试用 TypeScript 模拟一个带 Payload 的枚举",
-    "lang" : null,
-    "id" : "2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md",
-    "created-at" : "2020-05-01T00:00:00Z"
   } ]
 }

@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <link href="https://blog.c4605.com/" rel="self" type="application/atom+xml" />
   <link href="https://blog.c4605.com/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2026-01-22T00:00:00Z</updated>
+  <updated>2026-01-23T00:00:00Z</updated>
   <id>https://github.com/bolasblack/BlogPosts/</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
@@ -15,10 +15,75 @@
 
   
   <entry xml:lang="en">
+    <title type="html">I Made a Skill That Converts MCP to Skill</title>
+    <link href="https://blog.c4605.com/#/goto/articles/2026-01-23-mcp-skill-generator.en.md" rel="alternate" type="text/html" title="I Made a Skill That Converts MCP to Skill" />
+    <published>2026-01-23T00:00:00Z</published>
+    <updated>2026-01-23T00:00:00Z</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-23-mcp-skill-generator</id>
+    <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-23-mcp-skill-generator.en.md">&lt;p&gt;I recently made a skill that converts MCP servers into Claude Code skills. Sounds a bit meta, but it&amp;apos;s actually quite useful.&lt;/p&gt;&lt;h2 id=&quot;why-convert?&quot;&gt;Why Convert?&lt;/h2&gt;&lt;p&gt;MCP itself is great. It provides a unified, discoverable interaction protocol, and the adoption rate is impressive. RESTful APIs are supported by many providers, sure, but they&amp;apos;re too loosely constrained—honestly, &amp;quot;discoverability&amp;quot; is something many big companies (especially quite a few Chinese tech giants) do terribly. GraphQL, gRPC and the like have limited adoption and are quite fragmented. MCP solves a lot of these problems.&lt;/p&gt;&lt;p&gt;But it still has some issues.&lt;/p&gt;&lt;h3 id=&quot;context-window-consumption-is-too-heavy&quot;&gt;Context Window Consumption Is Too Heavy&lt;/h3&gt;&lt;p&gt;MCP works by dumping all tool definitions into the context at once. If you&amp;apos;ve connected several MCP servers, each with a bunch of tools, the tool definitions alone take up a huge chunk of your context window. For example, I just checked—the GitHub MCP takes up 10k tokens (5%) of my context.&lt;/p&gt;&lt;p&gt;Claude Code skills have a mechanism called progressive disclosure: the AI first sees a brief description, and only loads the full content when it actually needs to use that skill. This way the context window doesn&amp;apos;t get stuffed with tool definitions that might never be used.&lt;/p&gt;&lt;p&gt;Although this skill currently can&amp;apos;t convert MCP services that require OAuth (technically it&amp;apos;s doable, just a bit more work—I&amp;apos;m considering adding it when I have time...), at least every bit of context saved counts...&lt;/p&gt;&lt;h3 id=&quot;ai-tool-calling-is-too-inefficient&quot;&gt;AI Tool Calling Is Too Inefficient&lt;/h3&gt;&lt;p&gt;This is the main reason I wanted to build this converter.&lt;/p&gt;&lt;p&gt;The traditional approach has the AI call tools one by one: call A, get the result, call B, call C... Each call goes through an &amp;quot;AI decides → make call → get result → AI decides again&amp;quot; loop.&lt;/p&gt;&lt;p&gt;The problem is this process is unreliable. The AI might skip a step, might suddenly go off the rails mid-way, and each call result has to be stuffed into the context, making token consumption skyrocket. It might even fail because the response is too long, forcing the AI to figure out how to paginate through the content.&lt;/p&gt;&lt;p&gt;A better approach is to have the AI write a script that completes all calls at once (or preprocesses the responses). Code control flow is much more reliable than AI &amp;quot;chain of thought&amp;quot;, and Anthropic is officially researching this direction—they published an article called &lt;a href=&quot;https://www.anthropic.com/engineering/code-execution-with-mcp&quot;&gt;Code execution with MCP&lt;/a&gt;, showing token consumption dropping from 150k to 2k, a 98.7% reduction.&lt;/p&gt;&lt;p&gt;The skill I made generates an &lt;code&gt;api.mjs&lt;/code&gt; that the AI can directly import and use for scripting:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;import { callTool } from &amp;apos;/&amp;lt;mcp-skill-path&amp;gt;/scripts/api.mjs&amp;apos;;
+
+// Search issues across multiple repos in parallel
+const repos = [&amp;apos;facebook/react&amp;apos;, &amp;apos;vuejs/vue&amp;apos;, &amp;apos;sveltejs/svelte&amp;apos;];
+const results = await Promise.all(
+  repos.map(repo =&amp;gt; callTool(&amp;apos;search_issues&amp;apos;, {
+    repo,
+    query: &amp;apos;memory leak&amp;apos;
+  }))
+);
+
+// Summarize results, return only needed fields
+const summary = results.flatMap((r, i) =&amp;gt;
+  r.content[0].text.items?.slice(0, 3).map(issue =&amp;gt; ({
+    repo: repos[i],
+    title: issue.title,
+    url: issue.html_url
+  })) ?? []
+);
+
+console.log(JSON.stringify(summary, null, 2));
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With traditional tool calling, the AI would need to call &lt;code&gt;search_issues&lt;/code&gt; 3 times, with each call&amp;apos;s full result stuffed into context, then the AI &amp;quot;thinks&amp;quot; again about how to summarize. With a script, it executes once and returns the processed, concise result to the AI.&lt;/p&gt;&lt;h3 id=&quot;version-locking&quot;&gt;Version Locking&lt;/h3&gt;&lt;p&gt;MCP servers are typically run like &lt;code&gt;npx @some/mcp-server&lt;/code&gt;, pulling the latest version every time. This means the server maintainer could push a malicious update at any moment, and you&amp;apos;d have no idea.&lt;/p&gt;&lt;p&gt;When converting to a skill, you can lock the version number—at least providing some defense against supply chain attacks.&lt;/p&gt;&lt;h2 id=&quot;quick-example&quot;&gt;Quick Example&lt;/h2&gt;&lt;p&gt;Usage looks something like this:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;&amp;gt; /mcp-skill-generator convert @anthropic/mcp-server-filesystem
+&amp;gt; /mcp-skill-generator convert https://docs.devin.ai/work-with-devin/deepwiki-mcp
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It will ask where you want to save it (project directory or personal directory), then automatically extract the schema and generate files. The resulting directory structure is:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;mcp-filesystem/
+├── SKILL.md
+├── config.toml
+├── tools/
+│   ├── read_file.md
+│   ├── write_file.md
+│   └── ...
+└── scripts/
+    ├── mcp-caller.mjs
+    ├── ...
+    └── api.mjs          # AI can use this for scripting
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;finally&quot;&gt;Finally&lt;/h2&gt;&lt;p&gt;The code is in &lt;a href=&quot;https://github.com/user/claude-skills&quot;&gt;my claude-skills repo&lt;/a&gt; if you&amp;apos;re interested.&lt;/p&gt;&lt;p&gt;To be honest, this skill itself was written using Claude Code. During the process, I deeply experienced how much more reliable &amp;quot;having AI write code&amp;quot; is compared to &amp;quot;having AI call tools&amp;quot;—at least when code doesn&amp;apos;t run, you can see error messages, instead of the AI quietly going off track without you knowing.&lt;/p&gt;</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="Claude Code" />
+    
+
+    
+    <category term="Claude Code" />
+    
+    <category term="Open Code" />
+    
+    <category term="Codex" />
+    
+    <category term="MCP" />
+    
+    <category term="AI" />
+    
+  </entry>
+  
+  <entry xml:lang="en">
     <title type="html">shadow-cljs-vite-plugin v0.0.6: Fixing HMR and ES Module Compatibility</title>
     <link href="https://blog.c4605.com/#/goto/articles/2026-01-22-shadow-cljs-vite-plugin-v0.0.6.en.md" rel="alternate" type="text/html" title="shadow-cljs-vite-plugin v0.0.6: Fixing HMR and ES Module Compatibility" />
     <published>2026-01-22T00:00:00Z</published>
-    <updated>2026-01-22T00:00:00Z</updated>
+    <updated>2026-01-22T13:45:44Z</updated>
     <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-01-22-shadow-cljs-vite-plugin-v0.0.6</id>
     <content type="html" xml:base="https://blog.c4605.com/#/goto/articles/2026-01-22-shadow-cljs-vite-plugin-v0.0.6.en.md">&lt;p&gt;Two weeks after the initial release of &lt;a href=&quot;https://github.com/bolasblack/shadow-cljs-vite-plugin&quot;&gt;shadow-cljs-vite-plugin&lt;/a&gt;, v0.0.6 brings some important fixes that make the development experience much smoother.&lt;/p&gt;&lt;h2 id=&quot;problem-1:-es-module-imports&quot;&gt;Problem 1: ES Module Imports&lt;/h2&gt;&lt;p&gt;When I first released the plugin, there were edge cases where ClojureScript code wouldn&amp;apos;t import correctly in Vite&amp;apos;s ESM environment. This was particularly problematic for users deploying to Cloudflare Workers.&lt;/p&gt;&lt;p&gt;The fix required coordinating with shadow-cljs upstream. We submitted a &lt;a href=&quot;https://github.com/thheller/shadow-cljs/pull/1249&quot;&gt;PR #1249&lt;/a&gt; to address the root cause, which was merged in v3.3.5. Thanks to &lt;a href=&quot;https://github.com/thheller&quot;&gt;@thheller&lt;/a&gt; for working through it with me!&lt;/p&gt;&lt;h2 id=&quot;problem-2:-hmr-&amp;quot;namespace-already-declared&amp;quot;-error&quot;&gt;Problem 2: HMR &amp;quot;Namespace already declared&amp;quot; Error&lt;/h2&gt;&lt;p&gt;This was a frustrating one. During hot module replacement, Vite re-executes module code, but global state (like &lt;code&gt;goog.loadedModules_&lt;/code&gt;) persists across HMR updates. Google Closure Library assumes modules are loaded exactly once and throws errors on duplicate registration.&lt;/p&gt;&lt;p&gt;The solution was to patch &lt;code&gt;goog.provide&lt;/code&gt; and &lt;code&gt;goog.module&lt;/code&gt; to be idempotent:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;goog.provide = function(name) {
   return goog.isProvided_(name) ? undefined : goog.constructNamespace_.call(this, name);

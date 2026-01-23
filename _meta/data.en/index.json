@@ -1,9 +1,9 @@
 {
   "meta" : {
-    "total-posts" : 5,
+    "total-posts" : 6,
     "total-pages" : 1,
     "per-page" : 10,
-    "generated-at" : "2026-01-22T13:45:44.16176773Z"
+    "generated-at" : "2026-01-23T08:11:08.084132987Z"
   },
   "pagination" : {
     "current-page" : 1,
@@ -13,8 +13,26 @@
     "next-file" : null
   },
   "posts" : [ {
+    "path" : "2026-01-23-mcp-skill-generator.en.md",
+    "updated-at" : "2026-01-23T00:00:00Z",
+    "tags" : [ "Claude Code", "Open Code", "Codex", "MCP", "AI" ],
+    "date" : "2026-01-23",
+    "title" : "I Made a Skill That Converts MCP to Skill",
+    "lang" : "en",
+    "id" : "2026-01-23-mcp-skill-generator",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-23-mcp-skill-generator.en.md",
+    "created-at" : "2026-01-23T00:00:00Z",
+    "translations" : [ {
+      "lang" : null,
+      "title" : "我写了一个 MCP 转 Skill 的 Skill",
+      "path" : "2026-01-23-mcp-skill-generator.md",
+      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-01-23-mcp-skill-generator.md",
+      "tags" : [ "Claude Code", "Open Code", "Codex", "MCP", "AI" ],
+      "data-file" : "data/index.json"
+    } ]
+  }, {
     "path" : "2026-01-22-shadow-cljs-vite-plugin-v0.0.6.en.md",
-    "updated-at" : "2026-01-22T00:00:00Z",
+    "updated-at" : "2026-01-22T13:45:44Z",
     "tags" : [ "ClojureScript", "shadow-cljs", "Vite", "HMR", "Cloudflare Workers" ],
     "date" : "2026-01-22",
     "title" : "shadow-cljs-vite-plugin v0.0.6: Fixing HMR and ES Module Compatibility",

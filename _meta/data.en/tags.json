@@ -1,9 +1,9 @@
 {
   "meta" : {
-    "total-posts" : 5,
+    "total-posts" : 6,
     "total-pages" : 1,
     "per-page" : 10,
-    "generated-at" : "2026-01-22T13:45:44.16176773Z"
+    "generated-at" : "2026-01-23T08:11:08.084132987Z"
   },
   "tags" : [ {
     "tag" : "React",
@@ -26,9 +26,17 @@
     "count" : 1,
     "file" : "tags/elm.json"
   }, {
+    "tag" : "Claude Code",
+    "count" : 1,
+    "file" : "tags/claude-code.json"
+  }, {
     "tag" : "wallet",
     "count" : 1,
     "file" : "tags/wallet.json"
+  }, {
+    "tag" : "Codex",
+    "count" : 1,
+    "file" : "tags/codex.json"
   }, {
     "tag" : "tooling",
     "count" : 1,
@@ -41,6 +49,10 @@
     "tag" : "Cloudflare Workers",
     "count" : 1,
     "file" : "tags/cloudflare-workers.json"
+  }, {
+    "tag" : "Open Code",
+    "count" : 1,
+    "file" : "tags/open-code.json"
   }, {
     "tag" : "Web3",
     "count" : 1,
@@ -89,5 +101,13 @@
     "tag" : "npm",
     "count" : 1,
     "file" : "tags/npm.json"
+  }, {
+    "tag" : "MCP",
+    "count" : 1,
+    "file" : "tags/mcp.json"
+  }, {
+    "tag" : "AI",
+    "count" : 1,
+    "file" : "tags/ai.json"
   } ]
 }
