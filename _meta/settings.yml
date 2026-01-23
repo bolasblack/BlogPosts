@@ -2,7 +2,7 @@ extname: .md
 github_repo: bolasblack/BlogPosts
 
 url: https://blog.c4605.com/
-article_url: "#/goto/articles/{mdUrl}"
+article_url: "/goto/articles/{mdUrl}"
 title: "c4605's blog"
 description: ""
 lang: "zh"
