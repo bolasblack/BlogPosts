@@ -1,23 +1,13 @@
 {
   "meta" : {
-    "total-posts" : 25,
+    "total-posts" : 26,
     "total-pages" : 3,
     "per-page" : 10,
-    "generated-at" : "2026-01-23T09:06:34.132812606Z"
+    "generated-at" : "2026-04-14T08:59:47.180327335Z"
   },
   "tag" : "枚举",
   "count" : 2,
   "posts" : [ {
-    "path" : "2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md",
-    "updated-at" : "2026-01-04T21:17:00Z",
-    "tags" : [ "TypeScript", "枚举" ],
-    "date" : "2020-05-01",
-    "title" : "尝试用 TypeScript 模拟一个带 Payload 的枚举",
-    "lang" : null,
-    "id" : "2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举",
-    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md",
-    "created-at" : "2020-05-01T00:00:00Z"
-  }, {
     "path" : "2020-05-05-TypeScript_如何真正_keyof_一个枚举.md",
     "updated-at" : "2026-01-04T21:17:00Z",
     "tags" : [ "TypeScript", "枚举" ],
@@ -27,5 +17,15 @@
     "id" : "2020-05-05-TypeScript_如何真正_keyof_一个枚举",
     "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2020-05-05-TypeScript_如何真正_keyof_一个枚举.md",
     "created-at" : "2020-05-05T00:00:00Z"
+  }, {
+    "path" : "2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md",
+    "updated-at" : "2026-01-04T21:17:00Z",
+    "tags" : [ "TypeScript", "枚举" ],
+    "date" : "2020-05-01",
+    "title" : "尝试用 TypeScript 模拟一个带 Payload 的枚举",
+    "lang" : null,
+    "id" : "2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2020-05-01-尝试用_TypeScript_模拟一个带_Payload_的枚举.md",
+    "created-at" : "2020-05-01T00:00:00Z"
   } ]
 }

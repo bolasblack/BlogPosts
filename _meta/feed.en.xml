@@ -3,7 +3,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <link href="https://blog.c4605.com/" rel="self" type="application/atom+xml" />
   <link href="https://blog.c4605.com/" rel="alternate" type="text/html" hreflang="en" />
-  <updated>2026-01-23T08:11:08Z</updated>
+  <updated>2026-04-13T00:00:00Z</updated>
   <id>https://github.com/bolasblack/BlogPosts/</id>
   <title type="html">c4605&#39;s blog</title>
   <subtitle></subtitle>
@@ -13,6 +13,45 @@
     <uri>https://github.com/bolasblack</uri>
   </author>
 
+  
+  <entry xml:lang="en">
+    <title type="html">shadow-cljs-vite-plugin v0.0.7–v0.0.9: Mixed CLJS + React HMR and Stability Fixes</title>
+    <link href="https://blog.c4605.com/goto/articles/2026-04-13-shadow-cljs-vite-plugin-v0.0.9.en.md" rel="alternate" type="text/html" title="shadow-cljs-vite-plugin v0.0.7–v0.0.9: Mixed CLJS + React HMR and Stability Fixes" />
+    <published>2026-04-13T00:00:00Z</published>
+    <updated>2026-04-13T00:00:00Z</updated>
+    <id>https://github.com/bolasblack/BlogPosts/blob/master/2026-04-13-shadow-cljs-vite-plugin-v0.0.9</id>
+    <content type="html" xml:base="https://blog.c4605.com/goto/articles/2026-04-13-shadow-cljs-vite-plugin-v0.0.9.en.md">&lt;p&gt;&lt;a href=&quot;https://github.com/bolasblack/shadow-cljs-vite-plugin&quot;&gt;shadow-cljs-vite-plugin&lt;/a&gt; has gone through several iterations since &lt;a href=&quot;https://www.reddit.com/r/Clojure/comments/1qjtcka/ann_shadowcljsviteplugin_v006_better_hmr_es/&quot;&gt;v0.0.6&lt;/a&gt;, primarily addressing HMR issues in mixed CLJS + React/TypeScript projects.&lt;/p&gt;&lt;h2 id=&quot;mixed-cljs-+-react/typescript-hmr&quot;&gt;Mixed CLJS + React/TypeScript HMR&lt;/h2&gt;&lt;p&gt;Previously, HMR worked fine for pure ClojureScript apps via shadow-cljs&amp;apos;s native eval. But if TypeScript/React code imported CLJS functions through &lt;code&gt;virtual:shadow-cljs/app&lt;/code&gt;, ES module exports went stale after hot-reload — editing a &lt;code&gt;.cljs&lt;/code&gt; file would trigger shadow-cljs eval, but React kept rendering old values.&lt;/p&gt;&lt;p&gt;This is now fixed. Exports stay fresh and React re-renders automatically:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-tsx&quot;&gt;import { greet } from &amp;quot;virtual:shadow-cljs/app&amp;quot;;
+
+export default function App() {
+  return &amp;lt;p&amp;gt;{greet(&amp;quot;World&amp;quot;)}&amp;lt;/p&amp;gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;No event listeners, hooks, or boilerplate needed.&lt;/p&gt;&lt;p&gt;Getting this right was trickier than expected. shadow-cljs and Vite use separate WebSocket connections, with no guaranteed timing between them — we can&amp;apos;t simply send a Vite HMR update when &amp;quot;Build completed&amp;quot; appears on stdout (eval might not have finished yet). On top of that, &lt;code&gt;import.meta.hot.invalidate()&lt;/code&gt; silently fails for virtual modules (no file on disk, so the server can&amp;apos;t resolve the invalidation).&lt;/p&gt;&lt;p&gt;The solution: the client polls the global namespace after receiving a build-complete signal, detects when shadow-cljs eval has actually mutated the globals, refreshes the ES module live bindings, then signals the server to trigger React Fast Refresh. Deterministic, no fixed delays, no monkey-patching.&lt;/p&gt;&lt;h2 id=&quot;fixed:-shadow-cljs-jvm-surviving-ctrl+c&quot;&gt;Fixed: shadow-cljs JVM Surviving Ctrl+C&lt;/h2&gt;&lt;p&gt;After pressing Ctrl+C, the shadow-cljs JVM process sometimes stayed alive, causing &amp;quot;server already running&amp;quot; errors on the next &lt;code&gt;vite dev&lt;/code&gt;. Root cause: pnpm sends SIGTERM to Vite shortly after Ctrl+C, killing Vite before it could send SIGKILL to the JVM. Fixed by using synchronous SIGKILL in signal handlers — no &lt;code&gt;await&lt;/code&gt;, can&amp;apos;t be interrupted.&lt;/p&gt;&lt;h2 id=&quot;new-examples&quot;&gt;New Examples&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;https://github.com/bolasblack/shadow-cljs-vite-plugin/tree/master/examples/cljs-react&quot;&gt;cljs-react&lt;/a&gt; — CLJS business logic + React UI with auto HMR&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;https://github.com/bolasblack/shadow-cljs-vite-plugin/tree/master/examples/cljs-ts-mixed&quot;&gt;cljs-ts-mixed&lt;/a&gt; — CLJS + TypeScript mixed project with HMR&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;https://github.com/bolasblack/shadow-cljs-vite-plugin/tree/master/examples/cljs-reagent&quot;&gt;cljs-reagent&lt;/a&gt; — Pure Reagent (ClojureScript) app with HMR&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;https://github.com/bolasblack/shadow-cljs-vite-plugin/tree/master/examples/cljs-cloudflare-worker&quot;&gt;cljs-cloudflare-worker&lt;/a&gt; — CLJS shared between browser (React) and Cloudflare Worker (SSR + JSON API), using &lt;code&gt;@cloudflare/vite-plugin&lt;/code&gt;. Modeled after &lt;a href=&quot;https://blog.c4605.com/en/&quot;&gt;my blog&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h2 id=&quot;other-improvements&quot;&gt;Other Improvements&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;Vite&amp;apos;s file watcher now ignores shadow-cljs output directories, preventing unnecessary HMR processing&lt;/li&gt;&lt;/ul&gt;&lt;h2 id=&quot;vite-bug-found-&amp;amp;-pr-submitted&quot;&gt;Vite Bug Found &amp;amp; PR Submitted&lt;/h2&gt;&lt;p&gt;During development, we discovered that &lt;code&gt;import.meta.hot.invalidate()&lt;/code&gt; silently fails for virtual modules. The client sends the invalidation, the server receives it, but nothing happens — because the browser-side URL (&lt;code&gt;/@id/__x00__virtual:...&lt;/code&gt;) doesn&amp;apos;t match the server-side module URL (&lt;code&gt;virtual:...&lt;/code&gt;). A fix has been submitted: &lt;a href=&quot;https://github.com/vitejs/vite/pull/22098&quot;&gt;vitejs/vite#22098&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Once merged, the plugin&amp;apos;s HMR implementation can be simplified significantly — the current client→server→client round-trip would be replaced by a single &lt;code&gt;invalidate()&lt;/code&gt; call, letting Vite handle propagation internally.&lt;/p&gt;&lt;h2 id=&quot;give-it-a-try&quot;&gt;Give It a Try&lt;/h2&gt;&lt;p&gt;The plugin has been running stably in production on Cloudflare Workers at &lt;a href=&quot;https://blog.c4605.com/en/&quot;&gt;blog.c4605.com&lt;/a&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;npm install shadow-cljs-vite-plugin
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Feedback and contributions are welcome on &lt;a href=&quot;https://github.com/bolasblack/shadow-cljs-vite-plugin&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</content>
+
+    <author>
+      <name>c4605</name>
+      <email>bolasblack@gmail.com</email>
+      <uri>https://github.com/bolasblack</uri>
+    </author>
+
+    
+    <category term="ClojureScript" />
+    
+
+    
+    <category term="ClojureScript" />
+    
+    <category term="shadow-cljs" />
+    
+    <category term="Vite" />
+    
+    <category term="HMR" />
+    
+    <category term="React" />
+    
+    <category term="Cloudflare Workers" />
+    
+  </entry>
   
   <entry xml:lang="en">
     <title type="html">I Made a Skill That Converts MCP to Skill</title>

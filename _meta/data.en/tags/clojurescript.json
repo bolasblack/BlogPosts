@@ -1,13 +1,31 @@
 {
   "meta" : {
-    "total-posts" : 6,
+    "total-posts" : 7,
     "total-pages" : 1,
     "per-page" : 10,
-    "generated-at" : "2026-01-23T09:06:34.129772958Z"
+    "generated-at" : "2026-04-14T08:59:47.186567517Z"
   },
   "tag" : "ClojureScript",
-  "count" : 1,
+  "count" : 2,
   "posts" : [ {
+    "path" : "2026-04-13-shadow-cljs-vite-plugin-v0.0.9.en.md",
+    "updated-at" : "2026-04-13T00:00:00Z",
+    "tags" : [ "ClojureScript", "shadow-cljs", "Vite", "HMR", "React", "Cloudflare Workers" ],
+    "date" : "2026-04-13",
+    "title" : "shadow-cljs-vite-plugin v0.0.7–v0.0.9: Mixed CLJS + React HMR and Stability Fixes",
+    "lang" : "en",
+    "id" : "2026-04-13-shadow-cljs-vite-plugin-v0.0.9",
+    "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-04-13-shadow-cljs-vite-plugin-v0.0.9.en.md",
+    "created-at" : "2026-04-13T00:00:00Z",
+    "translations" : [ {
+      "lang" : null,
+      "title" : "shadow-cljs-vite-plugin v0.0.7–v0.0.9: CLJS + React 混合 HMR 与稳定性改进",
+      "path" : "2026-04-13-shadow-cljs-vite-plugin-v0.0.9.md",
+      "url" : "https://github.com/bolasblack/BlogPosts/blob/master/2026-04-13-shadow-cljs-vite-plugin-v0.0.9.md",
+      "tags" : [ "ClojureScript", "shadow-cljs", "Vite", "HMR", "React", "Cloudflare Workers" ],
+      "data-file" : "data/index.json"
+    } ]
+  }, {
     "path" : "2026-01-22-shadow-cljs-vite-plugin-v0.0.6.en.md",
     "updated-at" : "2026-01-22T13:45:44Z",
     "tags" : [ "ClojureScript", "shadow-cljs", "Vite", "HMR", "Cloudflare Workers" ],
